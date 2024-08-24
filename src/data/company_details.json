@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "photo": "https://cdn.worldvectorlogo.com/logos/expedia.svg",
+        "username": "Expedia Group 2024",
+        "category": "SDE Intern",
+        "location": "Gurugram",
+        "CGPA_criteria": "5",
+        "backlogs": "No Active Backlogs",
+        "branches": "CSE(All), IT(All), ECE(All)",
+        "message": [
+            "There will be 2 tests",
+            "1) Capfinity Test",
+            "2) Online Assessment - Hackerank"
+        ],
+        "details_of_test": "OA - 6 MCQ + 2 DSA",
+        "time_for_test": "60 Minutes",
+        "interview_experiences": [
+            {
+                "round": "Technical Interview 1",
+                "questions": [
+                    "Explain the time complexity of quicksort.",
+                    "Implement a function to reverse a linked list."
+                ]
+            },
+            {
+                "round": "Technical Interview 2",
+                "questions": [
+                    "Describe your experience with React and how you've used it in your projects.",
+                    "What is closure in JavaScript, and can you give an example?"
+                ]
+            },
+            {
+                "round": "HR Interview",
+                "questions": [
+                    "Why do you want to work at Expedia?",
+                    "Where do you see yourself in five years?"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "photo":"https://logos-world.net/wp-content/uploads/2020/10/Wells-Fargo-Logo.png",
+        "username": "Wells Fargo 2024",
+      "category":" Category : SDE Intern",
+      "location": "Location : Hyderabad/Chennai/Banglore",
+      "CGPA_criteria":" CGPA-Criteria : 7.5",
+      "backlogs":"Min Backlogs : No Active Backlogs",
+      "branches":"Branches Allowed : CSE(All),IT(All),ECE(All),EE",
+        "message": [
+            "There will be 2 tests",
+            "1) Capfinity Test",
+            "2) Online Assessment - Hackerank"
+        ],
+        "details_of_test": "OA - 6 MCQ + 2 DSA",
+        "time_for_test": "60 Minutes",
+        "interview_experiences": [
+            {
+                "round": "Technical Interview 1",
+                "questions": [
+                    "Explain the time complexity of quicksort.",
+                    "Implement a function to reverse a linked list."
+                ]
+            },
+            {
+                "round": "Technical Interview 2",
+                "questions": [
+                    "Describe your experience with React and how you've used it in your projects.",
+                    "What is closure in JavaScript, and can you give an example?"
+                ]
+            },
+            {
+                "round": "HR Interview",
+                "questions": [
+                    "Why do you want to work at Expedia?",
+                    "Where do you see yourself in five years?"
+                ]
+            }
+        ]
+    }
+    
+]
