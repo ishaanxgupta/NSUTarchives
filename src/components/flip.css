@@ -73,6 +73,7 @@
     top: 20%;
     left: 10%;
     animation-delay: 0s;
+    filter: blur(10px);
   }
   
   /* Second bubble */
@@ -83,6 +84,7 @@
     top: 50%;
     left: 60%;
     animation-delay: 2s;
+    filter: blur(10px);
   }
   
   /* Keyframes for floating animation */

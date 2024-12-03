@@ -3,13 +3,12 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import posts from "../data/posts.json";
 import company_details from "../data/company_details.json";
-import { Container, Typography, Box, Card, CardMedia, CardContent, Accordion, AccordionSummary, AccordionDetails, Button, Divider  } from "@mui/material";
+import { Container, Typography, Box, Card, CardMedia, CardContent, Accordion, AccordionSummary, AccordionDetails, Button, Divider, boxClasses  } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function DetailsPage() {
   const { id } = useParams();
   const post = posts.find((post) => post.id === parseInt(id));
-
   const company_detail = company_details.find((company_detail) => company_detail.id === parseInt(id));
   const isValidURL = (string) => {
     try {
@@ -25,11 +24,24 @@ function DetailsPage() {
       <Container maxWidth="md" className="mt-8">
         <Card className="shadow-lg bg-white">
           {/* Company Logo */}
-          <CardMedia
+          {/* <CardMedia
             component="img"
-            alt={post.username}
-            image={company_detail.photo}  
-          />
+            alt={post.username} 
+            image={company_detail.logo}  
+          /> */}
+         <CardMedia
+        component="img"
+        alt={post.username}
+        image={post.logo}
+        sx={{
+          width: '400px',
+          height: '180px',
+          objectFit: 'contain', // Use 'contain' to avoid cropping
+          display: 'block',      // Ensure it's treated as a block element
+          margin: '0 auto',     // Center the image horizontally
+        }}
+      />
+
 
           {/* General Information */}
           <CardContent>

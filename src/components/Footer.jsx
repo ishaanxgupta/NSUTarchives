@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Like_Button from './Like_Button'
 
 function Footer() {
   return (
     <div>
     <footer className="bg-black text-white py-10">
+      {/* <Like_Button /> */}
   <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 md:px-16">
     {/* About Section */}
     <div>

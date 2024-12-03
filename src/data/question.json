@@ -1,0 +1,81 @@
+[
+    {
+        "id": 1,
+        "name": "Two Sum",
+        "rating": 800,
+        "difficulty": "Easy",
+        "topics": ["Array", "Hash Table"],
+        "examples": [
+            {
+                "input": "[2, 7, 11, 15], target = 9",
+                "output": "[0, 1]"
+            }
+        ],
+        "testCases": [
+            { "input": "[3, 2, 4], target = 6", "output": "[1, 2]" },
+            { "input": "[3, 3], target = 6", "output": "[0, 1]" },
+            { "input": "[2, 7, 11, 15], target = 9", "output": "[0, 1]" }
+        ],
+        "extraTestCases": [
+            { "input": "[1, 2, 3]", "output": "Example output" },
+            { "input": "[4, 5, 6]", "output": "Example output" }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Reverse Integer",
+        "rating": 800,
+        "difficulty": "Medium",
+        "topics": ["Math"],
+        "examples": [
+            {
+                "input": "123",
+                "output": "321"
+            }
+        ],
+        "testCases": [
+            { "input": "120", "output": "21" },
+            { "input": "-123", "output": "-321" },
+            { "input": "1534236469", "output": "Expected output" }
+        ],
+        "extraTestCases": [
+            { "input": "2147483648", "output": "Expected output" }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Kalpanas Keypad",
+        "rating": 1200,
+        "difficulty": "Medium",
+        "topics": ["Recursion", "String"],
+        "company":"Goldman Sachs",
+        "question_description": "To call a contact, Kalpana has to tap the key repeatedly for each required letter. For example, if she wishes to call rani, she has to press the keys as: r-777 a-2 n-6 i-444. This is proving to be very cumbersome to Kalpana, and she has come up with an idea.\n\nShe is pruning her contact list, such that any number combination she types will result in only one match from her contact list. Her contact list contains contacts made up entirely of lowercase letters from the English alphabet.\n\nAfter pruning the list, Kalpana is left with N contacts. Can you help her with a program to check if the list is pruned enough that any number combination will match with only one contact? She'll provide you a string S which is the number combination, and you have to figure out how many contacts from the contact list can be mapped to S.",
+        "function_description": "Complete the noOfPossibleWords function, which has 3 input parameters and returns an integer result, which is the number of contacts matching with S. The 3 input parameters are:\n1. An integer N that indicates the number of contacts in the contact list.\n2. An array of strings arr which is the contact list.\n3. A number S represented as a string that contains digits 2-9, which is the number combination.",
+        "input_format": "The first line of input contains the integer N, the number of contacts in the contact list.\nEach of the next N lines contains a single string representing one contact.\nThe last line of input contains the string S that consists of digits 2-9, which is the number combination.",
+        "output_format": "Single line of output contains the number of contacts that can be mapped to the string S.",
+        "constraints": "\n1. 1 ≤ N ≤ 1000\n2. Length of each contact < 10^6 characters\n3. 1 ≤ Length of number combination S ≤ 1000",
+        "examples": [
+            {
+              "input": "2\nfiba\nbida\n3422",
+              "output": "1",
+              "explanation": "There are 2 contacts in the contact list: fiba and bida. The string S: 3422. Here, key-strokes pattern will be:\n\nf-3 i-4 b-2 a-2\nb-2 i-4 d-3 a-2\n\nSo, only 1 contact 'fiba' matches with S. Hence, 1 is printed as output."
+            },
+            {
+              "input": "3\nwin\nzin\nmin\n946",
+              "output": "2",
+              "explanation": "3 contacts are given: win, zin, min. The string S: 946. Here, the key-strokes pattern will be:\n\nw-9 i-4 n-6\nz-9 i-4 n-6\nm-6 i-4 n-6\n\nSo, 2 contacts 'win' and 'zin' match with 946. Hence, 2 is printed as output."
+            }
+          ],
+        "testCases": [
+            { "input": "120", "output": "21" },
+            { "input": "-123", "output": "-321" },
+            { "input": "1534236469", "output": "Expected output" }
+        ],
+        "extraTestCases": [
+            { "input": "2147483648", "output": "Expected output" }
+        ],
+        "solution":"",
+        "time_complexity":"",
+        "space_complexity":""
+    }
+]
