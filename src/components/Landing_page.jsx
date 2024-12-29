@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { Link } from 'react-scroll';
 // import { AnimatedBackground } from 'animated-backgrounds'; 
 import { Fade } from 'react-awesome-reveal';
@@ -25,14 +25,15 @@ import useScrollAnimation from '../Hooks/useScrollAnimation';
 import Footer from './Footer';
 import Suggestion_form from './Suggestion_form';
 import Like_Button from './Like_Button';
+import Loader from './Loader';
 
 export default function Landing_page() {
   const features = [
     {
       id: 1,
-      title: 'Archives',
+      title: 'PataKaro',
       icon: 'bi bi-book', 
-      description: 'Explore intern details and other company-related information.',
+      description: `From hiring timelines to assessment patterns, get all the information you need in one place.`,
       background: 'url(https://www.ags-recordsmanagement.com/wp-content/uploads/sites/5/2023/04/history-of-public-archives.jpg)',
     },
     {
@@ -44,24 +45,68 @@ export default function Landing_page() {
     },
     {
       id: 3,
-      title: 'Upsolve',
+      title: 'IntelliCode',
       icon: 'bi bi-lightbulb', 
-      description: 'Solve previous online assessment questions using a compiler.',
+      description: 'Solve previous online assessment questions.',
       background: 'url(https://captureisg.com/wp-content/uploads/2017/05/shutterstock_373670722.jpg)',
+    },
+  ];
+
+  const features_description = [
+    {
+      name: "Patakaro",
+      description:
+        "Prepare smarter with a repository tailored to help you succeed",
+      specifications: [
+        "Comprehensive company hiring timelines",
+        "Gain insights into the structure and types of assessments used by various companies for their recruitment process",
+        "Read firsthand experiences from candidates who have successfully navigated the interview process at leading companies",
+        "Access a curated collection of real questions asked in past online assessments to help you prepare more effectively",
+      ],
+      image: "https://2.img-dpreview.com/files/p/E~TS590x0~articles/0718588880/AdobeStock_276941222.jpeg",
+    },
+    {
+      name: "IntelliCode",
+      description:
+        "Revolutionizing your coding experience with AI-powered assistance and the ability to code seamlessly on the go, anytime, anywhere",
+      specifications: [
+        "Extensive Repository of OA Questions",
+        "Test case generation and error analysis",
+        "Unparalleled mobile coding experience with a sleek, high-performance UI tailored for seamless interaction on any device",
+        "Includes test cases, solutions, and detailed explanations to help you learn and excel",
+        "Intelligent code suggestions and debugging support powered by AI, making your coding faster and smarter",
+      ],
+      image: "https://chriskirby.net/content/images/size/w1200/2024/02/AICodingAssistant.png",
     },
   ];
 
   const featureTitleRef = useRef(null);
   const pricingTitleRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useScrollAnimation([featureTitleRef.current, pricingTitleRef.current]);
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsLoading(false); 
+      }, 2000); 
+  
+      return () => clearTimeout(timer); 
+    }, []);
+  
 
   return (
     <div>
       <Header />
 
+      {isLoading ? (
+          <div className="flex justify-center items-center h-screen">
+            <Loader /> {/* Display loader when isLoading is true */}
+          </div>
+        ) : (
+          <>  
       {/* Hero Section */}
-      <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden bg-black">
+      <section className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden bg-black"> 
   <div className="bubble-container"></div>
         {/* <div className="bg-color:black"> 
           <AnimatedBackground animationName="cosmicDust" style={{ opacity: 0.85 }} />
@@ -78,12 +123,12 @@ export default function Landing_page() {
         fontFamily: "'Poppins', sans-serif", 
       }}
     >
-      Welcome to Our Website
+      Welcome to IDGAF
     </h1>
   </Fade>
 
-  <p className="text-md sm:text-lg lg:text-xl text-gray-200 mb-8" style={{ fontFamily: "'Roboto', sans-serif" }}>
-    <Typewriter text="Your one-stop solution for exploring exciting features!" delay={30} />
+  <p className="text-xl sm:text-lg lg:text-xl text-gray-200 mb-8" style={{ fontFamily: "'Roboto', sans-serif" }}>
+    <Typewriter text="Where Challenges Turn into Opportunities!" delay={30} />
   </p>
           
           <Link to="features-section" smooth={true} duration={1200}>
@@ -240,30 +285,81 @@ export default function Landing_page() {
     </div>
   </div>
 </section>
-<div className='bg-slate-100'>
-<div className='bg-black rounded-bl-full rounded-tr-full'>
-  <div className="flex space-x-56">
-    {/* Left aligned form */}
-    <Suggestion_form />
-    
-    {/* Right aligned text */}
-    <div className="flex flex-col mt-4">
-      <div className='ml-12'>
-        <img src="/feedback1.png" alt="Feedback" className='w-80 h-80' />
+
+<section className="features_description-section px-4 py-8 bg-black">
+  <h2 className="text-4xl font-bold text-center mb-8 text-white">What We Offer</h2>
+  <div className="space-y-16">
+    {features_description.map((feature, index) => (
+      <div
+        key={index}
+        className={`flex flex-col-reverse lg:flex-row items-center ${
+          index % 2 !== 0 ? "lg:flex-row-reverse" : ""
+        }`}
+      >
+        {/* Feature Image */}
+        <div className="mr-16 ml-20 w-1/2 lg:w-1/3 flex justify-center">
+          <img
+            src={feature.image}
+            alt={feature.name}
+            className="rounded-lg shadow-lg max-w-full h-auto slide-in-effect-image"
+          />
         </div>
-      <div className="text-white text-3xl font-semibold text-center"
-       style={{
-        background: "linear-gradient(to right, #007BFF, #20c997)",
-        WebkitBackgroundClip: "text",
-        color: "transparent",    
-      }}>
-        We Would Love to hear from you!
+
+        {/* Feature Description */}
+        <div className="w-full lg:w-1/2 px-8 mr-16 slide-in-effect-text">
+          <h3 className="text-2xl text-white font-semibold mb-4">{feature.name}</h3>
+          <p className="text-zinc-400 mb-4">{feature.description}</p>
+          <ul className="list-disc pl-5">
+            {feature.specifications.map((spec, idx) => (
+              <li key={idx} className="text-zinc-400 mb-2">
+                {spec}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
+  <div className="bg-slate-100">
+    <div className="lg:flex lg:items-center lg:justify-between">
+      {/* Left Section: Image and Text */}
+      <div className="lg:w-1/2 lg:ml-32 flex flex-col items-center lg:items-start text-center">
+      <div className='lg:ml-36'>
+        <img
+          src="/feedback1.png"
+          alt="Feedback"
+          className="w-32 h-32 lg:w-56 lg:h-56 lg:mt-4"
+        />
+        </div>
+        <div className='lg:ml-36'>
+        <div
+          className="text-white text-lg lg:mt-4 lg:text-3xl font-semibold"
+          style={{
+            background: "linear-gradient(to right, #007BFF, #20c997)",
+            WebkitBackgroundClip: "text",
+            color: "transparent",
+          }}
+        >
+          We Would Love to hear from you!
+        </div>
+        </div>
+      </div>
+
+      {/* Right Section: Feedback Form */}
+      <div className="lg:mr-60 lg:w-full mt-8 lg:mt-0 flex justify-center">
+        <div className="w-full">
+          <Suggestion_form />
+        </div>
       </div>
     </div>
   </div>
-  </div>
-  </div>
-{/* <div><Like_Button/></div> */}
-    </div>
+  <Footer/>
+  </>
+        )}
+</div>
   );
 }

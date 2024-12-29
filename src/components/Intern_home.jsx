@@ -9,12 +9,14 @@ import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import { useUser } from "@clerk/clerk-react";
+import Loader1 from "./Loader1";
 
 function Intern_home() {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // Search query state
   const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,6 +30,15 @@ function Intern_home() {
       setPosts(postsData);
     }
   }, [isSignedIn, navigate]);
+
+
+   useEffect(() => {
+     const timer = setTimeout(() => {
+       setIsLoading(false);
+     }, 2000); 
+ 
+     return () => clearTimeout(timer); 
+   }, []);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -77,7 +88,16 @@ function Intern_home() {
           />
         </div>
 
+
+
         {/* Displaying filtered posts */}
+        {isLoading ? (
+                // Loader component is displayed when loading
+                <div className="flex justify-center items-center py-12">
+                  <Loader1 />
+                </div>
+              ) : (
+                <>
         <div className="space-y-4">
           {filteredPosts.length > 0 ? (
             filteredPosts.slice().reverse().map((post) => (
@@ -113,7 +133,7 @@ function Intern_home() {
                     branches={post.branches}
                   />
                   <Link
-                    to={`/intern/details/${post.id}`}
+                    to={`/patakaro/details/${post.id}`}
                     className="text-blue-500 hover:underline mt-2 block"
                   >
                     Read More
@@ -129,6 +149,8 @@ function Intern_home() {
         </div>
         <div>
         </div>
+              </>
+              )}
       </div>
 
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

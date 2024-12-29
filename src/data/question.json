@@ -5,6 +5,7 @@
         "rating": 800,
         "difficulty": "Easy",
         "topics": ["Array", "Hash Table"],
+        "company":" Leetcode",
         "examples": [
             {
                 "input": "[2, 7, 11, 15], target = 9",
@@ -27,6 +28,7 @@
         "rating": 800,
         "difficulty": "Medium",
         "topics": ["Math"],
+        "company":" Leetcode",
         "examples": [
             {
                 "input": "123",
@@ -77,5 +79,264 @@
         "solution":"",
         "time_complexity":"",
         "space_complexity":""
+    },
+    {
+        "id": 4,
+        "name": "Kyles Treasure Hunt",
+        "rating": 800,
+        "difficulty": "Medium",
+        "topics": ["Array", "Hash Table"],
+        "company":"Placewit",
+            "question_description": "Kyle is a treasure hunter. For his latest project, he visits an island and starts collecting clues to find the treasure. One day he finds a box containing different cards with strings written on them. To get the next clue, he needs to find the size of the largest set of cards such that no string written on some card is a substring of the string written on some other card. Help Kyle to find the next clue.",
+            "function_description": "Complete the function `largestNonSubstringSet` which has one input parameter and returns an integer result, which is the size of the largest subset of cards such that no string is a substring of any other string. The input parameter is:\n1. An array of strings `arr` which contains the strings written on the cards.",
+            "input_format": "The first line contains the integer `n` denoting the number of cards in the box.\nEach of the next `n` lines contains a string written on the card. Each string consists only of the characters 'a' and 'b'.",
+            "output_format": "Output a single integer denoting the size of the largest subset of the cards such that no string is a substring of the string written on some other card.",
+            "constraints": "Constraints:\n1. 1 < Number of cards in the box (`n`) ≤ 200\n2. The string on each card consists of 'a' and 'b' only.",
+            "examples": [
+              {
+                "input": "5\nb\naab\nab\naabab\nababa",
+                "output": "2",
+                "explanation": "In this case, the largest subset of cards that satisfies the condition is {'aabab', 'ababa'}. All other strings are substrings of these two strings."
+              },
+              {
+                "input": "4\nabaa\nbaab\nb\nbbb",
+                "output": "3",
+                "explanation": "In this case, the largest subset of cards that satisfies the condition is {'abaa', 'baab', 'b'}. The string 'bbb' is a substring of 'b'."
+              }
+            ],
+            "testCases": [
+                { "input": "120", "output": "21" },
+                { "input": "-123", "output": "-321" },
+                { "input": "1534236469", "output": "Expected output" }
+            ],
+            "extraTestCases": [
+                { "input": "2147483648", "output": "Expected output" }
+            ],
+            "solution":"",
+            "time_complexity":"",
+            "space_complexity":""
+    },
+    {
+        "id": 5,
+        "name": "Mathematics Problem",
+        "rating": 800,
+        "difficulty": "Medium",
+        "topics": ["Array", "Hash Table"],
+        "company":"Placewit",
+            "question_description": "Priyam is a school mathematics teacher, and one day he decides to test his students' knowledge about permutations. A permutation of size n is defined as a sequence of n integers where all integers from 1 to n occur exactly once. He gives one permutation array `arr` to his students and wants them to find a permutation of size n that satisfies a condition based on the score of that permutation.\n\nThe score of a permutation array `perm` (found by a student), given the array `arr` (provided by Priyam), is defined as:\n\n|perm[1] - arr[perm[1]]| + |perm[2] - arr[perm[2]]| + ... + |perm[n] - arr[perm[n]]|\n\nThe task is to find a permutation of size n which has the smallest score possible. If there are multiple such permutations, the students must find the lexicographically smallest one among them.\n\nFor example, if `arr` = [2, 1] and `perm` = [1, 2], then the score is |1 - 1| + |2 - 2| = 0.",
+            "function_description": "Complete the Question which has one input parameter and returns an array of integers representing the lexicographically smallest permutation with the smallest score. The input parameter is:\n1. An array of integers `arr` of size n, representing the permutation provided by Priyam.",
+            "input_format": "The first line contains the integer `n`, denoting the size of the integer array `arr`.\nThe next line contains `n` space-separated integers denoting the array `arr`.",
+            "output_format": "Output `n` space-separated integers denoting the lexicographically smallest permutation of size n with the smallest score.",
+            "constraints": "Constraints:\n1. 1 ≤ n ≤ 100\n2. Each element of `arr` is a positive integer from 1 to n.",
+            "examples": [
+              {
+                "input": "3\n2 1 3",
+                "output": "1 2 3",
+                "explanation": "Given `arr` = [2, 1, 3], the lexicographically smallest permutation with the smallest score is [1, 2, 3]. The score is |1 - 2| + |2 - 1| + |3 - 3| = 1 + 1 + 0 = 2."
+              },
+              {
+                "input": "5\n3 4 2 5 1",
+                "output": "1 5 4 2 3",
+                "explanation": "Given `arr` = [3, 4, 2, 5, 1], the lexicographically smallest permutation with the smallest score is [1, 5, 4, 2, 3]."
+              }
+            ],
+           "testCases": [
+    {
+        "input": "3\n2 1 3",
+        "output": "1 2 3",
+        "explanation": "Given arr = [2, 1, 3], the lexicographically smallest permutation with the smallest score is [1, 2, 3]."
+    },
+    {
+        "input": "5\n3 4 2 5 1",
+        "output": "1 5 4 2 3",
+        "explanation": "Given arr = [3, 4, 2, 5, 1], the lexicographically smallest permutation with the smallest score is [1, 5, 4, 2, 3]."
+    },
+    {
+        "input": "4\n4 3 2 1",
+        "output": "1 2 3 4",
+        "explanation": "Given arr = [4, 3, 2, 1], the score is minimized by the lexicographically smallest permutation [1, 2, 3, 4]."
+    },
+    {
+        "input": "2\n1 2",
+        "output": "1 2",
+        "explanation": "Given arr = [1, 2], the score is already minimized, and the smallest permutation is [1, 2]."
+    },
+    {
+        "input": "6\n6 5 4 3 2 1",
+        "output": "1 2 3 4 5 6",
+        "explanation": "Given arr = [6, 5, 4, 3, 2, 1], the lexicographically smallest permutation with the smallest score is [1, 2, 3, 4, 5, 6]."
     }
+],
+
+           "extraTestCases": [
+    {
+        "input": "1\n1",
+        "output": "1",
+        "explanation": "With only one element, the lexicographically smallest permutation is [1]."
+    },
+    {
+        "input": "10\n10 9 8 7 6 5 4 3 2 1",
+        "output": "1 2 3 4 5 6 7 8 9 10",
+        "explanation": "Given arr = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1], the smallest permutation is [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]."
+    },
+    {
+        "input": "4\n1 1 1 1",
+        "output": "1 2 3 4",
+        "explanation": "All elements in arr are the same. The score is minimized by selecting the smallest lexicographical permutation [1, 2, 3, 4]."
+    },
+    {
+        "input": "7\n3 1 4 1 5 9 2",
+        "output": "1 2 3 4 5 6 7",
+        "explanation": "Given arr = [3, 1, 4, 1, 5, 9, 2], the smallest lexicographical permutation is [1, 2, 3, 4, 5, 6, 7]."
+    }
+],
+            "solution":"",
+            "time_complexity":"",
+            "space_complexity":""
+          
+
+    },
+    {
+        "id": 6,
+        "name": "Minimum Moves for Divisibility",
+        "rating": 1400,
+        "difficulty": "Medium",
+        "topics": ["Array", "Mathematics", "Simulation"],
+        "company": "CodeForces",
+        "question_description": "You are given an array `a` consisting of `n` positive integers.\n\nInitially, you have an integer `x = 0`. During one move, you can do one of the following two operations:\n\n1. Choose exactly one `i` from 1 to `n` and increase `a[i]` by `x` \n(`a[i] := a[i] + x`), then increase `x` by 1 (`x := x + 1`). You can only apply this operation once per index `i`.\n2. Just increase `x` by 1 (`x := x + 1`).\n\nYour task is to find the minimum number of moves required to obtain such an array where each element is divisible by `k` (the value `k` is given).\n",
+        "input_format": "Each of the input test cases contains two integers `n` and `k`, followed by `n` space-separated integers representing the array `a`.",
+        "output_format": "For each test case, output a single integer — the minimum number of moves required to make each element of the array divisible by `k`.",
+        "constraints": "1. 1 ≤ n ≤ 2⋅10⁵\n2. 1 ≤ k ≤ 10⁹\n3. 1 ≤ a[i] ≤ 10⁹\n",
+        "examples": [
+        {
+            "input": "4 3 1 2 1 3",
+            "output": "6",
+            "explanation": "Initial array: [1, 2, 1, 3].\n1. `x = 0`. Just increase `x`.\n2. `x = 1`. Add `x` to the second element.\n3. `x = 2`. Add `x` to the third element.\n4. `x = 3`. Add `x` to the fourth element.\n5. `x = 4`. Just increase `x`.\n6. `x = 5`. Add `x` to the first element. Final array: [6, 3, 3, 6]."
+        },
+        {
+            "input": "10 6 8 7 1 8 3 7 5 10 8 9",
+            "output": "18",
+            "explanation": "Initial array: [8, 7, 1, 8, 3, 7, 5, 10, 8, 9]. Apply the operations step-by-step to make each element divisible by 6."
+        },
+        {
+            "input": "5 10 20 100 50 20 100500",
+            "output": "0",
+            "explanation": "All elements in the array are already divisible by 10. No moves are needed."
+        }
+    ],
+    "testCases": [
+        {"input": "4 3 1 2 1 3", "output": "6" },
+        { "input": "10 6 8 7 1 8 3 7 5 10 8 9", "output": "18" },
+        { "input": "5 10 20 100 50 20 100500", "output": "0" },
+        { "input": "8 8 1 2 3 4 5 6 7 8", "output": "8" }
+    ],
+    "extraTestCases": [
+        { "input": "1 2 1", "output": "1" },
+        { "input": "6 10 1 2 3 4 5 6", "output": "15" }
+    ],
+    "solution": "#include <bits/stdc++.h>\nusing namespace std;\n#define int long long\n#define vi vector<int>\n#define in cin >>\n#define f(i, a, b) for (int i = a; i < b; i++)\n \nint solve(int n, int k, vi &a) {\n    map<int, int> freq; // Frequency of remainders needed to reach multiples of k\n    for (int i = 0; i < n; i++) {\n        int rem = a[i] % k;\n        if (rem != 0) {\n            freq[k - rem]++;\n        }\n    }\n \n    int max_operations = 0;\n    for (auto &[diff, count] : freq) {\n        int operations = (count - 1) * k + diff;\n        max_operations = max(max_operations, operations);\n    }\n \n    return max_operations > 0 ? max_operations + 1 : 0;\n}\n \nsigned main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n \n    int T = 0;\n    in T;\n    while (T--) {\n        int n, k;\n        in n >> k;\n        vi a(n);\n        f(i, 0, n) in a[i];\n        cout << solve(n, k, a) << endl;\n    }\n \n    return 0;\n}",
+    "time_complexity": "O(n \u00d7 log(n))",
+    "space_complexity": "O(n)"
+    } ,
+    {
+        "id": 8,
+        "name": "Arranging Astericks",
+        "rating": 1400,
+        "difficulty": "Medium",
+        "topics": ["Greedy", "Maths", "Strings"],
+        "company": "Codeforces Variant",
+        "question_description": "You are playing the game \"Arranging Astericks\". The goal of this game is to make the Astericks line up. The level in the game is described by a string of length `n`, consisting of the characters '.' (empty space) and * (Astericks). In one move, you can move any Astericks one square to the left or one square to the right, if the corresponding square exists and is empty. The game ends as soon as the Astericks are lined up, that is, there should be no empty cells between any Astericks.\n\nFor example, if `n=6` and the level is described by the string **.*.., then the following game scenario is possible:\n\n1. The Astericks at the 4th position moves to the right, the state of the level: **..*. \n2. The Astericks at the 2nd position moves to the right, the state of the level: *.*.*. \n3. The Astericks at the 1st position moves to the right, the state of the level: .**.*. \n4. The Astericks at the 3rd position moves to the right, the state of the level: .*.**. \n5. The Astericks at the 2nd position moves to the right, the state of the level: ..***. The Astericks are now lined up, and the game ends.\n\nFor a given level, determine the minimum number of moves you need to make to complete the level.",
+        "function_description": "Complete the function `calculateMoves(vector<int> &positions)` that takes the positions of the Astericks in the level and calculates the minimum number of moves required to line them up. Also, implement the `solve` function to handle multiple test cases.",
+        "input_format": "Each  line contains an integer `n`, the length of the level followed by a space and contains a string of length `n`, consisting of `'.'` and `'*'`, describing the level.",
+        "output_format": "For each test case, output the minimum number of moves required to line up the Astericks.",
+        "constraints": "Constraints:\n1. `1 ≤ t ≤ 10^4`\n2. `1 ≤ n ≤ 10^6`\n3. Sum of `n` over all test cases does not exceed `10^6`.",
+        "examples": [
+            {
+                "input": "6 **.*..",
+                "output": "1",
+                "explanation": "The minimum number of moves required to line up the Astericks is 1. The steps are shown in the problem description."
+            },
+            {
+                "input": "5 *****",
+                "output": "0",
+                "explanation": "The Astericks are already lined up, so no moves are required."
+            },
+            {
+                "input": "3 .*.",
+                "output": "0",
+                "explanation": "The Astericks are already lined up, so no moves are required."
+            },
+            {
+                "input": "3 ...",
+                "output": "0",
+                "explanation": "There are no Astericks to line up, so no moves are required."
+            },
+            {
+                "input": "10 *.*...*.**",
+                "output": "9",
+                "explanation": "The minimum number of moves required to line up the Astericks is 9."
+            }
+        ],
+        "testCases": [
+            { "input": "6 **.*..", "output": "1" },
+            { "input": "5 *****", "output": "0" },
+            { "input": "3 .*.", "output": "0" },
+            { "input": "3 ...", "output": "0" },
+            { "input": "10 *.*...*.**", "output": "9" }
+        ],
+        "extraTestCases": [
+            { "input": "8 ..*..*.*", "output": "Expected output" },
+            { "input": "12 *.*.*.*.*.*", "output": "Expected output" }
+        ],
+       "solution": "#include <bits/stdc++.h>\nusing namespace std;\n \nlong long calculateMoves(vector<int> &positions) {\n    int m = positions.size();\n    if (m == 0) return 0;\n \n    int medianIdx = m / 2;\n    int median = positions[medianIdx];\n    \n    long long moves = 0;\n    for (int i = 0; i < m; ++i) {\n        moves += abs(positions[i] - (median + i - medianIdx));\n    }\n    return moves;\n}\n \nvoid solve() {\n        int n;\n        cin >> n;\n        string s;\n        cin >> s;\n \n        vector<int> positions;\n        for (int i = 0; i < n; ++i) {\n            if (s[i] == '*') {\n                positions.push_back(i);\n            }\n        }\n \n        cout << calculateMoves(positions) << \"\\n\";\n    }\n \nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n \n    solve();\n \n    return 0;\n}",
+        "time_complexity": "O(n)",
+        "space_complexity": "O(n)"
+    },
+    {
+        "id": 9,
+        "name": "Weighted Sorted Subarrays",
+        "rating": 1500,
+        "difficulty": "Medium",
+        "topics": ["Arrays", "Sorting"],
+        "company": "Codeforces Variant",
+        "question_description": "Given an array `a` of length `n` and an integer `k`, find the number of indices `1 ≤ i ≤ n−k` such that the subarray `[a[i], ..., a[i+k]]` with length `k+1` has the following property:\n\nIf you multiply the first element by `2^0`, the second element by `2^1`, ..., and the `(k+1)`-st element by `2^k`, then this subarray is sorted in strictly increasing order.\n\nMore formally, count the number of indices `1 ≤ i ≤ n−k` such that:\n\n```\n2^0 * a[i] < 2^1 * a[i+1] < ... < 2^k * a[i+k]\n```\n\nInput format and constraints are given below.",
+        "function_description": "Complete the function `solve` that takes an integer `n`, an integer `k`, and an array `a` of length `n` and returns the count of indices satisfying the above condition.",
+        "input_format": "Each test case consists of a single line containing two integers n, k followed by n integers representing the array a.",
+        "output_format": "Output a single integer — the number of indices satisfying the condition in the statement.",
+        "constraints": "1. The sum of `n` across all test cases does not exceed `2 * 10^5`.",
+        "examples": [
+            {
+                "input": "4 2 20 22 19 84",
+                "output": "2",
+                "explanation": "Two subarrays satisfy the condition:\n1. Subarray [20, 22, 19]: 1 * 20 < 2 * 22 < 4 * 19.\n2. Subarray [22, 19, 84]: 1 * 22 < 2 * 19 < 4 * 84."
+            },
+            {
+                "input": "5 1 9 5 3 2 1",
+                "output": "3",
+                "explanation": "Three subarrays satisfy the condition:\n1. Subarray [9, 5]: 1 * 9 < 2 * 5.\n2. Subarray [5, 3]: 1 * 5 < 2 * 3.\n3. Subarray [3, 2]: 1 * 3 < 2 * 2 (but doesn't satisfy strict inequality)."
+            },
+            {
+                "input": "7 2 22 12 16 4 3 22 12",
+                "output": "3",
+                "explanation": "Three subarrays satisfy the condition."
+            }
+        ],
+        "testCases": [
+            { "input": "4 2\n20 22 19 84", "output": "2" },
+            { "input": "5 1\n9 5 3 2 1", "output": "3" },
+            { "input": "7 2\n22 12 16 4 3 22 12", "output": "3" },
+            { "input": "7 3\n22 12 16 4 3 22 12", "output": "1" },
+            { "input": "9 3\n3 9 12 3 9 12 3 9 12", "output": "0" }
+        ],
+        
+        "extraTestCases": [
+            { "input": "5 2 9 5 3 2 1", "output": "2" },
+            { "input": "12 9 168241647 417768181 845864907 1205051 315011621 851213346 616876671 520479767 714546635 422929581 926902302 683180905 ", "output": "0" }
+        ],
+       "solution": "#include<bits/stdc++.h>\nusing namespace std ;\n\n#define int long long int \n#define vi vector<int> \n#define vs vector<string> \n#define vv vector<vector<int>>\n#define f(i,a,b) for(int i=a;i<b;i++)\n#define in cin>>\n#define out cout<<\n#define nl <<endl;\n\nint sliding_window(vi &ones, int k) {\n    int n = ones.size();\n    int ans = 0;\n    int count = 0;\n    for (int i = 0; i < n; i++) {\n        if (ones[i] == 1) {\n            count++;\n        } else {\n            count = 0;  \n        }\n        if (count >= k) {\n            ans++;\n        }\n    }\n    return ans;\n}\n\nint solve(int n, int k, vi &a) {\n    vi ones;\n    for (int i = 0; i < n - 1; i++) {\n        if (a[i] < 2 * a[i + 1]) {\n            ones.push_back(1);\n        } else {\n            ones.push_back(0);\n        }\n    }\n    return sliding_window(ones, k);\n}\nsigned main(){\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n        int n;\n        in n;\n        int k;\n        in k;\n        vi a(n);\n        f(i,0,n){\n            in a[i];\n        }\n        cout<<solve(n,k,a)<<endl;\n}",
+       "solution_explanation":"",
+       "time_complexity": "O(n)",
+        "space_complexity": "O(n)"
+    }
+    
 ]

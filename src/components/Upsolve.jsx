@@ -20,47 +20,67 @@ import {
   DialogContent,
 
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { CheckCircle, Cancel, ExpandMore, PlayArrow } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import MonacoEditor from '@monaco-editor/react';
 import debounce from 'lodash.debounce';
 import './Upsolve.css';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import questions from "../data/question.json";
+import Footer from './Footer';
+import Header from './Header';
+import Loader2 from './Loader2';
+import Button1 from './Button1';
 
 const boilerplate = {
+  cpp: `#include <iostream>
+using namespace std;
 
+int main() {
+    // Your code here
+    return 0;
+}`,
+
+  python: `def main():
+
+if __name__ == "__main__":
+    main()`,
+
+  java: `import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // Your code here
+    }
+}`
 };
-const testCasesInitial = [
-  { input: '3 5', expectedOutput: '8', output: '' },
-  { input: '2 3', expectedOutput: '5', output: '' },
-  { input: '7 4', expectedOutput: '11', output: '' },
-];
 
-const extraTestCases = [
-  { input: '1 2', expectedOutput: '3', output: '' },
-  { input: '4 5', expectedOutput: '9', output: '' },
-  { input: '6 1', expectedOutput: '7', output: '' },
-  { input: '2 8', expectedOutput: '10', output: '' },
-  { input: '10 20', expectedOutput: '30', output: '' }
-];
-const theme = createTheme();
+
 const Upsolve = () => {
+  const { id } = useParams(); // Get question ID from the URL
+  const selectedQuestion = questions.find((q) => q.id === parseInt(id)); // Find question by ID
   const [code, setCode] = useState(boilerplate.cpp);
-  const [testCases, setTestCases] = useState(testCasesInitial);
+  const [testCases, setTestCases] = useState(selectedQuestion.testCases);
   const [activeTestCase, setActiveTestCase] = useState(0); // Index for current active test case
   const [testResults, setTestResults] = useState(Array(testCases.length).fill(null));
-  const [extraTestCases, setExtraTestCases] = useState([{ input: '', expectedOutput: '', output: '' }]); // Pass/fail status of each test case
+  // const [extraTestCases, setExtraTestCases] = useState([{ input: '', expectedOutput: '', actualOutput: '' }]); // Pass/fail status of each test case
+ 
+  const [extraTestCases, setExtraTestCases] = useState(
+    selectedQuestion.extraTestCases.map((testCase) => ({
+      ...testCase,
+      actualOutput: '', // Add a field to store the output from the compiler
+    }))
+  );
   const [loading, setLoading] = useState(false); // Loading state for initial test cases
   const [extraLoading, setExtraLoading] = useState(false); // Loading state for extra test cases
   const [language, setLanguage] = useState('cpp');
   const [error, setError] = useState(''); // Add this line to define an error state
   const [solved, setSolved] = useState(false);
-//   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isFocusMode,setIsFocusMode] = useState(false);
   const [open, setOpen] = useState(false);
-  const isMobile = false;
   const [aiSuggestionsEnabled, setAiSuggestionsEnabled] = useState(true);
   const [suggestion,setSuggestion] = useState('');
 
@@ -68,24 +88,83 @@ const Upsolve = () => {
   const editorRef = useRef(null);
   const monacoRef = useRef(null);
   const decorationsRef = useRef([]);
+  const [copied,setCopied] = useState(false);
 
-  const { id } = useParams(); // Get question ID from the URL
-  const selectedQuestion = questions.find((q) => q.id === parseInt(id)); // Find question by ID
+  const [isLoaded, setIsLoaded] = useState(false); 
+  const [isLOADING,SetIsLOADING] = useState(true);
+
+
+  // const handleRunCode = async (index, caseSet = 'main') => {
+  //   // setLoading(true);  //yeh glti lag rhi iss line ko hata skte hai
+  //   setError(''); 
+
+  //   const selectedTestCases = caseSet === 'extra' ? extraTestCases : testCases;
+
+  //   // Set loading based on the case set
+  //   if (caseSet === 'extra') {
+  //     setExtraLoading(true);
+  //   } else {
+  //     setLoading(true);
+  //   }
+
+  //   try {
+  //     const response = await fetch('https://api.codex.jaagrav.in', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         code,
+  //         input: selectedTestCases[index].input,
+  //         language: 'cpp',
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     if (data.error) {
+  //       setError(data.error); 
+  //       testCases[index].output = ''; 
+  //   } else {  
+  //       testCases[index].output = data.output.trim();
+  //       setError(''); 
+  //   }
+    
+  //     const updatedTestCases = [...selectedTestCases];
+  //     updatedTestCases[index].output = data.output.trim();
+
+  //     // Check if the output matches the expected output
+  //     const updatedResults = [...testResults];
+  //     if (updatedTestCases[index].output === selectedTestCases[index].output) {
+  //       updatedResults[index] = true; // Test passed
+  //       setSolved(true);
+  //     } else {
+  //       updatedResults[index] = false; // Test failed
+  //     }
+  //     setTestResults(updatedResults);
+  //     if (caseSet === 'extra') {
+  //       setTestResults(updatedTestCases);
+  //     }
+  //   } catch (error) {
+  //     setError('An unexpected error occurred. Please try again.');
+  //   } finally { 
+  //   if (caseSet === 'extra') {
+  //     setExtraLoading(false);
+  //   } else {
+  //     setLoading(false);
+  //   }}
+  //   // setLoading(false); //yeh bhi htado
+  // };
 
 
   const handleRunCode = async (index, caseSet = 'main') => {
-    setLoading(true);
-    setError(''); // Clear previous errors
-
+    setError(''); 
+  
     const selectedTestCases = caseSet === 'extra' ? extraTestCases : testCases;
-
+  
     // Set loading based on the case set
     if (caseSet === 'extra') {
       setExtraLoading(true);
     } else {
       setLoading(true);
     }
-
+  
     try {
       const response = await fetch('https://api.codex.jaagrav.in', {
         method: 'POST',
@@ -99,95 +178,113 @@ const Upsolve = () => {
       const data = await response.json();
       if (data.error) {
         setError(data.error); 
-        testCases[index].output = ''; 
-    } else {  
-        testCases[index].output = data.output.trim();
-        setError(''); 
-    }
-    
-      const updatedTestCases = [...selectedTestCases];
-      updatedTestCases[index].output = data.output.trim();
-
-      // Check if the output matches the expected output
-      const updatedResults = [...testResults];
-      if (updatedTestCases[index].output === selectedTestCases[index].expectedOutput) {
-        updatedResults[index] = true; // Test passed
-        setSolved(true);
-      } else {
-        updatedResults[index] = false; // Test failed
-      }
-      setTestResults(updatedResults);
-      if (caseSet === 'extra') {
-        setTestResults(updatedTestCases);
+      } else {  
+        setError('');
+        const updatedTestCases = [...selectedTestCases];
+        
+        // Store the actual output in a new field
+        updatedTestCases[index].actualOutput = data.output.trim();
+  
+        // Check if the actual output matches the expected output
+        const updatedResults = [...testResults];
+        if (updatedTestCases[index].actualOutput === selectedTestCases[index].output) {
+          updatedResults[index] = true; // Test passed
+        } else {
+          updatedResults[index] = false; // Test failed
+        }
+  
+        if (caseSet === 'main') {
+          setTestCases(updatedTestCases); // Update main test cases
+        } else {
+          setExtraTestCases(updatedTestCases); // Update extra test cases
+        }
+        setTestResults(updatedResults);
       }
     } catch (error) {
       setError('An unexpected error occurred. Please try again.');
     } finally { 
-    if (caseSet === 'extra') {
-      setExtraLoading(false);
-    } else {
-      setLoading(false);
-    }}
-    setLoading(false);
+      if (caseSet === 'extra') {
+        setExtraLoading(false);
+      } else {
+        setLoading(false);
+      }
+    }
   };
-
+  
 
 const handleCodeChange = (e) => {
-    setCode(e.target.value); // Update the code as user types
-    // handleGetSuggestions(); // Get suggestions on every change or debounce as needed
+    setCode(e.target.value); 
 };
   const handleSaveCode = () => {
-    const file = new Blob([code], { type: 'text/plain' }); // Creates a text file with code content
-    const fileName = `${code}.${language}`; // Names the file based on selected language
-    const url = URL.createObjectURL(file); // Blob URL
-
-    // Create a temporary link to download the file
+    const file = new Blob([code], { type: 'text/plain' });
+    const fileName = `${selectedQuestion.name}.${language}`; 
+    const url = URL.createObjectURL(file); 
     const link = document.createElement('a');
     link.href = url;
-    link.download = fileName; // Sets the download filename
+    link.download = fileName; 
     document.body.appendChild(link);
-    link.click(); // Triggers the download
-    document.body.removeChild(link); // Removes link after download
+    link.click(); 
+    document.body.removeChild(link); 
 
-    URL.revokeObjectURL(url); // Frees up the Blob URL
+    URL.revokeObjectURL(url); 
 };
   // Run all extra test cases one by one
   const handleRunExtraTestCases = async () => {
     setExtraLoading(true);
     for (let i = 0; i < extraTestCases.length; i++) {
       await handleRunCode(i, 'extra');
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds
+      await new Promise(resolve => setTimeout(resolve, 2000)); 
     }
     setExtraLoading(false);
   };
 
   // Add new test case to main test cases
   const addTestCase = () => {
-    setTestCases([...testCases, { input: '', expectedOutput: '', output: '' }]);
+    setTestCases([...testCases, { input: '', expectedOutput: '', actualOutput: '' }]);
   };
 
   const handleLanguageChange = (event) => {
     const newLanguage = event.target.value;
-    if (window.confirm('Changing the language will remove your current code. Do you want to proceed?')) {
+    if (window.confirm('Smart, knows to code in different languages😏. Changing the language will remove your current code. Do you want to proceed?')) {
       setLanguage(newLanguage);
-      setCode(boilerplate[newLanguage]); // Set the boilerplate for the selected language
+      setCode(boilerplate[newLanguage]); 
     }
   };
 
-  // Save code to local storage
+
+
+  
   useEffect(() => {
+    // Retrieve saved code and language from localStorage on component mount
     const savedCode = localStorage.getItem('savedCode');
     const savedLanguage = localStorage.getItem('savedLanguage');
-    if (savedCode) {
+  
+    // Check and set the retrieved code and language
+    if (savedCode !== null) {
+      console.log(savedCode)
+      console.log("inside the if")
       setCode(savedCode);
-      setLanguage(savedLanguage || 'cpp');
+    }else{
+      setCode(boilerplate.cpp);
     }
-  }, []);
+  
+    setLanguage(savedLanguage); 
+
+    setIsLoaded(true);
+    setTimeout(() => {
+      //nothing just a timeout
+    })
+  }, [5000]);
 
   useEffect(() => {
-    localStorage.setItem('savedCode', code);
-    localStorage.setItem('savedLanguage', language);
-  }, [code, language]);
+    // Save code and language to localStorage whenever they change
+    if (isLoaded) { // Only save after initial load
+      localStorage.setItem('savedCode', code);
+      localStorage.setItem('savedLanguage', language);
+    }
+  }, [code, language, isLoaded]);
+  
+
 
   // useEffect(() => {
   //   console.log('EditorRef:', editorRef.current);
@@ -203,8 +300,6 @@ const handleCodeChange = (e) => {
     setOpen(false);
     document.getElementById('main-content').classList.remove('blur-sm');
 }
-
-
 
 
 
@@ -255,7 +350,7 @@ const generateCodeFromGemini = useCallback(
     } catch (error) {
       console.error('Error generating suggestion:', error);
     }
-  }, 500), // 500ms debounce
+  }, 500), 
   []
 );
 
@@ -265,6 +360,10 @@ const handleEditorMount = (editor, monaco) => {
   // console.log('Editor initialized:', editor);
   // console.log('Monaco initialized:', monaco);
 };
+
+setTimeout(() => {
+  SetIsLOADING(false);
+},[1000])
 
 const handleEditorChange = async (value, event) => {
   setCode(value);
@@ -278,13 +377,11 @@ const appendInlineSuggestion = (suggestion,t) => {
   console.log(t);
  
     const editor = editorRef.current;
-    const position = editor?.getPosition(); // current cursor position 
-    const newCode = suggestion; // Append the suggestion directly to code
+    const position = editor?.getPosition(); 
+    const newCode = suggestion;
     setCode(newCode);
 
-    editor.setValue(newCode); // Update the editor with the new code
-
-    // Optionally, move the cursor back to the original position
+    editor.setValue(newCode); 
     editor.setPosition(position);
 
 };
@@ -321,7 +418,7 @@ const insertText = (symbol) => {
     column: position.column + symbol.length,
   });
 
-  editor.focus(); // Refocus the editor
+  editor.focus();
 };
 
 
@@ -376,10 +473,15 @@ const toggleAiSuggestions = () => {
 };
 
   return (
-    
+    <>
+    <Header/>
+    {isLOADING ?(
+        <div className='flex items-center justify-center'><Loader2/></div>
+    ):(
     <Box id="main-content" sx={{ p: isMobile ? '10px' : '20px', display: isFocusMode ? 'block' : 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
   {/* <Box sx={{ display: 'flex', gap: '20px', padding: '20px' }}> */}
-  {/* Left Section: Question Title */}
+
+  {/* Left Section */}
   {!isFocusMode && (
      <Box
      sx={{
@@ -390,13 +492,23 @@ const toggleAiSuggestions = () => {
        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
        backgroundColor: "#f9f9f9",
        flex: isMobile ? "none" : 1,
+       maxHeight: "165vh", // Set maximum height for the container
+       overflowY: "auto", // Enable vertical scrolling
      }}
    >
      {/* Question Name */}
-     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1, color: "#333" }}>
-       {selectedQuestion?.name}
-     </Typography>
-   
+  <Typography
+    variant="h5"
+    sx={{
+      fontWeight: "bold",
+      mb: 1,
+      backgroundImage: "linear-gradient(to right, #007BFF, #20c997)",
+      backgroundClip: "text",
+      textFillColor: "transparent",
+    }}
+  >
+    {selectedQuestion?.name}
+  </Typography>
      {/* Metadata */}
      <Typography
        variant="subtitle1"
@@ -568,7 +680,7 @@ const toggleAiSuggestions = () => {
         {/* Left side: Extra Test Cases in Accordions */}
       <Box flex={1}>
         <Typography variant="h6">Extra Test Cases</Typography>
-        {extraTestCases.map((testCase, index) => (
+        {selectedQuestion.extraTestCases.map((testCase, index) => (
           <Accordion key={index}>
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Typography>Test Case {index + 1}</Typography>
@@ -576,9 +688,9 @@ const toggleAiSuggestions = () => {
                 color={testResults[index] === null ? 'primary' : testResults[index] ? 'success' : 'error'}
                 sx={{ ml: 'auto' }}
                 onClick={() => handleRunCode(index, 'extra')}
-                disabled={loading || extraLoading} // Disable button while code is running
+                disabled={extraLoading} // Disable button while code is running
               >
-                {loading || extraLoading ? <CircularProgress size={24} color="inherit" /> : <PlayArrow />}
+                {extraLoading ? <CircularProgress size={24} color="inherit" /> : <PlayArrow />}
               </IconButton>
             </AccordionSummary>
             <AccordionDetails>
@@ -592,14 +704,14 @@ const toggleAiSuggestions = () => {
               <Typography variant="subtitle1">Expected Output:</Typography>
               <TextField
                 fullWidth
-                value={testCase.expectedOutput}
+                value={testCase.output}
                 margin="normal"
                 disabled
               />
               <Typography variant="subtitle1">Code Output:</Typography>
               <TextField
                 fullWidth
-                value={testCase.output || 'Run the code to see output'}
+                value={extraTestCases.actualOutput || 'Run the code to see output'}//yaha correction krna hai jab output ayega toh yaha dikhna chhiaye na
                 margin="normal"
                 disabled
               />
@@ -623,7 +735,7 @@ const toggleAiSuggestions = () => {
         <div className='flex gap-2 content-end'>
 
           {/* focus button - by ishaan */}
-      <Button className="" variant="contained" color="secondary" onClick={() => setIsFocusMode(!isFocusMode)}>
+      <Button className="m-2 lg:m-0" variant="contained" color="primary" onClick={() => setIsFocusMode(!isFocusMode)}>
   {isFocusMode ? 'Exit Focus Mode' : 'Enter Focus Mode'}
 </Button>
 {/* download button - by ishaan */}
@@ -649,7 +761,7 @@ const toggleAiSuggestions = () => {
 </button>
 
 {/* show solution button by ishaan */}
-<Button variant="contained" color="primary" onClick={handleClickOpen}>
+{/* <Button className='m-2 lg:m-0' variant="contained" color="primary" onClick={handleClickOpen}>
         Solution
       </Button>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
@@ -659,7 +771,7 @@ const toggleAiSuggestions = () => {
             Here is the detailed solution to the question. The response includes explanations and code snippets to provide a comprehensive understanding of the solution approach.
           </Typography>
           <pre style={{ backgroundColor: '#f5f5f5', padding: '16px', borderRadius: '8px' }}>
-            {`def example_function():  # Code snippet\n    return "Example Output"`}
+            {selectedQuestion?.solution}
           </pre>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
             <Button variant="contained" color="primary">
@@ -670,11 +782,81 @@ const toggleAiSuggestions = () => {
             </Button>
           </div>
         </DialogContent>
-      </Dialog> 
+      </Dialog>  */}
+ {/* variant="contained" color="primary" */}
+ <div className='m-2 lg:m-0' onClick={handleClickOpen}>
+<Button1>
+</Button1>
+</div>
+<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+  <DialogTitle className="flex justify-between items-center">
+    Correct Answer
+    <button className="bg-red-500 ml-4 p-0 rounded" onClick={handleClose}>
+      <CloseIcon />
+    </button>
+  </DialogTitle>
+  <DialogContent>
+    <Typography variant="body1" gutterBottom>
+       Here is the accepted solution of the question.
+    </Typography>
+    <div style={{ position: 'relative', marginTop: '16px' }}>
+    <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        style={{ position: 'absolute', top: '8px', right: '24px', zIndex: 1 }}
+        onClick={() => {
+          navigator.clipboard.writeText(`${selectedQuestion?.solution}`);
+          setCopied(true); 
+          setTimeout(() => setCopied(false), 3000); 
+        }}
+        startIcon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            style={{ width: '20px', height: '20px' }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 9h6m-6 4h6m-5-9h4.25A2.75 2.75 0 0117 6.75v12.5A2.75 2.75 0 0114.25 22H6.75A2.75 2.75 0 014 19.25V6.75A2.75 2.75 0 016.75 4H8.5M8.5 4V3.5a2 2 0 012-2h3a2 2 0 012 2V4"
+            />
+          </svg>
+        }
+      >
+        {copied ? 'Copying code is bad habit 🤦' : 'DONT COPY 😠'}
+      </Button>
+      <div
+        style={{
+          backgroundColor: '#f5f5f5',
+          padding: '16px',
+          borderRadius: '8px',
+          height: '200px',
+          overflowY: 'scroll',
+          fontFamily: 'monospace',
+          fontSize: '14px',
+        }}
+      >
+        <pre>{selectedQuestion?.solution}</pre>
+      </div>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
+      <Button variant="contained" color="primary">
+       TC of solution: {selectedQuestion?.time_complexity}
+      </Button>
+      <Button variant="contained" color="primary">
+        SC of solution: {selectedQuestion?.space_complexity}
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
 
 
-      <div className="flex items-center gap-3">
-    <span className="text-sm text-gray-600 ml-64">AI Suggestions</span>
+      <div className="flex items-center gap-1 lg:gap-3">
+    <span className="text-sm text-gray-600 ml-2 lg:ml-48">AI Suggestions</span>
     <label className="relative inline-flex items-center cursor-pointer">
       <input
         type="checkbox"
@@ -687,7 +869,9 @@ const toggleAiSuggestions = () => {
   </div>
 </div>
 
-
+{!isLoaded ? (
+      <div>loading...</div> // Show a loading indicator while initializing
+    ) : (
 <MonacoEditor
         height="500px"
         language="cpp"
@@ -701,7 +885,8 @@ const toggleAiSuggestions = () => {
           lightbulb: { enabled: true },
         }}
         
-      />    
+      /> 
+    )}   
   {/* yeh woh action bar hai jo chal ni rha */}
      <Box
     sx={{
@@ -720,7 +905,7 @@ const toggleAiSuggestions = () => {
     
   
     >
-      {['{}', '()', '[]', 'if', 'else', 'for','<>','vector'].map((symbol, idx) => (
+      {['{}', '()', '[]', 'if', 'else', 'for','<int>','vector','int','='].map((symbol, idx) => (
         <Button key={idx} variant="text" size="small" onClick={() => insertText(symbol,code)}>
           {symbol}
         </Button>
@@ -736,16 +921,16 @@ const toggleAiSuggestions = () => {
     >
       <MenuItem value="cpp">C++</MenuItem>
       <MenuItem value="python">Python</MenuItem>
-      <MenuItem value="javascript">JavaScript</MenuItem>
       <MenuItem value="java">Java</MenuItem>
     </Select>
   </Box>
+
+
   {error && (
     <div style={{ marginTop: '16px', color: 'red', whiteSpace: 'pre-line' }}>
         {error}
     </div>
 )}
-
 
         {/* Tabs for Test Cases */}
         <Box mt={3}>
@@ -779,7 +964,7 @@ const toggleAiSuggestions = () => {
             <Typography variant="subtitle1">Expected Output:</Typography>
             <TextField
               fullWidth
-              value={testCases[activeTestCase].expectedOutput}
+              value={testCases[activeTestCase].output}
               margin="normal"
               onChange={(e) => {
                 const updatedTestCases = [...testCases];
@@ -791,14 +976,14 @@ const toggleAiSuggestions = () => {
             <Typography variant="subtitle1">Code Output:</Typography>
             <TextField
               fullWidth
-              value={testCases[activeTestCase].output || 'Run the code to see output'}
+              value={testCases[activeTestCase].actualOutput || 'Run the code to see output'}
               margin="normal"
               disabled
             />
              
             {/* Run Button  */}
            <button 
-                onClick={() => handleRunCode(activeTestCase)} 
+                onClick={() => handleRunCode(activeTestCase,"main")} 
                 className={`relative border hover:border-sky-600 duration-500 group cursor-pointer text-sky-50 
                             overflow-hidden h-12 w-48 rounded-md bg-sky-800 p-2 flex justify-center items-center 
                             font-extrabold`}
@@ -824,6 +1009,9 @@ const toggleAiSuggestions = () => {
         </Box>
       </Box>
     </Box>
+    )}
+    <Footer/>
+    </>
   );
 };
 

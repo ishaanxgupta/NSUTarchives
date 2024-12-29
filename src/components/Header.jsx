@@ -26,21 +26,21 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" className="bg-white shadow-md">
-  <div className="flex justify-between items-center px-3 py-2" style={{ backgroundColor: "black" }}>
+    <AppBar position="sticky" className="shadow-lg">
+  <div className="flex justify-between items-center lg:px-3 lg:py-2" style={{ backgroundColor: "black" }}>
     {/* Navigation Links */}
-    <div className="space-x-4">
-  {["Home", "Intern", "FTE", "Upsolve", "Codecast"].map((label) => (
+    <div className="lg:space-x-1">
+  {["Home", "PataKaro", "IntelliCode","FTE"].map((label) => (
     <Link
       key={label}
       to={`/${label.toLowerCase()}`}
       className="relative inline-block p-px font-semibold text-white shadow-2xl rounded-xl cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95 group"
     >
       <span
-        className="absolute inset-0 bg-gradient-to-r from-teal-500 via-blue-500 to-green-500 p-[1px] rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute inset-0 bg-gradient-to-r from-teal-500 via-blue-500 to-green-500 p-0 lg:p-[1px] rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       ></span>
-      <span className="relative z-10 block px-6 py-2 rounded-xl bg-black">
-        <div className="relative z-10 flex items-center space-x-2">
+      <span className="relative z-10 block px-3 py-4 lg:px-6 lg:py-2 rounded-xl bg-black">
+        <div className="relative z-10 flex items-center lg:space-x-2">
           <span className="transition-all duration-500">
             {label}
           </span>

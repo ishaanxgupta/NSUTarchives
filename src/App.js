@@ -4,11 +4,11 @@ import Intern_home from "./components/Intern_home";
 import Fte_home from "./components/Fte_home";
 import Company_details from "./components/Company_details";
 import Landing_page from './components/Landing_page';
-import Questions_page from "./components/Questions_page";
 
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
+import Questions_page from "./components/Questions_page";
 import Upsolve from "./components/Upsolve";
 function App() {
   const { isSignedIn } = useAuth(); 
@@ -21,7 +21,7 @@ function App() {
           path="/"
           element={
             isSignedIn ? (
-              <Navigate to="/home" /> // Redirect to home if signed in
+              <Navigate to="/home" /> 
             ) : (
               <Navigate to="/sign-up" />
             )
@@ -31,7 +31,7 @@ function App() {
           path="/sign-in"
           element={
             isSignedIn ? (
-              <Navigate to="/home" /> // Redirect to home if already signed in
+              <Navigate to="/home" /> 
             ) : (
               <SignInPage />
             )
@@ -49,7 +49,7 @@ function App() {
           }
         />
         <Route
-          path="/intern"
+          path="/patakaro"
           element={
             isSignedIn ? (
               <Intern_home /> // Redirect to home if already signed up
@@ -105,16 +105,16 @@ function App() {
             </SignedIn>
           }
         />
-        {/* <Route
-          path="/codecast"
+        <Route
+          path="/intellicode"
           element={
             <SignedIn>
-              <Codecast_home />
+              <Questions_page />
             </SignedIn>
           }
-        /> */}
+        />
         <Route
-          path="/intern/details/:id"
+          path="/patakaro/details/:id"
           element={
             <SignedIn>
               <Company_details />

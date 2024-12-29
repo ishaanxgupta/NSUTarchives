@@ -1,38 +1,21 @@
 
+
+
 import React, { useState, useEffect } from 'react';
 import { Search, Code2, Filter, Brain, Building2, Target, Clock, Zap, Sparkles, X } from 'lucide-react';
 import questionsData from '../data/question.json';
-import Header from  "./Header";
-import Footer from './Footer';
-import Loader1 from './Loader1';
-import Loader from './Loader';
-import {useNavigate} from 'react-router-dom';
 
 
 const topics = ["Array", "Trees", "Linked Lists", "DP", "Graphs", "Strings"];
 const companies = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix","Goldman Sachs","Placewit"];
 
-function Questions_page() {
+function App() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   const [selectedCompany, setSelectedCompany] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoading1,setIsLoading1] = useState(false);
-  const navigate = useNavigate();
-
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false); // Set loading to false after data "loads"
-    }, 1000); // Simulated delay (1.5 seconds)
-
-    return () => clearTimeout(timer); // Cleanup the timer
-  }, []);
-
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -40,7 +23,7 @@ function Questions_page() {
         x: (e.clientX / window.innerWidth) * 100,
         y: (e.clientY / window.innerHeight) * 100,
       });
-    }; 
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -55,20 +38,11 @@ function Questions_page() {
   });
 
   const handleQuestionClick = (questionId) => {
-    navigate(`/upsolve/${questionId}`);
+    window.location.href = `/upsolve/${questionId}`;
   };
 
   return (
-    <>
-    <Header />
     <div className="min-h-screen relative overflow-hidden bg-[#0a192f]">
-        {/* Loader Section */}
-        {isLoading ? (
-          <div className="flex justify-center items-center h-screen">
-            <Loader /> {/* Display loader when isLoading is true */}
-          </div>
-        ) : (
-          <>  
       {/* Dynamic Background */}
       <div 
         className="absolute inset-0 overflow-hidden"
@@ -130,15 +104,15 @@ function Questions_page() {
           <div className="md:col-span-3">
             <div className={`${isFiltersOpen ? 'block' : 'hidden'} md:block fixed md:relative top-0 left-0 w-full md:w-auto h-full md:h-auto z-50 bg-[#0a192f] md:bg-transparent overflow-auto md:overflow-visible p-4 md:p-0`}>
               <div className="bg-gray-800/50 backdrop-blur-lg p-6 rounded-xl border border-gray-700/50">
-                <div className="flex items-center justify-between mb-4 mt-8 lg:mt-0">
+                <div className="flex items-center justify-between mb-6">
                   <h3 className="text-white font-semibold flex items-center gap-2">
                     <Filter className="w-5 h-5 text-teal-400" /> Filters
                   </h3>
                   <button
                     onClick={() => setIsFiltersOpen(false)}
-                    className="md:hidden text-gray-400 hover:text-white transition-colors mt-16px"
+                    className="md:hidden text-gray-400 hover:text-white transition-colors"
                   >
-                    <X className="w-5 h-5 " />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
 
@@ -211,12 +185,6 @@ function Questions_page() {
 
           {/* Questions List */}
           <div className="md:col-span-9">
-          {isLoading ? (
-                // Loader component is displayed when loading
-                <div className="flex justify-center items-center py-12">
-                  <Loader1 />
-                </div>
-              ) : (
             <div className="space-y-4">
               {filteredQuestions.length > 0 ? (
                 filteredQuestions.map((question) => (
@@ -289,16 +257,11 @@ function Questions_page() {
                 </div>
               )}
             </div>
-              )}
           </div>
         </div>
       </div>
-      </>
-        )}
     </div>
-    <Footer/>
-    </>
   );
 }
 
-export default Questions_page;
+export default App;
