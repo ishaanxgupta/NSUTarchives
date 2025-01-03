@@ -239,7 +239,7 @@
     "space_complexity": "O(n)"
     } ,
     {
-        "id": 8,
+        "id": 7,
         "name": "Arranging Astericks",
         "rating": 1400,
         "difficulty": "Medium",
@@ -293,7 +293,7 @@
         "space_complexity": "O(n)"
     },
     {
-        "id": 9,
+        "id": 8,
         "name": "Weighted Sorted Subarrays",
         "rating": 1500,
         "difficulty": "Medium",
@@ -337,6 +337,186 @@
        "solution_explanation":"",
        "time_complexity": "O(n)",
         "space_complexity": "O(n)"
+    },
+    {
+        "id": 9,
+        "name": "Minimum Task Completion Time",
+        "rating": 1600,
+        "difficulty": "Hard",
+        "topics": ["Binary Search", "Greedy"],
+        "company": "Codeforces Variant",
+        "question_description": "There are n workers and m tasks. Each task has a value indicating the proficient worker. The goal is to assign tasks to workers such that all tasks are completed in the minimum time. Workers can complete a proficient task in 1 hour and a non-proficient task in 2 hours. Tasks must be assigned in parallel.",   "function_description": "Complete the function `solve` that takes an integer `n`, an integer `k`, and an array `a` of length `n` and returns the count of indices satisfying the above condition.",
+        "function_description": "Implement a function `solve(int n, int m, vector<int>& tasks)` that takes the number of workers `n`, the number of tasks `m`, and an array of task proficiency indices, and returns the minimum time to complete all tasks.",
+        "input_format": "Line contains two integers n (1≤n≤200000) and m (1≤m≤200000) followed by m integers representing the worker index proficient in the i-th task.",
+        "output_format": "For each test case, print a single integer representing the minimum time to complete all tasks.",
+        "constraints": "1. 1 ≤ n ≤ 200000\n 2. 1 ≤ m ≤ 200000 \n3. 1 ≤ a[i] ≤ n\n4. The sum of `n` across all test cases does not exceed `2 * 10^5`.",
+        "examples": [
+            {
+              "input": "2 4 1 2 1 2",
+              "output": "2",
+              "explanation": "Worker 1 works on tasks 1 and 3, Worker 2 works on tasks 2 and 4. Both complete their tasks in 2 hours."
+            },
+            {
+              "input": "5 5 5 1 3 2 4",
+              "output": "1",
+              "explanation": "Each worker is assigned to their proficient task, completing it in 1 hour."
+            }
+          ],
+        "testCases": [
+    {
+      "input": "2 4 1 2 1 2",
+      "output": "2"
+    },
+    {
+      "input": "2 4 1 1 1 1",
+      "output": "3"
+    },
+    {
+      "input": "5 5 5 1 3 2 4",
+      "output": "1"
+    },
+    {
+      "input": "1 1 1",
+      "output": "1"
     }
-    
+  ],
+        
+       "extraTestCases": [
+    {
+      "input": "3 6 1 2 3 1 2 3",
+      "output": "2"
+    },
+    {
+      "input": "4 10 1 2 3 4 1 2 3 4 1 2",
+      "output": "3"
+    }
+  ],
+        "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool canComplete(int maxTime, int n, int m, vector<int>& taskCount) {\n    long long totalExtraTasks = 0; // Non-proficient tasks\n    long long totalFreeSlots = 0; // Free slots for additional tasks\n\n    for (int i = 0; i < n; i++) {\n        if (taskCount[i] > maxTime) {\n            // Tasks exceeding maxTime become extra tasks\n            totalExtraTasks += taskCount[i] - maxTime;\n        } else {\n            // Free slots available for non-proficient tasks\n            totalFreeSlots += (maxTime - taskCount[i]) / 2;\n        }\n    }\n\n    return totalExtraTasks <= totalFreeSlots;\n}\n\nint solve(int n, int m, vector<int>& tasks) {\n    vector<int> taskCount(n, 0);\n    for (int task : tasks) {\n        taskCount[task - 1]++;\n    }\n\n    int low = 1, high = m, result = m;\n    while (low <= high) {\n        int mid = (low + high) / 2;\n        if (canComplete(mid, n, m, taskCount)) {\n            result = mid;\n            high = mid - 1; // Try for smaller time\n        } else {\n            low = mid + 1; // Increase time\n        }\n    }\n\n    return result;\n}\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int t;\n    cin >> t;\n    while (t--) {\n        int n, m;\n        cin >> n >> m;\n\n        vector<int> tasks(m);\n        for (int i = 0; i < m; i++) {\n            cin >> tasks[i];\n        }\n\n        cout << solve(n, m, tasks) << '\\n';\n    }\n\n    return 0;\n}",
+  "time_complexity": "O(n log m)",
+  "space_complexity": "O(n)"
+    },
+    {
+        "id": 10,
+        "name": "Winter Break Game",
+        "rating": 1500,
+        "difficulty": "Hard",
+        "topics": ["DP", "Combinatorics"],
+        "company": "Competitive Programming",
+        "question_description": "Magnus, a high school student, created a game to find how many beautiful grids can be formed for given rows n and columns m. A grid is beautiful if:\n1. It contains only 0s and 1s.\n2. Each row has exactly one segment of consecutive 0s and one segment of consecutive 1s.\n3. Each column has exactly one segment of consecutive 0s and one segment of consecutive 1s.\nFind the number of different beautiful grids possible. Return the result modulo 998244353.",
+        "function_description": "Complete the function `countBeautifulGrids`, which calculates the number of beautiful grids possible.\nThe function takes two input parameters:\n1. An integer `n` (the number of rows of the grid).\n2. An integer `m` (the number of columns of the grid).\nThe function should return a single integer denoting the number of different beautiful grids possible modulo 998244353.",
+        "input_format": "The input consists of two space-separated integers n and m, representing the number of rows and columns of the grid.",
+        "output_format": "Output a single integer denoting the number of beautiful grids modulo 998244353.",
+        "constraints": "\n1 ≤ n, m ≤ 2050",
+        "examples": [
+            {
+                "input": "4 1",
+                "output": "0",
+                "explanation": "For a grid of size 4x1, it is impossible to create a beautiful grid that satisfies all the conditions, hence the output is 0."
+            },
+            {
+                "input": "5 7",
+                "output": "353760",
+                "explanation": "For a grid of size 5x7, there are 353760 possible beautiful grids that meet the conditions."
+            }
+        ],
+        "testCases": [
+            { "input": "5 7", "output": "353760" },
+            { "input": "4 1", "output": "0" }
+        ],
+        "extraTestCases": [],
+        "solution": "",
+        "time_complexity": "O(n * m)",
+        "space_complexity": "O(1)"
+    },
+    {
+    "id": 11,
+    "name": "Twilio Bandwidth Allocation",
+  "rating": 1500,
+  "difficulty": "Medium",
+  "topics": ["Sorting", "Binary Search","Two Pointers"],
+  "company": "Twilio",
+  "question_description": "A core Twilio product is the ability to send text messages programmatically. Each channel has a fixed bandwidth. Given two lists, List A representing the required bandwidth for each message and List B representing the available bandwidth for each channel, determine how many messages in List A can be sent for each bandwidth in List B.",
+  "function_description": "You need to write a function that takes two lists, listA and listB, and returns an array of integers where each integer represents the count of messages in listA that can be sent through the respective channel in listB.",
+  "input_format": "Two integers n and m followed by a space-separated list of integers listA (n elements) and listB (m elements).",
+  "output_format": "A space-separated list of m integers, where each value represents the count of messages in listA that can be sent using the respective channel in listB.",
+  "constraints": "1. 2 ≤ n, m ≤ 10^5\n 2. 1 ≤ listA[i] ≤ 10^9, where 0 ≤ i < n\n 3. 1 ≤ listB[j] ≤ 10^9, where 0 ≤ j < m\n",
+  "examples": [
+    {
+      "input": "3 2 1 2 3 2 4",
+      "output": "2 3",
+      "explanation": "For the first channel with bandwidth=2, there are 2 messages in List A with bandwidths ≤ 2. For the second channel with bandwidth=4, there are 3 messages in List A with bandwidths ≤ 4."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "5 3 4 2 5 1 3 3 4 5",
+      "output": "3 4 5"
+    },
+    {
+      "input": "6 2 7 3 2 6 5 8 4 10",
+      "output": "2 6"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "4 3 8 6 7 5 5 7 10",
+      "output": "1 2 4"
+    },
+    {
+      "input": "7 3 10 5 6 7 8 12 3 4 9 15",
+      "output": "4 6 7"
+    }
+  ],
+  "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
+  "solution1": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
+  "time_complexity": "O(nlog n+mlog n)",
+  "space_complexity": "O(n+m)",
+  "explanation": "Sort listA to allow efficient binary search. For each bandwidth in listB, find the number of elements in listA ≤ bandwidth using binary search."
+},
+{
+  "id": 12,
+  "name": "Twilio Bandwidth Allocation",
+"rating": 1500,
+"difficulty": "Medium",
+"topics": ["Sorting", "Binary Search","Two Pointers"],
+"company": "Twilio",
+"question_description": "A core Twilio product is the ability to send text messages programmatically. Each channel has a fixed bandwidth. Given two lists, List A representing the required bandwidth for each message and List B representing the available bandwidth for each channel, determine how many messages in List A can be sent for each bandwidth in List B.",
+"function_description": "You need to write a function that takes two lists, listA and listB, and returns an array of integers where each integer represents the count of messages in listA that can be sent through the respective channel in listB.",
+"input_format": "Two integers n and m followed by a space-separated list of integers listA (n elements) and listB (m elements).",
+"output_format": "A space-separated list of m integers, where each value represents the count of messages in listA that can be sent using the respective channel in listB.",
+"constraints": "1. 2 ≤ n, m ≤ 10^5\n 2. 1 ≤ listA[i] ≤ 10^9, where 0 ≤ i < n\n 3. 1 ≤ listB[j] ≤ 10^9, where 0 ≤ j < m\n",
+"examples": [
+  {
+    "input": "3 2 1 2 3 2 4",
+    "output": "2 3",
+    "explanation": "For the first channel with bandwidth=2, there are 2 messages in List A with bandwidths ≤ 2. For the second channel with bandwidth=4, there are 3 messages in List A with bandwidths ≤ 4."
+  }
+],
+"testCases": [
+  {
+    "input": "5 3 4 2 5 1 3 3 4 5",
+    "output": "3 4 5"
+  },
+  {
+    "input": "6 2 7 3 2 6 5 8 4 10",
+    "output": "2 6"
+  }
+],
+"extraTestCases": [
+  {
+    "input": "4 3 8 6 7 5 5 7 10",
+    "output": "1 2 4"
+  },
+  {
+    "input": "7 3 10 5 6 7 8 12 3 4 9 15",
+    "output": "4 6 7"
+  }
+],
+"solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
+"solution1": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
+"time_complexity": "O(nlog n+mlog n)",
+"space_complexity": "O(n+m)",
+"explanation": "Sort listA to allow efficient binary search. For each bandwidth in listB, find the number of elements in listA ≤ bandwidth using binary search."
+}
+
 ]

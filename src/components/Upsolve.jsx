@@ -18,11 +18,13 @@ import {
   Dialog,
   DialogTitle, 
   DialogContent,
+  Drawer,
 
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
 import { CheckCircle, Cancel, ExpandMore, PlayArrow } from '@mui/icons-material';
+import Close from '@mui/icons-material/Close';
 import CloseIcon from '@mui/icons-material/Close';
 import MonacoEditor from '@monaco-editor/react';
 import debounce from 'lodash.debounce';
@@ -32,6 +34,13 @@ import Footer from './Footer';
 import Header from './Header';
 import Loader2 from './Loader2';
 import Button1 from './Button1';
+import Tick from '../Utils/Tick';
+import HowTouseModal from '../Utils/HowtouseModal';
+import HowTouseModal1 from '../Utils/HowtouseModal1';
+import BurgerButton from '../Utils/BurgerButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Premium from './Premium';
+import Add from './Add';
 
 const boilerplate = {
   cpp: `#include <iostream>
@@ -61,7 +70,7 @@ const Upsolve = () => {
   const { id } = useParams(); // Get question ID from the URL
   const selectedQuestion = questions.find((q) => q.id === parseInt(id)); // Find question by ID
   const [code, setCode] = useState(boilerplate.cpp);
-  const [testCases, setTestCases] = useState(selectedQuestion.testCases);
+  const [testCases, setTestCases] = useState(selectedQuestion?.testCases);
   const [activeTestCase, setActiveTestCase] = useState(0); // Index for current active test case
   const [testResults, setTestResults] = useState(Array(testCases.length).fill(null));
   // const [extraTestCases, setExtraTestCases] = useState([{ input: '', expectedOutput: '', actualOutput: '' }]); // Pass/fail status of each test case
@@ -91,7 +100,10 @@ const Upsolve = () => {
   const [copied,setCopied] = useState(false);
 
   const [isLoaded, setIsLoaded] = useState(false); 
-  const [isLOADING,SetIsLOADING] = useState(true);
+  const [isLOADING,SetIsLOADING] = useState(true);  
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isPremium,setIsPremium] = useState(false);
+
 
 
   // const handleRunCode = async (index, caseSet = 'main') => {
@@ -153,19 +165,73 @@ const Upsolve = () => {
   // };
 
 
+  // const handleRunCode = async (index, caseSet = 'main') => {
+  //   setError(''); 
+  
+  //   const selectedTestCases = caseSet === 'extra' ? extraTestCases : testCases;
+  
+  //   // Set loading based on the case set
+  //   if (caseSet === 'extra') {
+  //     setExtraLoading(true);
+  //   } else {
+  //     setLoading(true);
+  //   }
+  
+  //   try {
+  //     const response = await fetch('https://api.codex.jaagrav.in', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         code,
+  //         input: selectedTestCases[index].input,
+  //         language: 'cpp',
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     if (data.error) {
+  //       setError(data.error); 
+  //     } else {  
+  //       setError('');
+  //       const updatedTestCases = [...selectedTestCases];
+        
+  //       // Store the actual output in a new field
+  //       updatedTestCases[index].actualOutput = data.output.trim();
+  
+  //       // Check if the actual output matches the expected output
+  //       const updatedResults = [...testResults];
+  //       if (updatedTestCases[index].actualOutput === selectedTestCases[index].output) {
+  //         updatedResults[index] = true; // Test passed
+  //       } else {
+  //         updatedResults[index] = false; // Test failed
+  //       }
+  
+  //       if (caseSet === 'main') {
+  //         setTestCases(updatedTestCases); // Update main test cases
+  //       } else {
+  //         setExtraTestCases(updatedTestCases); // Update extra test cases
+  //       }
+  //       setTestResults(updatedResults);
+  //     }
+  //   } catch (error) {
+  //     setError('An unexpected error occurred. Please try again.');
+  //   } finally { 
+  //     if (caseSet === 'extra') {
+  //       setExtraLoading(false);
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
   const handleRunCode = async (index, caseSet = 'main') => {
-    setError(''); 
-  
+    setError('');
     const selectedTestCases = caseSet === 'extra' ? extraTestCases : testCases;
-  
-    // Set loading based on the case set
-    if (caseSet === 'extra') {
-      setExtraLoading(true);
-    } else {
-      setLoading(true);
-    }
+    caseSet === 'extra' ? setExtraLoading(true) : setLoading(true);
   
     try {
+      const controller = new AbortController(); // Create a new AbortController
+      const timeoutId = setTimeout(() => controller.abort(), 3500); 
+  
       const response = await fetch('https://api.codex.jaagrav.in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -174,40 +240,50 @@ const Upsolve = () => {
           input: selectedTestCases[index].input,
           language: 'cpp',
         }),
+        signal: controller.signal, 
       });
+  
+      clearTimeout(timeoutId); 
       const data = await response.json();
+  
       if (data.error) {
-        setError(data.error); 
-      } else {  
+        setError(data.error);
+      } else {
         setError('');
+  
         const updatedTestCases = [...selectedTestCases];
-        
-        // Store the actual output in a new field
-        updatedTestCases[index].actualOutput = data.output.trim();
-  
-        // Check if the actual output matches the expected output
         const updatedResults = [...testResults];
-        if (updatedTestCases[index].actualOutput === selectedTestCases[index].output) {
-          updatedResults[index] = true; // Test passed
+        //hi
+  
+        // Store the actual output
+        const actualOutput = data.output.trim();
+        updatedTestCases[index].actualOutput = actualOutput;
+  
+        // Ensure the TLE status is cleared
+        updatedTestCases[index].tle = false;
+  
+        // Update state based on the case set
+        if (caseSet === 'main') {
+          setTestCases(updatedTestCases);
         } else {
-          updatedResults[index] = false; // Test failed
+          setExtraTestCases(updatedTestCases);
         }
   
-        if (caseSet === 'main') {
-          setTestCases(updatedTestCases); // Update main test cases
-        } else {
-          setExtraTestCases(updatedTestCases); // Update extra test cases
-        }
+        // Compare outputs for results
+        updatedResults[index] = actualOutput === selectedTestCases[index].output;
         setTestResults(updatedResults);
       }
     } catch (error) {
-      setError('An unexpected error occurred. Please try again.');
-    } finally { 
-      if (caseSet === 'extra') {
-        setExtraLoading(false);
+      if (error.name === 'AbortError') {
+        // Handle timeout by marking TLE but not overwriting actualOutput
+        const updatedTestCases = [...selectedTestCases];
+        updatedTestCases[index].tle = true; // Mark as TLE
+        caseSet === 'main' ? setTestCases(updatedTestCases) : setExtraTestCases(updatedTestCases);
       } else {
-        setLoading(false);
+        setError('An unexpected error occurred. Please try again.');
       }
+    } finally {
+      caseSet === 'extra' ? setExtraLoading(false) : setLoading(false);
     }
   };
   
@@ -251,38 +327,79 @@ const handleCodeChange = (e) => {
     }
   };
 
-
+  const deleteTestCase = (index) => {
+    const updatedTestCases = testCases.filter((_, i) => i !== index);
+    const newActiveIndex = index === activeTestCase
+      ? Math.max(0, activeTestCase - 1) 
+      : activeTestCase;
+  
+    setTestCases(updatedTestCases);
+    setActiveTestCase(newActiveIndex);
+  };
 
   
+  // useEffect(() => {
+  //   // Retrieve saved code and language from localStorage on component mount
+  //   const savedCode = localStorage.getItem('savedCode');
+  //   const savedLanguage = localStorage.getItem('savedLanguage');
+  //   const savedID = localStorage.getItem('savedID');
+  
+  //   // Check and set the retrieved code and language
+  //   if (savedCode !== null) {
+  //     console.log(savedCode)
+  //     console.log("inside the if")
+  //     setCode(savedCode);
+  //   }else{
+  //     setCode(boilerplate.cpp);
+  //   }
+  
+  //   setLanguage(savedLanguage); 
+
+  //   setIsLoaded(true);
+  // }, [5000]);
+
+  // useEffect(() => {
+  //   // Save code and language to localStorage whenever they change
+  //   if (isLoaded) { // Only save after initial load
+  //     localStorage.setItem('savedCode', code);
+  //     localStorage.setItem('savedLanguage', language);
+  //     localStorage.setItem('savedID', selectedQuestion.id);
+  //   }
+  // }, [code, language,selectedQuestion.id, isLoaded]);
+
+
   useEffect(() => {
-    // Retrieve saved code and language from localStorage on component mount
-    const savedCode = localStorage.getItem('savedCode');
-    const savedLanguage = localStorage.getItem('savedLanguage');
+    // Retrieve saved data on component mount
+    const savedData = JSON.parse(localStorage.getItem("savedCodes")) || {};
   
-    // Check and set the retrieved code and language
-    if (savedCode !== null) {
-      console.log(savedCode)
-      console.log("inside the if")
-      setCode(savedCode);
-    }else{
+    if (selectedQuestion?.id && savedData[selectedQuestion.id]) {
+      setCode(savedData[selectedQuestion.id]);
+    } else {
       setCode(boilerplate.cpp);
     }
   
-    setLanguage(savedLanguage); 
-
+    const savedLanguage = localStorage.getItem("savedLanguage");
+    setLanguage(savedLanguage || "cpp");
+  
     setIsLoaded(true);
-    setTimeout(() => {
-      //nothing just a timeout
-    })
-  }, [5000]);
-
+  }, [selectedQuestion?.id]); // Only re-run when the selected question ID changes
+  
   useEffect(() => {
-    // Save code and language to localStorage whenever they change
-    if (isLoaded) { // Only save after initial load
-      localStorage.setItem('savedCode', code);
-      localStorage.setItem('savedLanguage', language);
+    // Save the code and language to localStorage whenever they change
+    if (isLoaded && selectedQuestion?.id) { 
+      const savedData = JSON.parse(localStorage.getItem("savedCodes")) || {};
+  
+      // Update the code for the current question ID
+      savedData[selectedQuestion.id] = code;
+      localStorage.setItem("savedCodes", JSON.stringify(savedData));
+      localStorage.setItem("savedLanguage", language);
     }
-  }, [code, language, isLoaded]);
+  }, [code, language, selectedQuestion?.id, isLoaded]);
+
+
+
+
+  
   
 
 
@@ -472,16 +589,29 @@ const toggleAiSuggestions = () => {
   setAiSuggestionsEnabled((prev) => !prev);
 };
 
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const openModal = () => setIsModalOpen(true);
+const closeModal = () => setIsModalOpen(false);
+
+
+const toggleDrawer = () => {
+  setIsDrawerOpen(!isDrawerOpen);
+};
+
   return (
     <>
     <Header/>
     {isLOADING ?(
         <div className='flex items-center justify-center'><Loader2/></div>
     ):(
-    <Box id="main-content" sx={{ p: isMobile ? '10px' : '20px', display: isFocusMode ? 'block' : 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
+  
+    <Box id="main-content" sx={{ p: isMobile ? '10px' : '20px', display: isFocusMode ? 'block' : 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px', overflow: 'hidden' }}>
   {/* <Box sx={{ display: 'flex', gap: '20px', padding: '20px' }}> */}
 
   {/* Left Section */}
+  <HowTouseModal/>
+  <HowTouseModal1 isModalOpen={isModalOpen} closeModal={closeModal} />
   {!isFocusMode && (
      <Box
      sx={{
@@ -492,6 +622,7 @@ const toggleAiSuggestions = () => {
        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
        backgroundColor: "#f9f9f9",
        flex: isMobile ? "none" : 1,
+       maxWidth: isMobile ? "100%" : "50%", // Restrict maximum width for the left section
        maxHeight: "165vh", // Set maximum height for the container
        overflowY: "auto", // Enable vertical scrolling
      }}
@@ -507,8 +638,9 @@ const toggleAiSuggestions = () => {
       textFillColor: "transparent",
     }}
   >
-    {selectedQuestion?.name}
-  </Typography>
+    {selectedQuestion?.name} 
+  </Typography> 
+
      {/* Metadata */}
      <Typography
        variant="subtitle1"
@@ -678,7 +810,7 @@ const toggleAiSuggestions = () => {
    
    
         {/* Left side: Extra Test Cases in Accordions */}
-      <Box flex={1}>
+      {/* <Box flex={1}>
         <Typography variant="h6">Extra Test Cases</Typography>
         {selectedQuestion.extraTestCases.map((testCase, index) => (
           <Accordion key={index}>
@@ -726,18 +858,85 @@ const toggleAiSuggestions = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-      </Box>
+      </Box> */}
+      <Box flex={1}>
+  <Typography variant="h6">Extra Test Cases</Typography>
+  {selectedQuestion.extraTestCases.map((testCase, index) => (
+    <Accordion key={index} >
+      <AccordionSummary expandIcon={isPremium ? <ExpandMore /> : null}>
+        <Typography>Test Case {index + 1}</Typography>
+        {!isPremium && (
+          <div className='ml-8 cursor-pointer' onClick={() => {
+            window.alert("You are not a Premium user Currently. But will Become soon. Contact to get Access");
+          }}><Premium/></div>
+        )}
+        {isPremium && (
+          <IconButton
+            color={testResults[index] === null ? 'primary' : testResults[index] ? 'success' : 'error'}
+            sx={{ ml: 'auto' }}
+            onClick={() => handleRunCode(index, 'extra')}
+            disabled={extraLoading} // Disable button while code is running
+          >
+            {extraLoading ? <CircularProgress size={24} color="inherit" /> : <PlayArrow />}
+          </IconButton>
+        )}
+      </AccordionSummary>
+      {isPremium && (
+        <AccordionDetails>
+          <Typography variant="subtitle1">Input:</Typography>
+          <TextField
+            fullWidth
+            value={testCase.input}
+            margin="normal"
+            disabled
+          />
+          <Typography variant="subtitle1">Expected Output:</Typography>
+          <TextField
+            fullWidth
+            value={testCase.output}
+            margin="normal"
+            disabled
+          />
+          <Typography variant="subtitle1">Code Output:</Typography>
+          <TextField
+            fullWidth
+            value={testCase.actualOutput || 'Run the code to see output'}
+            margin="normal"
+            disabled
+          />
+          <Box mt={2}>
+            {testResults[index] === true && (
+              <CheckCircle style={{ color: 'green' }} />
+            )}
+            {testResults[index] === false && (
+              <Cancel style={{ color: 'red' }} />
+            )}
+          </Box>
+        </AccordionDetails>
+      )}
+    </Accordion>
+  ))}
+</Box>
+
       </Box>
   )}
 
-      {/* Right side: Code Editor and Language Selection */}
-      <Box sx={{ flex: isMobile ? 'none' : 2, width: isMobile ? '100%' : 'auto'  }}>
-        <div className='flex gap-2 content-end'>
 
-          {/* focus button - by ishaan */}
-      <Button className="m-2 lg:m-0" variant="contained" color="primary" onClick={() => setIsFocusMode(!isFocusMode)}>
+
+      {/* Right side: Code Editor and Language Selection */}
+      <Box sx={{ flex: isMobile ? 'none' : 2, width: isMobile ? '100%' : 'auto' , minWidth: '50%', maxWidth: '100%',  overflowX: 'hidden',overflowY: 'auto'}}>
+        <div className='flex gap-2 content-end'>
+        {isMobile ? (
+        // If mobile, show the burger button to open drawer
+        <IconButton onClick={toggleDrawer} className="m-2">
+        <MenuIcon />
+      </IconButton>
+      ) : (
+        <>
+        <Button className='m-2 lg:m-4 lg:p-4 w-1/5' variant="contained" color="primary" onClick={openModal}> How to use  </Button>
+      {/* <Button className="m-2 lg:m-0" variant="contained" color="primary" onClick={() => setIsFocusMode(!isFocusMode)}>
   {isFocusMode ? 'Exit Focus Mode' : 'Enter Focus Mode'}
-</Button>
+</Button> */}
 {/* download button - by ishaan */}
 <button class="custom-button" onClick={handleSaveCode}>
   <span class="button-text">Save Code</span>
@@ -760,34 +959,52 @@ const toggleAiSuggestions = () => {
   </span>
 </button>
 
-{/* show solution button by ishaan */}
-{/* <Button className='m-2 lg:m-0' variant="contained" color="primary" onClick={handleClickOpen}>
-        Solution
-      </Button>
-      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle className="flex gap-x-72">Answer to the Question <div className="justify-end"><button className='bg-red-500 ml-4' onClick={handleClose}><CloseIcon></CloseIcon></button></div></DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" gutterBottom>
-            Here is the detailed solution to the question. The response includes explanations and code snippets to provide a comprehensive understanding of the solution approach.
-          </Typography>
-          <pre style={{ backgroundColor: '#f5f5f5', padding: '16px', borderRadius: '8px' }}>
-            {selectedQuestion?.solution}
-          </pre>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
-            <Button variant="contained" color="primary">
-              Analyze Time Complexity
-            </Button>
-            <Button variant="contained" color="primary">
-              Analyze Space Complexity
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>  */}
- {/* variant="contained" color="primary" */}
+
  <div className='m-2 lg:m-0' onClick={handleClickOpen}>
 <Button1>
 </Button1>
 </div>
+</>
+      )}
+<div>
+      <Drawer anchor="top" open={isDrawerOpen} onClose={toggleDrawer}>
+        <div className="flex flex-col gap-4 p-4">
+          <Button variant="contained" color="primary" onClick={toggleDrawer && openModal}>
+            How to use
+          </Button>
+          <Button className="m-2 lg:m-0" variant="contained" color="primary" onClick={() => setIsFocusMode(!isFocusMode)}>
+  {isFocusMode ? 'Exit Focus Mode' : 'Enter Focus Mode'}
+</Button>
+<div className='m-2 lg:m-0' onClick={handleClickOpen}>
+<Button1>
+</Button1>
+</div>
+<button class="custom-button" onClick={handleSaveCode}>
+  <span class="button-text">Save Code</span>
+  <span class="button-icon">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 35 35"
+      class="svg-icon"
+    >
+      <path
+        d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"
+      ></path>
+      <path
+        d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"
+      ></path>
+      <path
+        d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"
+      ></path>
+    </svg>
+  </span>
+</button>       
+        </div>
+      </Drawer>
+      </div>
+
+
+
 <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
   <DialogTitle className="flex justify-between items-center">
     Correct Answer
@@ -798,6 +1015,7 @@ const toggleAiSuggestions = () => {
   <DialogContent>
     <Typography variant="body1" gutterBottom>
        Here is the accepted solution of the question.
+       ({selectedQuestion?.explanation})
     </Typography>
     <div style={{ position: 'relative', marginTop: '16px' }}>
     <Button
@@ -856,7 +1074,7 @@ const toggleAiSuggestions = () => {
 
 
       <div className="flex items-center gap-1 lg:gap-3">
-    <span className="text-sm text-gray-600 ml-2 lg:ml-48">AI Suggestions</span>
+    <span className="text-sm text-gray-600 ml-40 lg:ml-48">AI Suggestions</span>
     <label className="relative inline-flex items-center cursor-pointer">
       <input
         type="checkbox"
@@ -887,7 +1105,16 @@ const toggleAiSuggestions = () => {
         
       /> 
     )}   
-  {/* yeh woh action bar hai jo chal ni rha */}
+
+<div className="flex items-center text-black rounded-md relative animate-fade-in-out">
+  <div className="mr-1">
+    <Tick />
+  </div>
+  <span>Code Saved Locally</span>
+</div>
+
+
+  {/* yeh woh action bar hai  */}
      <Box
     sx={{
       display: 'flex',
@@ -912,6 +1139,7 @@ const toggleAiSuggestions = () => {
       ))}
     </Box>
 
+
 {/* Language bar */}
   <Box mt={3}>
     <Select
@@ -931,22 +1159,54 @@ const toggleAiSuggestions = () => {
         {error}
     </div>
 )}
-
+          {/* this issue */}
         {/* Tabs for Test Cases */}
-        <Box mt={3}>
-          <Tabs
-            value={activeTestCase}
-            onChange={(event, newValue) => setActiveTestCase(newValue)}
-            variant="scrollable"
-            scrollButtons="auto"
-            allowScrollButtonsMobile
-            aria-label="Test Cases Tabs"
-          >
-            {testCases.map((_, index) => (
-              <Tab label={`TestCase ${index + 1}`} key={index} />
-            ))}
-            <Button onClick={addTestCase} style={{ marginLeft: '10px' }}>+ Add Test Case</Button>
-          </Tabs>
+        <Box sx={{ maxWidth: '100%', overflowX: 'auto', whiteSpace: 'nowrap', flexShrink: 0 }}>
+          <br></br>
+          <IconButton
+  size="small"
+  color="error"
+  onClick={() => {
+    if (testCases.length === 1) {
+      window.alert("Sorry Boss ☺️, You cannot delete the last test case present"); // Correct use of window.alert
+      return; // Exit the function to prevent further execution
+    }
+    if (testCases.length > 1) {
+      deleteTestCase(testCases.length - 1);
+      if (activeTestCase >= testCases.length - 1) {
+        setActiveTestCase(Math.max(0, activeTestCase - 1));
+      }
+    }
+  }}
+  style={{
+    marginLeft: '5px',
+    border: '1px solid #f87171', // Add border with color
+    borderRadius: '8px', // Optional: Adjust border radius
+    padding: '6px', // Optional: Adjust padding inside the button
+  }}
+>
+  <Close />
+  <div className="text-sm text-red-500">Delete Last TC</div>
+</IconButton>
+
+  <Tabs
+    value={activeTestCase}
+    onChange={(event, newValue) => setActiveTestCase(newValue)}
+    variant="scrollable"
+    scrollButtons="auto"
+  //   textColor="secondary"
+  // indicatorColor="secondary"
+    allowScrollButtonsMobile
+    aria-label="Test Cases Tabs"
+  >
+    {testCases.map((_, index) => (
+      <Tab label={`TestCase ${index + 1}`} key={index} />
+    ))}
+    <Button onClick={addTestCase} style={{ marginLeft: '10px', flexShrink: 0 }}> <Add/> Add Test Case</Button>
+  </Tabs>
+</Box>
+
+         
 
           <Box p={2} border={1} borderRadius={2} style={{ backgroundColor: '#f8f9fa' }}>
             <Typography variant="subtitle1">Input:</Typography>
@@ -964,11 +1224,11 @@ const toggleAiSuggestions = () => {
             <Typography variant="subtitle1">Expected Output:</Typography>
             <TextField
               fullWidth
-              value={testCases[activeTestCase].output}
+              value={testCases[activeTestCase].output || ""}
               margin="normal"
               onChange={(e) => {
                 const updatedTestCases = [...testCases];
-                updatedTestCases[activeTestCase].expectedOutput = e.target.value;
+                updatedTestCases[activeTestCase].output = e.target.value;
                 setTestCases(updatedTestCases);
               }}
             />
@@ -976,7 +1236,11 @@ const toggleAiSuggestions = () => {
             <Typography variant="subtitle1">Code Output:</Typography>
             <TextField
               fullWidth
-              value={testCases[activeTestCase].actualOutput || 'Run the code to see output'}
+              value={
+                testCases[activeTestCase]?.tle
+                  ? "TLE"
+                  : testCases[activeTestCase]?.actualOutput || "Run the code to see output"
+              }
               margin="normal"
               disabled
             />
@@ -1008,7 +1272,6 @@ const toggleAiSuggestions = () => {
           </Box>
         </Box>
       </Box>
-    </Box>
     )}
     <Footer/>
     </>

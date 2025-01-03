@@ -1,65 +1,94 @@
-import React, { useState } from "react";
+import React from 'react'
 
-const CustomSearchComponent = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
+function CustomSearchComponent() {
   return (
     <>
-      {/* Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f0f10_1px,transparent_1px),linear-gradient(to_bottom,#0f0f10_1px,transparent_1px)] bg-[length:1rem_1rem] blur-sm z-[-1]" />
+    <div class="relative group">
+  <div
+    class="relative w-80 h-16 opacity-90 overflow-hidden rounded-2xl bg-black z-10"
+  >
+    <div
+      class="absolute z-10 -translate-x-44 group-hover:translate-x-[30rem] ease-in transistion-all duration-500 h-full w-44 bg-gradient-to-r from-gray-500 to-white/10 opacity-30 -skew-x-12"
+    ></div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-8 text-[#D3CCD4] absolute left-4 top-4 z-[2]"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      ></path>
+    </svg>
+    <div
+      class="absolute overflow-hidden top-[10px] right-3 rounded-xl bg-black p-[2px] z-20 opacity-90"
+    >
+      <div
+        class="absolute group-hover:-left-24 transistion-all duration-300 ease-out w-32 h-5 bg-[#007BFF] rounded-full blur-[12px] -left-8 -top-6"
+      ></div>
+      <div
+        class="absolute group-hover:-left-24 transistion-all duration-300 ease-out w-32 h-5 bg-[#007BFF] rounded-full blur-[12px] -left-8 -bottom-6"
+      ></div>
+      <div class="bg-black relative rounded-lg p-1.5">
+        <div
+          class="absolute group-hover:-left-16 transistion-all duration-300 ease-out w-32 h-5 bg-[#007BFF] rounded-full blur-[16px] -left-8 -top-8"
+        ></div>
+        <div
+          class="absolute group-hover:-left-16 transistion-all duration-300 ease-out w-32 h-5 bg-[#007BFF] rounded-full blur-[16px] -left-8 -bottom-8"
+        ></div>
 
-      {/* Glowing Input Container */}
-      <div className="relative flex items-center justify-center p-4">
-        <div className="absolute inset-0 rounded-xl blur-lg bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-20" />
-        <div className="relative bg-black rounded-lg p-6 shadow-lg">
-          {/* Input Field */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-72 h-14 px-12 text-white bg-gray-900 border-none rounded-md focus:outline-none"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {/* Search Icon */}
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" />
-                <line x1="16.65" y1="16.65" x2="22" y2="22" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </div>
-            {/* Filter Icon */}
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-              <div className="relative w-10 h-10 bg-gradient-to-b from-gray-700 to-black rounded-md flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24"
-                  width="24"
-                  viewBox="4.8 4.56 14.832 15.408"
-                  fill="none"
-                  className="text-gray-400"
-                >
-                  <path
-                    d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+        <svg
+          class="size-7 text-white"
+          stroke="currentColor"
+          stroke-width="1.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          ></path>
+        </svg>
       </div>
+    </div>
+    <div
+      class="absolute flex items-center justify-center text-white z-[1] opacity-90 rounded-2xl inset-0.5 bg-black"
+    >
+      <input
+        type="text"
+        name="text"
+        placeholder="Search..."
+        class="input placeholder:text-[#D3CCD4] focus:outline-none h-full opacity-90 w-full px-16 py-3 placeholder:text-xl rounded-2xl bg-black"
+      />
+    </div>
+    <div
+      class="absolute group-hover:-left-[5px] group-hover:-top-[170px] transistion-all duration-300 ease-out w-56 h-48 bg-[#e4a9dd] blur-[20px] -left-[150px] -top-[150px]"
+    ></div>
+    <div
+      class="absolute group-hover:-right-[5px] group-hover:-bottom-[170px] transistion-all duration-300 ease-out w-56 h-48 bg-[#ADA2E8] blur-[20px] -right-[150px] -bottom-[150px]"
+    ></div>
+  </div>
+  <div
+    class="absolute w-32 rotate-6 h-10 bg-[#CE25A2] rounded-full blur-[8px] -left-0 top-1"
+  ></div>
+  <div
+    class="absolute w-32 rotate-6 h-10 group-hover:w-44 transistion-all duration-300 ease-out bg-[#5241c9] rounded-2xl blur-[10px] -right-0 bottom-1"
+  ></div>
+  <div
+    class="absolute w-32 h-14 group-hover:h-6 group-hover:blur-[40px] group-hover:w-56 transistion-all ease-out duration-300 bg-[#007BFF] rounded-full blur-[50px] -left-5 -top-1"
+  ></div>
+  <div
+    class="absolute w-32 h-14 group-hover:h-6 group-hover:blur-[40px] group-hover:w-56 transistion-all ease-out duration-300 bg-[#20c997] rounded-full blur-[50px] -right-3 -bottom-2"
+  ></div>
+</div>
     </>
-  );
-};
+  )
+}
 
-export default CustomSearchComponent;
+export default CustomSearchComponent

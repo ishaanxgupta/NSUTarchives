@@ -10,6 +10,7 @@ import SignInPage from "./components/SignInPage";
 import SignUpPage from "./components/SignUpPage";
 import Questions_page from "./components/Questions_page";
 import Upsolve from "./components/Upsolve";
+import User_profile from "./components/User_profile";
 function App() {
   const { isSignedIn } = useAuth(); 
 
@@ -17,6 +18,7 @@ function App() {
     <Router>
       <Routes>
         {/* Public Routes */}
+        <Route path="/user_profile" element={<User_profile/>} />
         <Route
           path="/"
           element={

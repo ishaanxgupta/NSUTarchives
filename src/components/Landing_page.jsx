@@ -123,7 +123,7 @@ export default function Landing_page() {
         fontFamily: "'Poppins', sans-serif", 
       }}
     >
-      Welcome to IDGAF
+      Welcome to Codify
     </h1>
   </Fade>
 
@@ -190,12 +190,12 @@ export default function Landing_page() {
 </section>
 
      {/* Pricing Section */}
-<section id="pricing-section" className="py-16 bg-gray-100 text-black text-center">
+{/* <section id="pricing-section" className="py-16 bg-gray-100 text-black text-center">
   <h2 className="section-title text-3xl md:text-4xl font-bold mb-8">Pricing Plans</h2>
 
-  <div className="flex flex-wrap justify-center items-stretch px-6 gap-6">
+  <div className="flex flex-wrap justify-center items-stretch px-6 gap-6"> */}
     {/* Free Model */}
-    <div className="rounded-2xl shadow-lg p-3 bg-orange-400 text-black max-w-xs">
+    {/* <div className="rounded-2xl shadow-lg p-3 bg-orange-400 text-black max-w-xs">
       <div className="relative flex flex-col items-center p-5 pt-10 bg-orange-100 rounded-xl">
         <span className="mt-[-12px] absolute top-0 right-0 flex items-center bg-orange-500 rounded-l-full py-2 px-3 text-xl font-semibold text-amber-100">
           Free
@@ -237,10 +237,10 @@ export default function Landing_page() {
           </a>
         </div>
       </div>
-    </div>
+    </div> */}
 
     {/* Upsolve Pro */}
-    <div className="rounded-2xl shadow-lg p-3 bg-indigo-500 text-gray-600 max-w-xs">
+    {/* <div className="rounded-2xl shadow-lg p-3 bg-indigo-500 text-gray-600 max-w-xs">
       <div className="relative flex flex-col items-center p-5 pt-10 bg-blue-100 rounded-xl">
         <span className="mt-[-12px] absolute top-0 right-0 flex items-center bg-indigo-500 rounded-l-full py-2 px-3 text-xl font-semibold text-amber-100">
           ₹50 <small className="text-xs ml-1 text-white">/ 2 weeks</small>
@@ -284,7 +284,7 @@ export default function Landing_page() {
       </div>
     </div>
   </div>
-</section>
+</section> */}
 
 <section className="features_description-section px-4 py-8 bg-black">
   <h2 className="text-4xl font-bold text-center mb-8 text-white">What We Offer</h2>

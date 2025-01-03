@@ -7,6 +7,7 @@ import Footer from './Footer';
 import Loader1 from './Loader1';
 import Loader from './Loader';
 import {useNavigate} from 'react-router-dom';
+import CustomSearchComponent from '../Utils/CustomSearchComponent';
 
 
 const topics = ["Array", "Trees", "Linked Lists", "DP", "Graphs", "Strings"];
@@ -115,6 +116,7 @@ function Questions_page() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <Search className="absolute left-4 top-3.5 text-gray-400 w-5 h-5" />
+              {/* <CustomSearchComponent /> */}
             </div>
             <button
               onClick={() => setIsFiltersOpen(true)}
