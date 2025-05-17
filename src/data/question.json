@@ -120,7 +120,7 @@
         "extraTestCases": [
             { "input": "2147483648", "output": "Expected output" }
         ],
-        "solution":"",
+        "solution":[""],
         "time_complexity":"",
         "space_complexity":""
     },
@@ -156,7 +156,7 @@
             "extraTestCases": [
                 { "input": "4 abaa baab b bbb", "output": "3" }
             ],
-            "solution":"",
+            "solution":[""],
             "time_complexity":"",
             "space_complexity":""
     },
@@ -234,7 +234,7 @@
         "explanation": "Given arr = [3, 1, 4, 1, 5, 9, 2], the smallest lexicographical permutation is [1, 2, 3, 4, 5, 6, 7]."
     }
 ],
-            "solution":"",
+            "solution":[""],
             "time_complexity":"",
             "space_complexity":""
           
@@ -333,7 +333,7 @@
             { "input": "8 ..*..*.*", "output": "Expected output" },
             { "input": "12 *.*.*.*.*.*", "output": "Expected output" }
         ],
-       "solution": "#include <bits/stdc++.h>\nusing namespace std;\n \nlong long calculateMoves(vector<int> &positions) {\n    int m = positions.size();\n    if (m == 0) return 0;\n \n    int medianIdx = m / 2;\n    int median = positions[medianIdx];\n    \n    long long moves = 0;\n    for (int i = 0; i < m; ++i) {\n        moves += abs(positions[i] - (median + i - medianIdx));\n    }\n    return moves;\n}\n \nvoid solve() {\n        int n;\n        cin >> n;\n        string s;\n        cin >> s;\n \n        vector<int> positions;\n        for (int i = 0; i < n; ++i) {\n            if (s[i] == '*') {\n                positions.push_back(i);\n            }\n        }\n \n        cout << calculateMoves(positions) << \"\\n\";\n    }\n \nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n \n    solve();\n \n    return 0;\n}",
+       "solution": ["#include <bits/stdc++.h>\nusing namespace std;\n \nlong long calculateMoves(vector<int> &positions) {\n    int m = positions.size();\n    if (m == 0) return 0;\n \n    int medianIdx = m / 2;\n    int median = positions[medianIdx];\n    \n    long long moves = 0;\n    for (int i = 0; i < m; ++i) {\n        moves += abs(positions[i] - (median + i - medianIdx));\n    }\n    return moves;\n}\n \nvoid solve() {\n        int n;\n        cin >> n;\n        string s;\n        cin >> s;\n \n        vector<int> positions;\n        for (int i = 0; i < n; ++i) {\n            if (s[i] == '*') {\n                positions.push_back(i);\n            }\n        }\n \n        cout << calculateMoves(positions) << \"\\n\";\n    }\n \nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n \n    solve();\n \n    return 0;\n}"],
         "time_complexity": "O(n)",
         "space_complexity": "O(n)"
     },
@@ -378,7 +378,7 @@
             { "input": "5 2 9 5 3 2 1", "output": "2" },
             { "input": "12 9 168241647 417768181 845864907 1205051 315011621 851213346 616876671 520479767 714546635 422929581 926902302 683180905 ", "output": "0" }
         ],
-       "solution": "#include<bits/stdc++.h>\nusing namespace std ;\n\n#define int long long int \n#define vi vector<int> \n#define vs vector<string> \n#define vv vector<vector<int>>\n#define f(i,a,b) for(int i=a;i<b;i++)\n#define in cin>>\n#define out cout<<\n#define nl <<endl;\n\nint sliding_window(vi &ones, int k) {\n    int n = ones.size();\n    int ans = 0;\n    int count = 0;\n    for (int i = 0; i < n; i++) {\n        if (ones[i] == 1) {\n            count++;\n        } else {\n            count = 0;  \n        }\n        if (count >= k) {\n            ans++;\n        }\n    }\n    return ans;\n}\n\nint solve(int n, int k, vi &a) {\n    vi ones;\n    for (int i = 0; i < n - 1; i++) {\n        if (a[i] < 2 * a[i + 1]) {\n            ones.push_back(1);\n        } else {\n            ones.push_back(0);\n        }\n    }\n    return sliding_window(ones, k);\n}\nsigned main(){\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n        int n;\n        in n;\n        int k;\n        in k;\n        vi a(n);\n        f(i,0,n){\n            in a[i];\n        }\n        cout<<solve(n,k,a)<<endl;\n}",
+       "solution": ["#include<bits/stdc++.h>\nusing namespace std ;\n\n#define int long long int \n#define vi vector<int> \n#define vs vector<string> \n#define vv vector<vector<int>>\n#define f(i,a,b) for(int i=a;i<b;i++)\n#define in cin>>\n#define out cout<<\n#define nl <<endl;\n\nint sliding_window(vi &ones, int k) {\n    int n = ones.size();\n    int ans = 0;\n    int count = 0;\n    for (int i = 0; i < n; i++) {\n        if (ones[i] == 1) {\n            count++;\n        } else {\n            count = 0;  \n        }\n        if (count >= k) {\n            ans++;\n        }\n    }\n    return ans;\n}\n\nint solve(int n, int k, vi &a) {\n    vi ones;\n    for (int i = 0; i < n - 1; i++) {\n        if (a[i] < 2 * a[i + 1]) {\n            ones.push_back(1);\n        } else {\n            ones.push_back(0);\n        }\n    }\n    return sliding_window(ones, k);\n}\nsigned main(){\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n        int n;\n        in n;\n        int k;\n        in k;\n        vi a(n);\n        f(i,0,n){\n            in a[i];\n        }\n        cout<<solve(n,k,a)<<endl;\n}"],
        "solution_explanation":"",
        "time_complexity": "O(n)",
         "space_complexity": "O(n)"
@@ -436,7 +436,7 @@
       "output": "3"
     }
   ],
-        "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool canComplete(int maxTime, int n, int m, vector<int>& taskCount) {\n    long long totalExtraTasks = 0; // Non-proficient tasks\n    long long totalFreeSlots = 0; // Free slots for additional tasks\n\n    for (int i = 0; i < n; i++) {\n        if (taskCount[i] > maxTime) {\n            // Tasks exceeding maxTime become extra tasks\n            totalExtraTasks += taskCount[i] - maxTime;\n        } else {\n            // Free slots available for non-proficient tasks\n            totalFreeSlots += (maxTime - taskCount[i]) / 2;\n        }\n    }\n\n    return totalExtraTasks <= totalFreeSlots;\n}\n\nint solve(int n, int m, vector<int>& tasks) {\n    vector<int> taskCount(n, 0);\n    for (int task : tasks) {\n        taskCount[task - 1]++;\n    }\n\n    int low = 1, high = m, result = m;\n    while (low <= high) {\n        int mid = (low + high) / 2;\n        if (canComplete(mid, n, m, taskCount)) {\n            result = mid;\n            high = mid - 1; // Try for smaller time\n        } else {\n            low = mid + 1; // Increase time\n        }\n    }\n\n    return result;\n}\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int t;\n    cin >> t;\n    while (t--) {\n        int n, m;\n        cin >> n >> m;\n\n        vector<int> tasks(m);\n        for (int i = 0; i < m; i++) {\n            cin >> tasks[i];\n        }\n\n        cout << solve(n, m, tasks) << '\\n';\n    }\n\n    return 0;\n}",
+        "solution": ["#include <bits/stdc++.h>\nusing namespace std;\n\nbool canComplete(int maxTime, int n, int m, vector<int>& taskCount) {\n    long long totalExtraTasks = 0; // Non-proficient tasks\n    long long totalFreeSlots = 0; // Free slots for additional tasks\n\n    for (int i = 0; i < n; i++) {\n        if (taskCount[i] > maxTime) {\n            // Tasks exceeding maxTime become extra tasks\n            totalExtraTasks += taskCount[i] - maxTime;\n        } else {\n            // Free slots available for non-proficient tasks\n            totalFreeSlots += (maxTime - taskCount[i]) / 2;\n        }\n    }\n\n    return totalExtraTasks <= totalFreeSlots;\n}\n\nint solve(int n, int m, vector<int>& tasks) {\n    vector<int> taskCount(n, 0);\n    for (int task : tasks) {\n        taskCount[task - 1]++;\n    }\n\n    int low = 1, high = m, result = m;\n    while (low <= high) {\n        int mid = (low + high) / 2;\n        if (canComplete(mid, n, m, taskCount)) {\n            result = mid;\n            high = mid - 1; // Try for smaller time\n        } else {\n            low = mid + 1; // Increase time\n        }\n    }\n\n    return result;\n}\n\nint main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(nullptr);\n\n    int t;\n    cin >> t;\n    while (t--) {\n        int n, m;\n        cin >> n >> m;\n\n        vector<int> tasks(m);\n        for (int i = 0; i < m; i++) {\n            cin >> tasks[i];\n        }\n\n        cout << solve(n, m, tasks) << '\\n';\n    }\n\n    return 0;\n}"],
   "time_complexity": "O(n log m)",
   "space_complexity": "O(n)"
     },
@@ -514,7 +514,7 @@
   ],
   "solution":[ 
       "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
-     "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}"   
+      "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}"   
    ],
  "time_complexity": "O(nlog n+mlog n)",
   "space_complexity": "O(n+m)",
@@ -588,7 +588,7 @@
       }
     ],
   
-  "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    long long numberOfSubarrays(vector<int>& nums) {\n        int n = nums.size();\n        stack<int> s;\n        vector<int> count(n, 1); // 1 for subarrays of size 1\n        for (int i = 0; i < n; i++) {\n            while (!s.empty() && nums[s.top()] <= nums[i]) {\n                if (nums[s.top()] == nums[i]) {\n                    count[i] += count[s.top()];\n                }\n                s.pop();\n            }\n            s.push(i);\n        }\n        return accumulate(count.begin(), count.end(), 0LL);\n    }\n};\n\nint main() {\n    Solution sol;\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> nums[i];\n    }\n    cout << sol.numberOfSubarrays(nums) << endl;\n    return 0;\n}",
+  "solution": ["#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    long long numberOfSubarrays(vector<int>& nums) {\n        int n = nums.size();\n        stack<int> s;\n        vector<int> count(n, 1); // 1 for subarrays of size 1\n        for (int i = 0; i < n; i++) {\n            while (!s.empty() && nums[s.top()] <= nums[i]) {\n                if (nums[s.top()] == nums[i]) {\n                    count[i] += count[s.top()];\n                }\n                s.pop();\n            }\n            s.push(i);\n        }\n        return accumulate(count.begin(), count.end(), 0LL);\n    }\n};\n\nint main() {\n    Solution sol;\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> nums[i];\n    }\n    cout << sol.numberOfSubarrays(nums) << endl;\n    return 0;\n}"],
   "explanation": "To solve the problem efficiently, use a monotonic decreasing stack and a count array. Traverse the array from left to right:\n1. Use the stack to track indices of elements that haven't found a larger value to their right.\n2. Maintain a count array, where count[i] represents the number of valid subarrays ending at index i (initially set to 1 for each element).\n3. If nums[stack.top()] == nums[i], add count[stack.top()] to count[i], as those subarrays can extend to include nums[i].\n4. Remove smaller elements from the stack, ensuring it remains decreasing, and push the current index.\n\nThe total number of valid subarrays is the sum of the count array. Time complexity is O(n).",
    "time_complexity": "O(n)",
   "space_complexity": "O(n)"
@@ -677,7 +677,7 @@
     }
   ],
   "explanation": "\nTo solve this problem efficiently, use a frequency count of tags within the specified range for each query. Count how many pairs can be formed based on the frequencies of tags. Iterate over the queries and compute the number of pairs for the subarray defined by the query.",
-  "solution": "#include <iostream>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nvector<int> countGroups(vector<int>& tags, vector<vector<int>>& queries) {\n    vector<int> result;\n    for (auto& query : queries) {\n        int l = query[0] - 1;\n        int r = query[1] - 1;\n        unordered_map<int, int> freq;\n\n        for (int i = l; i <= r; i++) {\n            freq[tags[i]]++;\n        }\n\n        int groups = 0;\n        for (auto p : freq) {\n            int count = p.second;\n            groups += count / 2;\n        }\n        result.push_back(groups);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input\n    int n, q;\n    cin >> n;\n    vector<int> tags(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> tags[i];\n    }\n    cin >> q;\n    vector<vector<int>> queries(q, vector<int>(2));\n    for (int i = 0; i < q; ++i) {\n        cin >> queries[i][0] >> queries[i][1];\n    }\n\n    // Output\n    vector<int> result = countGroups(tags, queries);\n    for (int res : result) {\n        cout << res << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+  "solution": ["#include <iostream>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nvector<int> countGroups(vector<int>& tags, vector<vector<int>>& queries) {\n    vector<int> result;\n    for (auto& query : queries) {\n        int l = query[0] - 1;\n        int r = query[1] - 1;\n        unordered_map<int, int> freq;\n\n        for (int i = l; i <= r; i++) {\n            freq[tags[i]]++;\n        }\n\n        int groups = 0;\n        for (auto p : freq) {\n            int count = p.second;\n            groups += count / 2;\n        }\n        result.push_back(groups);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input\n    int n, q;\n    cin >> n;\n    vector<int> tags(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> tags[i];\n    }\n    cin >> q;\n    vector<vector<int>> queries(q, vector<int>(2));\n    for (int i = 0; i < q; ++i) {\n        cin >> queries[i][0] >> queries[i][1];\n    }\n\n    // Output\n    vector<int> result = countGroups(tags, queries);\n    for (int res : result) {\n        cout << res << \" \";\n    }\n    cout << endl;\n    return 0;\n}"],
   "time_complexity": "O(n*q)",
   "space_complexity": "O(n+q)"
 },
@@ -730,7 +730,7 @@
     }
   ],
   "explanation": "The solution involves sliding window optimization and prefix sums to calculate the required changes for every K-window efficiently, considering cyclic array properties.",
-  "solution": "#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <numeric>\nusing namespace std;\n\nlong long makeSubKSumEqual(vector<int>& arr, int k) {\n    long long ans = 0;\n    int n = arr.size();\n    k = gcd(k, n);\n    for (int i = 0; i < k; i++) {\n        vector<int> v;\n        for (int j = i; j < n; j += k) {\n            v.push_back(arr[j]);\n        }\n        sort(v.begin(), v.end());\n        long long midv = v[v.size() / 2];\n        for (int j = i; j < n; j += k) {\n            ans += abs(midv - arr[j]);\n        }\n    }\n    return ans;\n}\n\nint main() {\n    int n, k;\n    cin >> n;\n    vector<int> arr(n);\n    for (int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    cin >> k;\n\n    long long result = makeSubKSumEqual(arr, k);\n    cout << result << endl;\n    return 0;\n}",
+  "solution": ["#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <numeric>\nusing namespace std;\n\nlong long makeSubKSumEqual(vector<int>& arr, int k) {\n    long long ans = 0;\n    int n = arr.size();\n    k = gcd(k, n);\n    for (int i = 0; i < k; i++) {\n        vector<int> v;\n        for (int j = i; j < n; j += k) {\n            v.push_back(arr[j]);\n        }\n        sort(v.begin(), v.end());\n        long long midv = v[v.size() / 2];\n        for (int j = i; j < n; j += k) {\n            ans += abs(midv - arr[j]);\n        }\n    }\n    return ans;\n}\n\nint main() {\n    int n, k;\n    cin >> n;\n    vector<int> arr(n);\n    for (int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    cin >> k;\n\n    long long result = makeSubKSumEqual(arr, k);\n    cout << result << endl;\n    return 0;\n}"],
   "time_complexity": "O(N)",
   "space_complexity": "O(N)"
 },
@@ -776,7 +776,7 @@
     }
   ],
   "explanation": "Sort the array and use a two-pointer approach to efficiently count the pairs of elements whose sums fall within the given range. This minimizes unnecessary computations.",
-  "solution": "#include <iostream>\n#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; i++) {\n        cin >> nums[i];\n    }\n\n    int lb;\n    cin >> lb;\n    int ub;\n    cin >> ub;\n\n    int ans = 0;\n    sort(nums.begin(), nums.end());\n\n    for (int i = 0; i < n; i++) {\n        for (int j = i + 1; j < n; j++) {\n            if (nums[i] + nums[j] > ub) break;\n            if (nums[i] + nums[j] <= ub && nums[i] + nums[j] >= lb) ans++;\n        }\n    }\n\n    cout << ans << endl;\n    return 0;\n}", 
+  "solution": ["#include <iostream>\n#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; i++) {\n        cin >> nums[i];\n    }\n\n    int lb;\n    cin >> lb;\n    int ub;\n    cin >> ub;\n\n    int ans = 0;\n    sort(nums.begin(), nums.end());\n\n    for (int i = 0; i < n; i++) {\n        for (int j = i + 1; j < n; j++) {\n            if (nums[i] + nums[j] > ub) break;\n            if (nums[i] + nums[j] <= ub && nums[i] + nums[j] >= lb) ans++;\n        }\n    }\n\n    cout << ans << endl;\n    return 0;\n}"], 
   "time_complexity": "O(N log N)",
   "space_complexity": "O(1)"
 },
@@ -840,7 +840,8 @@
     }
   ],
   "explanation": "\nThe problem can be solved using a greedy approach. We traverse through the tiles sequentially and construct the longest sequence by keeping track of the current ending color. Start with the first tile as the initial sequence. For each subsequent tile, check if its starting color matches the ending color of the current sequence. If it matches, include the tile in the sequence and update the ending color. If it doesn’t match, skip the tile. This ensures we maximize the length of the sequence without reordering tiles.",
-    "time_complexity": "O(N)",
+  "solution": [], 
+  "time_complexity": "O(N)",
     "space_complexity": "O(1)"
 },
 {
@@ -1253,7 +1254,7 @@
         "output": "4"
       }
     ],
-    "solution": [".\n\n```cpp\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint getMinMachines(vector<int>& start, vector<int>& end) {\n    int n = start.size();\n    sort(start.begin(), start.end());\n    sort(end.begin(), end.end());\n\n    int plat_needed = 1, result = 1;\n    int i = 1, j = 0;\n\n    while (i < n && j < n) {\n        if (start[i] <= end[j]) {\n            plat_needed++;\n            i++;\n        } else {\n            plat_needed--;\n            j++;\n        }\n        result = max(result, plat_needed);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input format: start and end times in a single line\n    int n;\n    cin >> n;\n    vector<int> start(n), end(n);\n\n    for (int i = 0; i < n; ++i) cin >> start[i];\n    for (int i = 0; i < n; ++i) cin >> end[i];\n\n    cout << getMinMachines(start, end) << endl;\n    return 0;\n}\n```"],  
+    "solution": ["#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint getMinMachines(vector<int>& start, vector<int>& end) {\n    int n = start.size();\n    sort(start.begin(), start.end());\n    sort(end.begin(), end.end());\n\n    int plat_needed = 1, result = 1;\n    int i = 1, j = 0;\n\n    while (i < n && j < n) {\n        if (start[i] <= end[j]) {\n            plat_needed++;\n            i++;\n        } else {\n            plat_needed--;\n            j++;\n        }\n        result = max(result, plat_needed);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input format: start and end times in a single line\n    int n;\n    cin >> n;\n    vector<int> start(n), end(n);\n\n    for (int i = 0; i < n; ++i) cin >> start[i];\n    for (int i = 0; i < n; ++i) cin >> end[i];\n\n    cout << getMinMachines(start, end) << endl;\n    return 0;\n}\n```"],  
     "explanation":"The problem can be solved using a greedy approach by sorting the start times and end times of the tasks and then iterating over them to determine the maximum overlap at any time",
     "time_complexity":"O(nlogn)",
     "space_complexity":"O(1)"   
