@@ -8,10 +8,11 @@ import Loader1 from './Loader1';
 import Loader from './Loader';
 import {useNavigate} from 'react-router-dom';
 import CustomSearchComponent from '../Utils/CustomSearchComponent';
+import ReactPaginate from "react-paginate";
 
 
-const topics = ["Array", "Trees", "Linked Lists", "DP", "Graphs", "Strings"];
-const companies = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix","Goldman Sachs","Placewit"];
+const topics = ["Array", "Tree", "Linked Lists", "DP","Greedy", "Graphs", "Strings", "Maths", "Two Pointers", "Combinatorics","Hash Table","Binary Search"];
+const companies = ["Microsoft", "Goldman Sachs", "Placewit", "Twilio", "Morgan Stanley","Uber","Expedia","IBM","Estee Advisory","Atlassian","LinkedIn"];
 
 function Questions_page() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
@@ -58,6 +59,22 @@ function Questions_page() {
   const handleQuestionClick = (questionId) => {
     navigate(`/upsolve/${questionId}`);
   };
+
+
+  const questionsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected);
+  };
+
+
+  const offset = currentPage * questionsPerPage;
+  const currentQuestions = filteredQuestions.slice(
+    offset,
+    offset + questionsPerPage
+  );
+
 
   return (
     <>
@@ -220,8 +237,8 @@ function Questions_page() {
                 </div>
               ) : (
             <div className="space-y-4">
-              {filteredQuestions.length > 0 ? (
-                filteredQuestions.map((question) => (
+              {currentQuestions.length > 0 ? (
+                currentQuestions.map((question) => (
                   <button
                     key={question.id}
                     onClick={() => handleQuestionClick(question.id)}
@@ -290,6 +307,21 @@ function Questions_page() {
                   </div>
                 </div>
               )}
+              <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={Math.ceil(filteredQuestions.length / questionsPerPage)}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName="flex justify-center items-center mt-4 space-x-2"
+            pageClassName="px-4 py-2 rounded-lg bg-gray-700 text-white cursor-pointer hover:bg-teal-500"
+            previousClassName="px-4 py-2 rounded-lg bg-gray-700 text-white cursor-pointer hover:bg-teal-500"
+            nextClassName="px-4 py-2 rounded-lg bg-gray-700 text-white cursor-pointer hover:bg-teal-500"
+            disabledClassName="opacity-50 cursor-not-allowed"
+            activeClassName="bg-teal-500 text-white"
+          />
             </div>
               )}
           </div>

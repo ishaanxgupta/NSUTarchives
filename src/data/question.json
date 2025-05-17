@@ -1,27 +1,70 @@
 [
-    {
-        "id": 1,
-        "name": "Two Sum",
-        "rating": 800,
-        "difficulty": "Easy",
-        "topics": ["Array", "Hash Table"],
-        "company":" Leetcode",
-        "examples": [
-            {
-                "input": "[2, 7, 11, 15], target = 9",
-                "output": "[0, 1]"
-            }
-        ],
-        "testCases": [
-            { "input": "[3, 2, 4], target = 6", "output": "[1, 2]" },
-            { "input": "[3, 3], target = 6", "output": "[0, 1]" },
-            { "input": "[2, 7, 11, 15], target = 9", "output": "[0, 1]" }
-        ],
-        "extraTestCases": [
-            { "input": "[1, 2, 3]", "output": "Example output" },
-            { "input": "[4, 5, 6]", "output": "Example output" }
-        ]
-    },
+  {
+    "id": 1,
+    "name": "Crazy Two Sum ",
+    "rating": 900,
+    "difficulty": "Easy",
+    "topics": ["Array", "Two Pointers","Binary Search"],
+    "company": "LeetCode Variant",
+    "question_description": "Given a **1-indexed** array of integers `nums` sorted in non-decreasing order, find two distinct numbers such that they add up to a specific `target` number. Return the two numbers in ascending order. You may assume there is exactly one solution, and you may not use the same element twice.",
+    "input_format": "The input consists of an integer `n`, the size of the array `nums` followed by `n` space-separated integers representing the sorted array `nums` and an integer `target`, the target sum.",
+    "output_format": "Output two space-separated integers representing the two distinct numbers that add up to the target, in ascending order.",
+    "constraints": "1. 2 ≤ n ≤ 3⋅10⁴\n2. -10⁹ ≤ nums[i] ≤ 10⁹\n3. -10⁹ ≤ target ≤ 10⁹\n4. The array `nums` is sorted in non-decreasing order.\n5. Exactly one valid solution exists.",
+    "examples": [
+        {
+            "input": "4 2 7 11 15 9",
+            "output": "2 7",
+            "explanation": "2 + 7 = 9. The two numbers are 2 and 7."
+        },
+        {
+            "input": "3 2 3 4 6",
+            "output": "2 4",
+            "explanation": "2 + 4 = 6. The two numbers are 2 and 4."
+        },
+        {
+            "input": "2 3 3 6",
+            "output": "3 3",
+            "explanation": "3 + 3 = 6. The two numbers are 3 and 3."
+        }
+    ],
+    "testCases": [
+        {
+            "input": "4 2 7 11 15 9",
+            "output": "2 7"
+        },
+        {
+            "input": "3 2 3 4 6",
+            "output": "2 4"
+        },
+        {
+            "input": "2 3 3 6",
+            "output": "3 3"
+        },
+        {
+            "input": "5 1 2 3 4 5 9",
+            "output": "4 5"
+        }
+    ],
+    "extraTestCases": [
+        {
+            "input": "6 1 3 5 7 9 11 10",
+            "output": "1 9"
+        },
+        {
+            "input": "7 -7 -6 -5 -4 -3 -2 -1 -8",
+            "output": "-6 -2"
+        }
+    ],
+
+      "solution": [
+        "#include <iostream>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        int left = 0, right = nums.size() - 1;\n        while (left < right) {\n            int sum = nums[left] + nums[right];\n            if (sum == target) {\n                return {nums[left], nums[right]};\n            } else if (sum < target) {\n                left++;\n            } else {\n                right--;\n            }\n        }\n        return {}; // Guaranteed to have a solution\n    }\n};\n\nint main() {\n    int n, target;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> nums[i];\n    }\n    cin >> target;\n    \n    Solution sol;\n    vector<int> result = sol.twoSum(nums, target);\n    cout << result[0] << \" \" << result[1] << endl;\n    return 0;\n}",
+    
+        "#include <iostream>\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        for (int i = 0; i < nums.size(); ++i) {\n            int complement = target - nums[i];\n            int left = i + 1, right = nums.size() - 1;\n            while (left <= right) {\n                int mid = left + (right - left) / 2;\n                if (nums[mid] == complement) {\n                    return {nums[i], nums[mid]};\n                } else if (nums[mid] < complement) {\n                    left = mid + 1;\n                } else {\n                    right = mid - 1;\n                }\n            }\n        }\n        return {}; // Guaranteed to have a solution\n    }\n};\n\nint main() {\n    int n, target;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> nums[i];\n    }\n    cin >> target;\n    \n    Solution sol;\n    vector<int> result = sol.twoSum(nums, target);\n    cout << result[0] << \" \" << result[1] << endl;\n    return 0;\n}"
+      ]
+    ,    
+     "time_complexity": "O(n)",
+    "space_complexity": "O(1)"
+},
     {
         "id": 2,
         "name": "Reverse Integer",
@@ -29,6 +72,7 @@
         "difficulty": "Medium",
         "topics": ["Math"],
         "company":" Leetcode",
+        "question_description":"Question is not complete. PLEASE TRY SOME OTHER QUESTION",
         "examples": [
             {
                 "input": "123",
@@ -101,16 +145,16 @@
               {
                 "input": "4\nabaa\nbaab\nb\nbbb",
                 "output": "3",
-                "explanation": "In this case, the largest subset of cards that satisfies the condition is {'abaa', 'baab', 'b'}. The string 'bbb' is a substring of 'b'."
+                "explanation": "In this case, the largest subset of cards that satisfies the condition is {'abaa', 'baab', 'bbb'}. The string 'b' is a substring of 'bbb'."
               }
             ],
             "testCases": [
-                { "input": "120", "output": "21" },
-                { "input": "-123", "output": "-321" },
-                { "input": "1534236469", "output": "Expected output" }
+                { "input": "4 abaa baab b bbb", "output": "3" },
+                { "input": "5 b aab ab aabab ababa", "output": "-2" }
+                
             ],
             "extraTestCases": [
-                { "input": "2147483648", "output": "Expected output" }
+                { "input": "4 abaa baab b bbb", "output": "3" }
             ],
             "solution":"",
             "time_complexity":"",
@@ -234,7 +278,8 @@
         { "input": "1 2 1", "output": "1" },
         { "input": "6 10 1 2 3 4 5 6", "output": "15" }
     ],
-    "solution": "#include <bits/stdc++.h>\nusing namespace std;\n#define int long long\n#define vi vector<int>\n#define in cin >>\n#define f(i, a, b) for (int i = a; i < b; i++)\n \nint solve(int n, int k, vi &a) {\n    map<int, int> freq; // Frequency of remainders needed to reach multiples of k\n    for (int i = 0; i < n; i++) {\n        int rem = a[i] % k;\n        if (rem != 0) {\n            freq[k - rem]++;\n        }\n    }\n \n    int max_operations = 0;\n    for (auto &[diff, count] : freq) {\n        int operations = (count - 1) * k + diff;\n        max_operations = max(max_operations, operations);\n    }\n \n    return max_operations > 0 ? max_operations + 1 : 0;\n}\n \nsigned main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n \n    int T = 0;\n    in T;\n    while (T--) {\n        int n, k;\n        in n >> k;\n        vi a(n);\n        f(i, 0, n) in a[i];\n        cout << solve(n, k, a) << endl;\n    }\n \n    return 0;\n}",
+    "solution": ["#include <bits/stdc++.h>\nusing namespace std;\n#define int long long\n#define vi vector<int>\n#define in cin >>\n#define f(i, a, b) for (int i = a; i < b; i++)\n \nint solve(int n, int k, vi &a) {\n    map<int, int> freq; // Frequency of remainders needed to reach multiples of k\n    for (int i = 0; i < n; i++) {\n        int rem = a[i] % k;\n        if (rem != 0) {\n            freq[k - rem]++;\n        }\n    }\n \n    int max_operations = 0;\n    for (auto &[diff, count] : freq) {\n        int operations = (count - 1) * k + diff;\n        max_operations = max(max_operations, operations);\n    }\n \n    return max_operations > 0 ? max_operations + 1 : 0;\n}\n \nsigned main() {\n    ios_base::sync_with_stdio(false);\n    cin.tie(NULL);\n    cout.tie(NULL);\n \n    int T = 0;\n    in T;\n    while (T--) {\n        int n, k;\n        in n >> k;\n        vi a(n);\n        f(i, 0, n) in a[i];\n        cout << solve(n, k, a) << endl;\n    }\n \n    return 0;\n}"
+    ],
     "time_complexity": "O(n \u00d7 log(n))",
     "space_complexity": "O(n)"
     } ,
@@ -401,7 +446,7 @@
         "rating": 1500,
         "difficulty": "Hard",
         "topics": ["DP", "Combinatorics"],
-        "company": "Competitive Programming",
+        "company": "Placewit",
         "question_description": "Magnus, a high school student, created a game to find how many beautiful grids can be formed for given rows n and columns m. A grid is beautiful if:\n1. It contains only 0s and 1s.\n2. Each row has exactly one segment of consecutive 0s and one segment of consecutive 1s.\n3. Each column has exactly one segment of consecutive 0s and one segment of consecutive 1s.\nFind the number of different beautiful grids possible. Return the result modulo 998244353.",
         "function_description": "Complete the function `countBeautifulGrids`, which calculates the number of beautiful grids possible.\nThe function takes two input parameters:\n1. An integer `n` (the number of rows of the grid).\n2. An integer `m` (the number of columns of the grid).\nThe function should return a single integer denoting the number of different beautiful grids possible modulo 998244353.",
         "input_format": "The input consists of two space-separated integers n and m, representing the number of rows and columns of the grid.",
@@ -467,56 +512,1158 @@
       "output": "4 6 7"
     }
   ],
-  "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
-  "solution1": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
-  "time_complexity": "O(nlog n+mlog n)",
+  "solution":[ 
+      "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
+     "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}"   
+   ],
+ "time_complexity": "O(nlog n+mlog n)",
   "space_complexity": "O(n+m)",
   "explanation": "Sort listA to allow efficient binary search. For each bandwidth in listB, find the number of elements in listA ≤ bandwidth using binary search."
 },
 {
-  "id": 12,
-  "name": "Twilio Bandwidth Allocation",
-"rating": 1500,
-"difficulty": "Medium",
-"topics": ["Sorting", "Binary Search","Two Pointers"],
-"company": "Twilio",
-"question_description": "A core Twilio product is the ability to send text messages programmatically. Each channel has a fixed bandwidth. Given two lists, List A representing the required bandwidth for each message and List B representing the available bandwidth for each channel, determine how many messages in List A can be sent for each bandwidth in List B.",
-"function_description": "You need to write a function that takes two lists, listA and listB, and returns an array of integers where each integer represents the count of messages in listA that can be sent through the respective channel in listB.",
-"input_format": "Two integers n and m followed by a space-separated list of integers listA (n elements) and listB (m elements).",
-"output_format": "A space-separated list of m integers, where each value represents the count of messages in listA that can be sent using the respective channel in listB.",
-"constraints": "1. 2 ≤ n, m ≤ 10^5\n 2. 1 ≤ listA[i] ≤ 10^9, where 0 ≤ i < n\n 3. 1 ≤ listB[j] ≤ 10^9, where 0 ≤ j < m\n",
+  "id": 13,
+  "name": "Count Subarrays with Largest Element as First and Last",
+  "rating": 1500,
+  "difficulty": "Hard",
+  "topics": ["Array", "Sliding Window","Stack"],
+  "company": "Leetcode Variant",
+  "question_description": "You are given an array of positive integers `nums`. Return the number of subarrays of `nums`, where the first and the last elements of the subarray are equal to the largest element in the subarray.",
+  "function_description": "Write a function `countSubarrays` that takes a list of integers `nums` and returns the number of valid subarrays.",
+  "input_format": "Size of array followed by an array of positive integers",
+  "output_format": "the number of subarrays satisfying the given condition",
+  "constraints": "1 <= nums.length <= 10^5\n1 <= nums[i] <= 10^9",
+  "examples": [
+    {
+      "input": "5 1 4 3 3 2",
+      "output": "6",
+      "explanation": "There are 6 subarrays which have the first and the last elements equal to the largest element of the subarray:\n- subarray [1,4,3,3,2], largest element 1. First and last element are 1.\n- subarray [1,4,3,3,2], largest element 4. First and last element are 4.\n- subarray [1,4,3,3,2], largest element 3. First and last element are 3.\n- subarray [1,4,3,3,2], largest element 3. First and last element are 3.\n- subarray [1,4,3,3,2], largest element 2. First and last element are 2.\n- subarray [1,4,3,3,2], largest element 3. First and last element are 3.\nHence, the output is 6."
+    },
+    {
+      "input": "3 3 3 3",
+      "output": "6",
+      "explanation": "There are 6 subarrays which have the first and the last elements equal to the largest element of the subarray:\n- All subarrays are [3,3,3].\nHence, the output is 6."
+    },
+    {
+      "input": "1 1",
+      "output": "1",
+      "explanation": "There is a single subarray of nums which is [1], with its largest element 1. The first element is 1 and the last element is also 1.\nHence, the output is 1."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "5 1 2 3 4 5",
+      "output": "5"
+    },
+    {
+      "input": "4 2 2 2 2",
+      "output": "10"
+    },
+    {
+      "input": "5 1 3 2 3 1",
+      "output": "6"
+    },
+    {
+      "input": "5 5 5 5 5 5",
+      "output": "15"
+    }
+  ],
+    "extraTestCases": [
+      {
+        "input": "10 1 2 3 4 5 6 7 8 9 10",
+        "output": "10"
+       
+      },
+      {
+        "input": "5 5 5 5 5 5",
+        "output": "15"
+
+      },
+      {
+        "input": "7 3 3 3 2 3 3 3",
+        "output": "28"
+      },
+      {
+        "input": "1 1000000000",
+        "output": "1"
+      }
+    ],
+  
+  "solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    long long numberOfSubarrays(vector<int>& nums) {\n        int n = nums.size();\n        stack<int> s;\n        vector<int> count(n, 1); // 1 for subarrays of size 1\n        for (int i = 0; i < n; i++) {\n            while (!s.empty() && nums[s.top()] <= nums[i]) {\n                if (nums[s.top()] == nums[i]) {\n                    count[i] += count[s.top()];\n                }\n                s.pop();\n            }\n            s.push(i);\n        }\n        return accumulate(count.begin(), count.end(), 0LL);\n    }\n};\n\nint main() {\n    Solution sol;\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> nums[i];\n    }\n    cout << sol.numberOfSubarrays(nums) << endl;\n    return 0;\n}",
+  "explanation": "To solve the problem efficiently, use a monotonic decreasing stack and a count array. Traverse the array from left to right:\n1. Use the stack to track indices of elements that haven't found a larger value to their right.\n2. Maintain a count array, where count[i] represents the number of valid subarrays ending at index i (initially set to 1 for each element).\n3. If nums[stack.top()] == nums[i], add count[stack.top()] to count[i], as those subarrays can extend to include nums[i].\n4. Remove smaller elements from the stack, ensuring it remains decreasing, and push the current index.\n\nThe total number of valid subarrays is the sum of the count array. Time complexity is O(n).",
+   "time_complexity": "O(n)",
+  "space_complexity": "O(n)"
+},
+{
+  "id": 14,
+  "name": "Server Allocation",
+  "rating": 1600,
+  "difficulty": "Hard",
+  "topics": ["Greedy Algorithms", "Optimization"],
+  "company": "Twilio",
+  "question_description": "A company manages a network of `n` servers to handle incoming requests. Each server can handle a specified number of requests represented by an array, `serverCapacity`. However, the actual incoming requests for each server, represented by `incomingRequests`, may exceed the capacity of some servers, leading to potential overload and performance degradation. To optimize load distribution and ensure efficient server utilization, the company plans to double the capacity of any `k` servers. The task is to determine the maximum total number of requests that can be handled by all the servers after implementing these changes.",
+  "function_description": "Complete the function `getMaxRequests`, which calculates the maximum total number of requests that can be handled by all servers after modifications.\nThe function takes the following input parameters:\n1. An integer `n` (the number of servers).\n2. An array `serverCapacity` of size `n` (the capacity of each server).\n3. An array `incomingRequests` of size `n` (the incoming requests for each server).\n4. An integer `k` (the number of servers whose capacity can be doubled).\nThe function should return a single integer representing the maximum number of total requests that can be handled.",
+  "input_format": "The input consists an integer `n` (the number of servers) followed by `n` integers representing the `serverCapacity` array followed by `n` integers representing the `incomingRequests` array followed by the integer `k` (the number of servers whose capacity can be doubled).",
+  "output_format": "Output a single integer representing the maximum number of total requests that can be handled after modifications.",
+  "constraints": "1 ≤ k ≤ n ≤ 200000 \n 1 ≤ serverCapacity[i] ≤ 10^9 \n 1 ≤ incomingRequests[i] ≤ 10^9",
+  "examples": [
+      {
+          "input": "4 10 4 3 7 3 10 4 5 2",
+          "output": "20",
+          "explanation": "If the second and third server capacities are doubled, the number of requests served is 3 + 8 + 4 + 5 = 20. Doubling the capacity of the second server allows it to handle all its incoming requests. The answer is 20."
+      },
+      {
+          "input": "5 5 3 7 10 12 3 2 5 8 10 2",
+          "output": "36",
+          "explanation": "If the third and fifth server capacities are doubled, the number of requests served is 3 + 2 + 10 + 8 + 13 = 36."
+      }
+  ],
+  "testCases": [
+      {
+          "input": "4 10 4 3 7 3 10 4 5 2",
+          "output": "20"
+      },
+      {
+          "input": "5 5 3 7 10 12 3 2 5 8 10 2",
+          "output": "36"
+      }
+  ],
+  "extraTestCases": [],
+  "solution": "",
+  "time_complexity": "O(n log n)",
+  "space_complexity": "O(n)"
+},
+{
+  "id": 15,
+  "name": "USB Cables",
+  "rating": 1000,
+  "difficulty": "Easy",
+  "topics": ["Arrays","Map","Hashing"],
+  "company": "Twilio",
+  "question_description": "Twilio's IT team is trying to send two new USB Cables to all the Software Engineers. The problem is that there are a lot of USB standards, and they are mostly not compatible with each other. For this reason, the team has labeled all the `n` cables with a numerical tag. They come in a list of tags like `tags = [0, 1, 2, ..., n-1]` where the ith cable has the tag `tags[i]`. For example, if `tags = [2, 3, 1, 2]`, the cable number 2 would have the tag 3. Now we want to group them in pairs, taking into account that they must be of the same type. The restrictions for grouping are:\n\n1. Two cables can be grouped together if they have the same tag.\n2. A group is always formed by 2 cables.\n3. One cable can only be in one or 0 groups.\n\nTo do the most efficient distribution, we want to create queries. A query has the form `[left, right]` and represents an interval in the list of cables. As a result of the query, we want to retrieve the number of groups that can be formed. For example, if `tags = [2, 3, 2, 1]` and the query = `[1, 3]`, we would take into consideration only the interval `[2, 3, 2]`, and the number of groups would be 1 because we have two '2's.",
+  "function_description": "Complete the function `countGroups` in the editor below. The function `countGroups` has the following parameters:\n\n- `int tags[n]`: The tags of the cables.\n- `int queries[q][2]`: The queries in the form `[l, r]`.\n\nReturns:\n- `int[q]`: The number of groups formed for each query.",
+  "input_format": "- The line contains an integer `n`, the number of cables followed by `n` integers, representing the tags of the cables followed by an integer `q`, the number of queries followed by two integers each, `l` and `r`, the bounds of the query.",
+  "output_format": "For each query, return the number of groups formed.",
+  "constraints": "- `1 <= n <= 10^3`\n- `1 <= tags[i] <= 10^9`\n- `1 <= q <= 10^3`\n- `1 <= l <= r <= n`",
+  "examples": [
+    {
+      "input": "4 2 3 4 2 2 1 4 3 4",
+      "output": "1 0",
+      "explanation": "For the first query, all cables are considered. Cables 1 and 4 can be grouped as their tags are the same (2). No other group formations are possible. Thus, the number of groups is 1.\n\nFor the second query, cables 3 and 4 are considered. Their tags are 4 and 2, respectively. Since they are different, no groups can be formed. The number of groups is 0."
+    },
+    {
+      "input": "4 2 2 2 2 1 1 4",
+      "output": "2",
+      "explanation": "For the only query, all cables are considered. Cables with numbers 1 and 2 can be grouped as their tags are the same (2). Similarly, cables with numbers 3 and 4 can also form a group. Thus, the number of groups is 2."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "2 1 1 2 1 2 1 1",
+      "output": "1 0"
+    },
+    {
+      "input": "2 1 1 2 1 2 1 1",
+      "output": "1 0"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "6 1 1 2 2 3 3 3 1 6 1 4 3 6",
+      "output": "3 2 1"
+    },
+    {
+      "input": "5 5 5 5 5 5 1 1 5",
+      "output": "2"
+    }
+  ],
+  "explanation": "\nTo solve this problem efficiently, use a frequency count of tags within the specified range for each query. Count how many pairs can be formed based on the frequencies of tags. Iterate over the queries and compute the number of pairs for the subarray defined by the query.",
+  "solution": "#include <iostream>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nvector<int> countGroups(vector<int>& tags, vector<vector<int>>& queries) {\n    vector<int> result;\n    for (auto& query : queries) {\n        int l = query[0] - 1;\n        int r = query[1] - 1;\n        unordered_map<int, int> freq;\n\n        for (int i = l; i <= r; i++) {\n            freq[tags[i]]++;\n        }\n\n        int groups = 0;\n        for (auto p : freq) {\n            int count = p.second;\n            groups += count / 2;\n        }\n        result.push_back(groups);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input\n    int n, q;\n    cin >> n;\n    vector<int> tags(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> tags[i];\n    }\n    cin >> q;\n    vector<vector<int>> queries(q, vector<int>(2));\n    for (int i = 0; i < q; ++i) {\n        cin >> queries[i][0] >> queries[i][1];\n    }\n\n    // Output\n    vector<int> result = countGroups(tags, queries);\n    for (int res : result) {\n        cout << res << \" \";\n    }\n    cout << endl;\n    return 0;\n}",
+  "time_complexity": "O(n*q)",
+  "space_complexity": "O(n+q)"
+},
+
+{
+  "id": 16,
+  "name": "Optimal File Transfer Operations",
+  "rating": "1500",
+  "difficulty": "Hard",
+  "topics": ["Greedy","Maths"],
+  "company": "Morgan Stanley",
+  "question_description": "A project has N application files, each of which has a certain size. The team plans to transfer the files to a server, but the files can only be transferred in an optimized form to the server when all consecutive K files have the same total file size. To achieve this, an operation can be performed to resize a file by compressing or expanding it by 1 unit size in each operation. The goal is to find the minimum number of operations required so that all the K consecutive files have the same total file size for an optimal transfer to the server. Consecutive files include the last and first files as well, meaning files are in cyclic order.",
+  "function_description": "Complete the function `minOperations` to find the minimum number of operations required.",
+  "input_format": "An integer N, representing the total number of files to be transferred followed by N space-separated integers, representing the size of each file followed by an integer K, representing the number of consecutive files to optimize.",
+  "output_format": "Print an integer representing the minimum number of operations required so that all the K consecutive files have the same total file size.",
+  "constraints":"1 ≤ N ≤ 10^5 \n1 ≤ File Size ≤ 10^4 \n1 ≤ K ≤ N",
+  "examples": [
+    {
+      "input": "4 1 5 1 3 2",
+      "output": "2",
+      "explanation": "Two operations can be performed on index 1 to make its value equal to 3. The array becomes [1, 3, 1, 3], ensuring all K=2 consecutive files have the same total sum (4)."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "5 2 4 6 8 10 3",
+      "output": "12"
+    },
+    {
+      "input": "6 1 3 5 7 9 11 4",
+      "output": "16"
+    },
+    {
+      "input": "4 1 5 1 3 2",
+      "output": "2"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "10 1 1 1 1 1 1 1 1 1 1 5",
+      "output": "0"
+    },
+    {
+      "input": "3 10 20 30 2",
+      "output": "20"
+    },
+    {
+      "input": "9 2 2 2 2 2 1 1 1 1 5",
+      "output": "4"
+    }
+  ],
+  "explanation": "The solution involves sliding window optimization and prefix sums to calculate the required changes for every K-window efficiently, considering cyclic array properties.",
+  "solution": "#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <numeric>\nusing namespace std;\n\nlong long makeSubKSumEqual(vector<int>& arr, int k) {\n    long long ans = 0;\n    int n = arr.size();\n    k = gcd(k, n);\n    for (int i = 0; i < k; i++) {\n        vector<int> v;\n        for (int j = i; j < n; j += k) {\n            v.push_back(arr[j]);\n        }\n        sort(v.begin(), v.end());\n        long long midv = v[v.size() / 2];\n        for (int j = i; j < n; j += k) {\n            ans += abs(midv - arr[j]);\n        }\n    }\n    return ans;\n}\n\nint main() {\n    int n, k;\n    cin >> n;\n    vector<int> arr(n);\n    for (int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    cin >> k;\n\n    long long result = makeSubKSumEqual(arr, k);\n    cout << result << endl;\n    return 0;\n}",
+  "time_complexity": "O(N)",
+  "space_complexity": "O(N)"
+},
+
+
+{
+  "id": 17,
+  "name": "Unique Fusion Reactions",
+  "rating": 1100,
+  "difficulty": "Easy",
+  "topics": ["Combinatorics", "Sorting", "Two Pointers"],
+  "company": "Morgan Stanley",
+  "question_description": "In an electric power plant, there are N radioactive elements, each with a certain electricity production capacity used for generating electricity. Electricity is created after a fusion of two different elements. To keep the fusion reaction in control, only those two elements can be fused together whose total sum after the reaction is not below a lower band and is not above an upper band. The team wishes to know the number of possible unique fusion reactions that can be performed while keeping the reaction in control. Write an algorithm to find the number of possible unique fusion reactions.",
+  "function_description": "Complete the function `countFusionReactions` to calculate the number of valid unique fusion reactions.",
+  "input_format": "An integer N, representing the number of radiocative elements followed by N space-separated integers, representing the electricity production capacities of each radioactive element followed by An integer lowerBand, representing the lower limit for the fusion reaction ans An integer upperBand, representing the upper limit for the fusion reaction.",
+  "output_format": "Print an integer representing the number of possible unique fusion reactions that can be performed by keeping the reaction in control. If no fusion reaction is possible, print 0.",
+  "constraints":  "2 ≤ N ≤ 10^5 \n1 ≤ Electricity Production Capacity ≤ 10^4\n 1 ≤ lowerBand ≤ upperBand ≤ 2 × 10^4 ",  
+  "examples": [
+    {
+      "input": "5 1 2 3 7 8 3 20",
+      "output": "10",
+      "explanation": "There are 10 possible unique fusion reactions within the given bounds: (1, 2), (1, 3), (1, 7), (1, 8), (2, 3), (2, 7), (2, 8), (3, 7), (3, 8), (7, 8)."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "6 1 5 7 10 12 15 10 20",
+      "output": "9"
+    },
+    {
+      "input": "4 1 2 3 4 5 10",
+      "output": "4"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "3 1 1 1 2 2",
+      "output": "3"
+    },
+    {
+      "input": "8 2 4 6 8 10 12 14 16 10 25",
+      "output": "22"
+    }
+  ],
+  "explanation": "Sort the array and use a two-pointer approach to efficiently count the pairs of elements whose sums fall within the given range. This minimizes unnecessary computations.",
+  "solution": "#include <iostream>\n#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; i++) {\n        cin >> nums[i];\n    }\n\n    int lb;\n    cin >> lb;\n    int ub;\n    cin >> ub;\n\n    int ans = 0;\n    sort(nums.begin(), nums.end());\n\n    for (int i = 0; i < n; i++) {\n        for (int j = i + 1; j < n; j++) {\n            if (nums[i] + nums[j] > ub) break;\n            if (nums[i] + nums[j] <= ub && nums[i] + nums[j] >= lb) ans++;\n        }\n    }\n\n    cout << ans << endl;\n    return 0;\n}", 
+  "time_complexity": "O(N log N)",
+  "space_complexity": "O(1)"
+},
+{
+  "id": 18,
+  "name": "Longest Tile Sequence",
+  "rating": 1500,
+  "difficulty": "Hard",
+  "topics": ["Greedy", "Strings","DP"],
+  "company": "Microsoft",
+  "question_description": "There are N tiles (numbered from 0 to N-1). Each tile is made of two squares that are colored either red (represented by the letter \"R\") or green (represented by \"G\"). A tile is described by a two-character string representing the respective colors of the left and right squares. The tiles cannot be rotated (which means that \"RG\" and \"GR\" tiles are different). Two tiles can be placed next to each other if the color of their adjacent squares is the same.\n\nWrite a function that, given an array A of N strings, representing the tiles, returns the maximum number of tiles that can be arranged in a sequence.",
+  "function_description": "Write a function `int solution (char *A[], int N);` to compute the maximum length of a valid sequence of tiles. The tiles can only be placed if the adjacent squares' colors match. You must return an integer representing the length of the longest sequence.",
+  "input_format": "The input consists of:\n1. `N` - an integer, representing the number of tiles followed by `A` - an array of N strings, where each string is either \"RR\", \"RG\", \"GR\", or \"GG\".",
+  "output_format": "Return the maximum number of tiles that can be arranged in a valid sequence.",
+  "constraints": "1. `1 <= N <= 100,000`\n2. Each string in `A` is one of the following: \"RR\", \"RG\", \"GR\", \"GG\".",
 "examples": [
-  {
-    "input": "3 2 1 2 3 2 4",
-    "output": "2 3",
-    "explanation": "For the first channel with bandwidth=2, there are 2 messages in List A with bandwidths ≤ 2. For the second channel with bandwidth=4, there are 3 messages in List A with bandwidths ≤ 4."
-  }
-],
-"testCases": [
-  {
-    "input": "5 3 4 2 5 1 3 3 4 5",
-    "output": "3 4 5"
+    {
+      "input": "6 \"RR\" \"GR\" \"RG\" \"GR\" \"GR\" \"RR\"",
+      "output": "5",
+      "explanation": "We can select tiles 0, 2, 3, 4, 5 and arrange them into the sequence GR - RR - RG - GR - RR."
+    },
+    {
+      "input": "5 \"GG\" \"GG\" \"RR\" \"GG\" \"RR\"",
+      "output": "3",
+      "explanation": "We can select tiles 0, 1, 3 and arrange them into the sequence GG - GG - GG."
+    },
+    {
+      "input": "4 \"RG\" \"GR\" \"RG\" \"GR\"",
+      "output": "4",
+      "explanation": "All tiles can be used without reordering them."
+    },
+    {
+      "input": "3 \"RG\" \"RG\" \"RG\"",
+      "output": "1",
+      "explanation": "Only one tile can be used as adjacent tiles do not match."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "7 \"RR\" \"RG\" \"GR\" \"GR\" \"RG\" \"RR\" \"RR\"",
+      "output": "6"
+    },
+    {
+      "input": "10 \"RG\" \"RG\" \"RG\" \"RG\" \"RG\" \"RG\" \"RG\" \"RG\" \"RG\" \"RG\"",
+      "output": "1"
+    },
+    {
+      "input": "4 \"GG\" \"GG\" \"GG\" \"GG\"",
+      "output": "4"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "100000 [\"RR\", \"RR\", \"RR\", ..., \"RR\"]",
+      "output": "100000",
+      "explanation": "All tiles are the same and can be arranged in a single sequence."
+    },
+    {
+      "input": "100000 [\"RR\", \"RG\", \"GR\", \"GG\", \"RG\", \"GR\", ..., (repeating pattern)]",
+      "output": "length depending on pattern and constraints"
+    }
+  ],
+  "explanation": "\nThe problem can be solved using a greedy approach. We traverse through the tiles sequentially and construct the longest sequence by keeping track of the current ending color. Start with the first tile as the initial sequence. For each subsequent tile, check if its starting color matches the ending color of the current sequence. If it matches, include the tile in the sequence and update the ending color. If it doesn’t match, skip the tile. This ensures we maximize the length of the sequence without reordering tiles.",
+    "time_complexity": "O(N)",
+    "space_complexity": "O(1)"
+},
+{
+  "id": 19,
+  "name": "Expand Tree by Replacing Leaves",
+  "rating": 800,
+  "difficulty": "Easy",
+  "topics": ["Tree"],
+  "company": "Microsoft",
+  "question_description": "Expand a tree by replacing every leaf node with a new node whose subtrees are both leaves. The new nodes' IDs and their two leaves' IDs should correspond to the ID of the leaf they replaced. The input and output are represented as in-order traversals of the tree, and the root of the tree is also provided.",
+  "input_format": "The input consists of the in-order traversal of the tree as a space-separated string and the root ID as an integer.",
+  "output_format": "The output is the in-order traversal of the expanded tree as a space-separated string.",
+  "constraints": "1 <= Number of nodes in the tree <= 1000\nAll node IDs are unique and represented as integers.",
+  "examples": [
+    {
+      "input": "4 2 5 1 6 3 7 1",
+      "output": "4 4 4 2 5 5 5 1 6 6 6 3 7 7 7",
+      "explanation": "The tree is expanded by replacing each leaf node (4, 5, 6, 7) with a new node whose subtrees are leaves with the same values as the replaced leaf."
+    },
+    {
+      "input": "1 1",
+      "output": "1 1 1",
+      "explanation": "The single node 1 is a leaf, so it is replaced by a new node whose subtrees are leaves with value 1."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "2 1 3 1",
+      "output": "2 2 2 1 3 3 3"
+    },
+    {
+      "input": "4 2 5 1 6 3 1",
+      "output": "4 4 4 2 5 5 5 1 6 6 6 3"
+    },
+    {
+      "input": "7 3 8 1 9 1",
+      "output": "7 7 7 3 8 8 8 1 9 9 9"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "10 5 11 2 6 1 7 1",
+      "output": "10 10 10 5 11 11 11 2 6 6 6 1 7 7 7"
+    },
+    {
+      "input": "1 1",
+      "output": "1 1 1",
+      "explanation": "Edge case with the smallest possible tree."
+    },
+    {
+      "input": "12 6 13 3 7 1 8 1",
+      "output": "12 12 12 6 13 13 13 3 7 7 7 1 8 8 8"
+    }
+  ]
+
+},
+{
+  "id": 20,
+  "name": "Coupon Craze",
+  "rating": 800,
+  "difficulty": "Medium",
+  "topics": ["Greedy","Priority Queue"],
+  "company": "Atlassian",
+  "question_description": "A shop in HackerMall offers n items with prices given in an array price[i]. A loyal customer has m discount coupons, and each coupon can be used to reduce the price of an item. For each coupon used on an item, its price is halved (rounded down to the nearest integer, i.e., floor(price[i]/2)). The customer can distribute the coupons among the items in any way they choose to minimize the total cost of purchasing all items. Your task is to determine the minimum total cost to purchase all the items using at most m coupons.",
+  "input_format": "An integer n representing the number of items, followed by n space-separated integers representing the prices of the items, followed by an integer m representing the number of discount coupons.",
+  "output_format": "An integer representing the minimum amount of money needed to buy all n items using at most m coupons.",
+  "constraints": "1 ≤ n ≤ 10^5\n 1 ≤ price[i] ≤ 10^9 \n0 ≤ m ≤ 10^9",
+  "examples": [
+    {
+      "input": "2 2 4 2",
+      "output": "3",
+      "explanation": "Given n = 2, price = [2, 4], m = 2. The optimal solution is to buy item 1 at its original price (2) and use 2 coupons on item 2, reducing its price to floor(4/4) = 1. The total cost is 2 + 1 = 3."
+    },
+    {
+      "input": "3 1 2 3 1",
+      "output": "4",
+      "explanation": "Given n = 3, price = [1, 2, 3], m = 1. Use 1 coupon on item 3, reducing its price to floor(3/2) = 1. The total cost is 1 + 2 + 1 = 4."
+    },
+    {
+      "input": "3 1 1 1 0",
+      "output": "3",
+      "explanation": "Given n = 3, price = [1, 1, 1], m = 0. No coupons can be used, so the total cost is simply the sum of the prices: 1 + 1 + 1 = 3."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "4 8 3 6 2 3",
+      "output": "12",
+      "explanation": "Use coupons optimally to reduce prices while staying within the limit of m = 3."
+    },
+    {
+      "input": "5 10 20 30 40 50 5",
+      "output": "120",
+      "explanation": "Given m = 5, distribute coupons to minimize the total cost."
+    },
+    {
+      "input": "6 100 50 75 25 10 5 10",
+      "output": "128",
+      "explanation": "Distribute 10 coupons to minimize the total cost."
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "10 1000000000 999999999 888888888 777777777 666666666 555555555 444444444 333333333 222222222 111111111 10",
+      "output": "4444444433",
+      "explanation": "Handle large inputs with large price values and coupon distribution."
+    },
+    {
+      "input": "5 1 1 1 1 1 10",
+      "output": "0",
+      "explanation": "All prices can be reduced to zero with sufficient coupons."
+    }
+  ],
+  "solution":[""],
+  "time_complexity": "O(nlogn)",
+  "space_complexity": "O(n)"
+
+},
+{
+  
+    "id": 21,
+    "name": "Merge Linked Lists",
+    "rating": 1000,
+    "difficulty": "Easy",
+    "topics": ["Linked List"],
+    "company": "Atlassian",
+    "question_description": "Consider two linked lists, list1 and list2, and two integers, a and b. Merge the two lists by removing the nodes from the ath through the bth positions in list1 and inserting all nodes of list2 in their place. After merging, list2 nodes should appear between the nodes of list1 that are before and after the removed segment.",
+    "function_description": "Complete the function mergeInBetween(list1, list2, a, b) to merge the two linked lists as described. The function should return a reference to the head of the modified list1.",
+    "input_format": "The first line contains an integer n, representing the length of list1. The second line contains n space-separated integers, representing the elements of list1. The third line contains an integer m, representing the length of list2. The fourth line contains m space-separated integers, representing the elements of list2. The fifth line contains two space-separated integers, a and b, representing the indices for the replacement segment in list1.",
+    "output_format": "Return the modified list1 as space-separated integers.",
+    "constraints": "1 <= n, m <= 10^5 \n1 <= a <= b <= n\n1 <= list1[i] <= 10^9 for all valid i\n1 <= list2[j] <= 10^9 for all valid j",
+    "examples": [
+      {
+        "input": "6 1 4 6 3 2 7 7 5 6 4 3 8 2 1 2 3",
+        "output": "1 5 6 4 3 8 2 1 2 7",
+        "explanation": "Nodes 2 and 3 of list1 are replaced by all nodes of list2. Final list becomes: 1 -> 5 -> 6 -> 4 -> 3 -> 8 -> 2 -> 1 -> 2 -> 7."
+      },
+      {
+        "input": "5 1 2 3 4 5 4 6 7 8 9 2 3",
+        "output": "1 6 7 8 9 4 5",
+        "explanation": "Nodes 2 and 3 of list1 are replaced by all nodes of list2. Final list becomes: 1 -> 6 -> 7 -> 8 -> 9 -> 4 -> 5."
+      }
+    ],
+    "testCases": [
+      {
+        "input": "8 1 3 5 7 9 11 13 15 3 2 4 6 3 5",
+        "output": "1 3 5 2 4 6 13 15"
+      },
+      {
+        "input": "4 1 2 3 4 2 5 6 2 2",
+        "output": "1 5 6 3 4"
+      },
+      {
+        "input": "10 10 20 30 40 50 60 70 80 90 100 5 1 2 3 4 5 4 7",
+        "output": "10 20 30 40 1 2 3 4 5 90 100"
+      }
+    ],
+    "extraTestCases": [
+      {
+        "input": "3 1 1 1 1 2 1 1",
+        "output": "2"
+      }
+    ],
+  "solution":[""],
+  "time_complexity": "O(n)",
+  "space_complexity": "O(1)"
+  
+},
+{
+
+    "id": 22,
+    "name": "Pixel Pyramid Optimization",
+    "rating": 1300,
+    "difficulty": "Medium",
+    "topics": ["Array", "Greedy"],
+    "company": "Goldman Sachs",
+    "question_description": "Some developers are working on clarifying an image with n pixels, where the value of the ith pixel is represented by pixel[i]. An image is clear if the array pixel has a padding of some number of 0s (possibly none) in the prefix and the suffix, and the non-zero part of the array pixel forms a pyramid-like structure. \n for example the pixel arrays [0,0,1,2,3,2,1], [1,2,1] ,[1],[0,0,0,1,2,3,4,3,2,1,0] are all clear. \n In one operation, a developer can reduce any pixel value by 1.\n Given an array pixel, find the minimum number of operations required to make the image clear.",
+    "function_description": "Complete the function getMinOperations(pixel) to compute the minimum number of operations required to make the array pixel clear. The function should return a long integer representing this minimum number.",
+    "input_format": "The first line contains an integer n, representing the number of pixels. The second line contains n space-separated integers, representing the values of the pixels.",
+    "output_format": "Return a single integer, the minimum number of operations required to make the pixel array clear.",
+    "constraints": "1 ≤ n ≤ 3*10^5 \n 1 ≤ pixel[i] ≤ 10^9",
+    "examples": [
+      {
+        "input": "5 1 2 5 2 1",
+        "output": "2",
+        "explanation": "It is optimal to reduce the value of the middle pixel by 2 to get the array [1, 2, 3, 2, 1]."
+      },
+      {
+        "input": "5 3 3 3 3 3",
+        "output": "6",
+        "explanation": "It is optimal to perform 2 operations on the first and last pixels, and 1 operation on the second and fourth pixels, to get [1, 2, 3, 2, 1]."
+      },
+      {
+        "input": "6 0 0 1 2 3 2 1",
+        "output": "0",
+        "explanation": "The array is already clear, so no operations are needed."
+      }
+    ],
+    "testCases": [
+      {
+        "input": "6 3 4 5 4 3 3",
+        "output": "2"
+      },
+      {
+        "input": "8 1 1 1 1 1 1 1 1",
+        "output": "28"
+      },
+      {
+        "input": "7 2 4 6 8 6 4 2",
+        "output": "12"
+      }
+    ],
+    "extraTestCases": [
+      {
+        "input": "10 10 9 8 7 6 5 4 3 2 1",
+        "output": "40"
+      },
+      {
+        "input": "15 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
+        "output": "105"
+      }
+    ],
+    "solution":[""],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)"
+},
+{
+    "id": 23,
+    "name": "Grid Quest",
+    "rating": 1500,
+    "difficulty": "Hard",
+    "topics": ["Matrix"],
+    "company": "Goldman Sachs",
+    "question_description": "You are given a grid matrix of integers consisting of n rows and m columns. The task is to find the length of the longest non-decreasing sequence by selecting at most one element from each column, without changing the order of the columns. Additionally, the columns from which elements are chosen must also be strictly increasing in order. The sequence must be non-decreasing in value.",
+  "function_description": "Complete the function getLongestSequence(matrix) that computes the length of the longest non-decreasing sequence. The function should return an integer representing the maximum length.",
+  "input_format": "The first line contains two integers n (number of rows) and m (number of columns). The next n lines each contain m integers, representing the grid matrix.",
+  "output_format": "Return a single integer, the length of the longest non-decreasing sequence that can be formed.",
+  "constraints": "1 ≤ n ≤ 1000 \n 1 ≤ m ≤ 1500 \n 1 ≤ matrix[i][j] ≤ 10^9",
+  "examples": [
+    {
+      "input": "3 4 2 6 3 5 8 9 4 6 5 8 9 7",
+      "output": "3",
+      "explanation": "One of the optimal sequences is [2, 4, 7]. Take 2 from the 1st column, 4 from the 3rd column, and 7 from the 4th column."
+    },
+    {
+      "input": "3 3 3 2 1 5 2 2 7 2 2",
+      "output": "2",
+      "explanation": "One of the optimal sequences is [2, 2]. Take 2 from the 2nd column and 2 from the 3rd column."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "4 5 1 2 3 4 5 5 6 7 8 9 2 3 4 5 6 10 11 12 13 14",
+      "output": "5"
+    },
+    {
+      "input": "2 3 1 3 2 4 5 6",
+      "output": "3"
+    },
+    {
+      "input": "5 5 1 2 3 4 5 6 7 8 9 10 5 6 7 8 9 4 5 6 7 8 3 4 5 6 7",
+      "output": "5"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "3 2 3 5 4 6 7 8",
+      "output": "2"
+    },
+    {
+      "input": "6 4 1 1 1 1 2 2 2 2 3 3 3 3 4 4 4 4 5 5 5 5 6 6 6 6",
+      "output": "4"
+    }
+  ],
+  "solution":[""],
+  "time_complexity": "O(n*m)",
+  "space_complexity": "O(n*m)"
+},
+{
+    "id": 24,
+    "name": "Gateway Throttle",
+    "rating": 1400,
+    "difficulty": "Medium",
+    "topics": ["Map"],
+    "company": "Expedia",
+     "question_description": "A gateway receives requests from various domains in an array `requests` over time. The gateway implements a rate-limiting mechanism:\n- At most **2 successful requests** are allowed from a domain within **5 seconds**.\n- At most **5 successful requests** are allowed from a domain within **30 seconds**.\n\nFor each request, return:\n- `(status: 200, message: OK)` if the request is allowed.\n- `(status: 429, message: Too many requests)` if the request exceeds the rate limits.\n\n### Example\nSuppose `n = 9` and `requests = [\"www.xyz.com\", \"www.abc.com\", \"www.xyz.com\", \"www.pqr.com\", \"www.abc.com\", \"www.xyz.com\", \"www.xyz.com\", \"www.abc.com\", \"www.xyz.com\"]`.\n\n#### Description Table:\n| Time | Request        | Accept | Remarks                                            |\n|------|----------------|--------|----------------------------------------------------|\n| 1    | www.xyz.com    | True   |                                                    |\n| 2    | www.abc.com    | True   |                                                    |\n| 3    | www.xyz.com    | True   |                                                    |\n| 4    | www.pqr.com    | True   |                                                    |\n| 5    | www.abc.com    | True   |                                                    |\n| 6    | www.xyz.com    | True   |                                                    |\n| 7    | www.xyz.com    | False  | 2 requests from \"www.xyz.com\" accepted within 5s. |\n| 8    | www.abc.com    | True   |                                                    |\n| 9    | www.xyz.com    | True   |                                                    |\n\n### Output:\n`[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\"]`\n\n### Function Description\nComplete the function `getRequestStatus` that determines the status of each request based on the rate limits.",
+  "function_description": "Complete the function `getRequestStatus` which takes the following parameters:\n- `int n`: the number of requests.\n- `string requests[]`: the list of domain names from which requests are received.\n\nThe function should return:\n- `string[]`: a list of statuses for each request.",
+  "input_format": "- An integer `n`, the number of requests.\n- A list of `n` domain names representing incoming requests.",
+  "output_format": "- A list of strings where each string represents the status of the corresponding request.",
+  "constraints":  "1 ≤ n ≤ 10^5 \n 1 ≤ length of requests[i] ≤ 15 \n `requests[i]` consists of lowercase English characters.",
+  "examples": [
+    {
+      "input": "9\nwww.xyz.com\nwww.abc.com\nwww.xyz.com\nwww.pqr.com\nwww.abc.com\nwww.xyz.com\nwww.xyz.com\nwww.abc.com\nwww.xyz.com",
+      "output": "[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\"]",
+      "explanation": "Requests exceeding the rate limit for a domain are denied with the status `(status: 429, message: Too many requests)`."
+    },
+    {
+      "input": "7\nwww.abc.com\nwww.hd.com\nwww.abc.com\nwww.par.com\nwww.abc.com\nwww.pqr.com\nwww.pqr.com",
+      "output": "[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\"]",
+      "explanation": "The fifth and seventh requests exceed the rate limits for the respective domains."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "10\nwww.google.com\nwww.google.com\nwww.google.com\nwww.amazon.com\nwww.google.com\nwww.amazon.com\nwww.amazon.com\nwww.google.com\nwww.amazon.com\nwww.amazon.com",
+      "output": "[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 429, message: Too many requests)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\"]"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "5\nwww.test.com\nwww.test.com\nwww.test.com\nwww.test.com\nwww.test.com",
+      "output": "[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 429, message: Too many requests)\", \"(status: 429, message: Too many requests)\", \"(status: 429, message: Too many requests)\"]"
+    },
+    {
+      "input": "3\nwww.xyz.com\nwww.abc.com\nwww.xyz.com",
+      "output": "[\"(status: 200, message: OK)\", \"(status: 200, message: OK)\", \"(status: 200, message: OK)\"]"
+    }
+  ]
+},
+{
+  "id": 25,
+  "name": "Song Popularity Ranking by User Preferences",
+  "rating": 1600,
+  "difficulty": "Medium",
+  "topics": ["Sorting"],
+  "company": "Expedia",
+  "question_description": "Implement a feature to rank songs by their popularity based on user preferences. There are `n` users and `m` songs. Each user has a preference list `pref[i]`, which is a permutation of the numbers `0` to `m-1`. The order in this list determines the user's preference for the songs.\n\nA song `x` is said to **beat** song `y` if:\n- More than half of the users prefer `x` over `y`, or\n- Exactly half of the users prefer `x` over `y`, and `x` has a smaller id.\n\nA song `x` is considered **more popular** than song `y` if `x` beats more songs than `y`. If two songs beat the same number of songs, the one with the smaller id is more popular.\n\n### Example\nSuppose `n = 3`, `m = 3`, and `pref = [[0, 1, 2], [0, 2, 1], [1, 2, 0]]`.\n\n| User | Song Preference            |\n|------|----------------------------|\n| 0    | Song 0 > Song 1 > Song 2  |\n| 1    | Song 0 > Song 2 > Song 1  |\n| 2    | Song 1 > Song 2 > Song 0  |\n\n#### Comparisons:\n| Song Pair    | Users Who Prefer |\n|--------------|------------------|\n| Song 0 > 1  | 0, 1             |\n| Song 0 > 2  | 0, 1             |\n| Song 1 > 2  | 0, 2             |\n\nBased on this, the ranking is established as `Song 0 > Song 1 > Song 2`. Hence, the answer is `[0, 1, 2]`.\n\n### Function Description\nComplete the function `getPopularityOrder` that ranks the songs based on user preferences.",
+  "function_description": "Complete the function `getPopularityOrder` which takes the following parameter:\n- `int song_preferences[n][m]`: a 2D list where `song_preferences[i]` is the preference list of the `i-th` user.\n\nThe function should return:\n- `int[m]`: a list of song IDs representing the popularity order.",
+  "input_format": "- An integer `n`, the number of users.\n- An integer `m`, the number of songs.\n- A 2D list `song_preferences` of size `n x m`.",
+  "output_format": "- A list of integers representing the song IDs in order of their popularity.",
+  "constraints":  "1 ≤ n ≤ 400 \n1 ≤ m ≤ 400\n song_preferences[i]` is a permutation of the numbers `0, 1, ..., m-1`. ",
+  "examples": [
+    {
+      "input": "3\n3\n[[0, 1, 2], [0, 2, 1], [1, 2, 0]]",
+      "output": "[0, 1, 2]",
+      "explanation": "Song 0 is more popular than Song 1, and Song 1 is more popular than Song 2 based on the user preferences."
+    },
+    {
+      "input": "4\n4\n[[0, 1, 2, 3], [3, 2, 1, 0], [1, 0, 2, 3], [2, 3, 0, 1]]",
+      "output": "[1, 0, 2, 3]",
+      "explanation": "Based on comparisons, the popularity order of the songs is [1, 0, 2, 3]."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "2\n2\n[[0, 1], [1, 0]]",
+      "output": "[0, 1]"
+    },
+    {
+      "input": "3\n3\n[[2, 0, 1], [0, 2, 1], [1, 0, 2]]",
+      "output": "[0, 2, 1]"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "5\n5\n[[4, 3, 2, 1, 0], [0, 1, 2, 3, 4], [2, 3, 4, 1, 0], [1, 0, 4, 3, 2], [3, 4, 0, 1, 2]]",
+      "output": "[3, 4, 2, 1, 0]"
+    },
+    {
+      "input": "6\n4\n[[0, 1, 2, 3], [3, 0, 1, 2], [1, 3, 0, 2], [2, 3, 1, 0], [0, 1, 3, 2], [1, 0, 3, 2]]",
+      "output": "[0, 1, 3, 2]"
+    }
+  ]
+},
+{
+    "id":26,
+    "name": "Resource Estimation Scheduler",
+    "rating": 1800,
+    "difficulty": "Medium",
+    "topics": ["Greedy", "Sorting"],
+    "company": "Expedia",
+    "question_description": "Implement a task scheduler service that determines the minimum number of machines required to complete a given set of tasks. Each task has a start time and an end time. A task can only be scheduled on one machine, and a machine can only run one task at a time.\n\n### Example\nSuppose `n = 5`, `start = [1, 8, 3, 9, 6]`, and `end = [7, 9, 6, 14, 7]`.\n\nConsider the following task schedule:\n- **Machine 1:** `[(1, 7), (8, 9)]`\n- **Machine 2:** `[(3, 6), (9, 14)]`\n- **Machine 3:** `[(6, 7)]`\n\nHere, the number of machines required is **3**.\n\n### Function Description\nComplete the function `getMinMachines` which takes the following parameters:\n- `int start[n]`: an array of start times of the tasks.\n- `int end[n]`: an array of end times of the tasks.\n\nThe function should return:\n- `int`: the minimum number of machines required to run all the tasks.",
+    "function_description": "Complete the function `getMinMachines` which determines the minimum number of machines required to schedule all tasks without any conflicts.",
+    "input_format": "- An integer `n`, the number of tasks.\n- An array `start` of size `n` where `start[i]` is the start time of the `i-th` task.\n- An array `end` of size `n` where `end[i]` is the end time of the `i-th` task.",
+    "output_format": "- An integer representing the minimum number of machines required to run all the tasks.",
+    "constraints": "1 ≤ n < 2*10^5 \n 1 ≤ start[i] ≤ end[i] ≤ 10^9",
+    "examples": [
+      {
+        "input": "5\n[1, 8, 3, 9, 6]\n[7, 9, 6, 14, 7]",
+        "output": "3",
+        "explanation": "The tasks are scheduled as follows:\n- **Machine 1:** `[(1, 7), (8, 9)]`\n- **Machine 2:** `[(3, 6), (9, 14)]`\n- **Machine 3:** `[(6, 7)]`\n\nThus, the minimum number of machines required is 3."
+      },
+      {
+        "input": "3\n[1, 2, 3]\n[4, 5, 6]",
+        "output": "1",
+        "explanation": "All tasks are non-overlapping, so they can run on a single machine."
+      }
+    ],
+    "testCases": [
+      {
+        "input": "5\n[2, 1, 5, 5, 8]\n[5, 3, 8, 6, 12]",
+        "output": "3"
+      },
+      {
+        "input": "4\n[1, 3, 5, 7]\n[2, 4, 6, 8]",
+        "output": "1"
+      }
+    ],
+    "extraTestCases": [
+      {
+        "input": "6\n[1, 2, 3, 4, 5, 6]\n[10, 9, 8, 7, 6, 5]",
+        "output": "6"
+      },
+      {
+        "input": "10\n[1, 3, 5, 7, 9, 11, 13, 15, 17, 19]\n[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]",
+        "output": "1"
+      },
+      {
+        "input": "8\n[1, 4, 2, 6, 5, 8, 9, 10]\n[3, 7, 5, 8, 7, 11, 10, 12]",
+        "output": "4"
+      }
+    ],
+    "solution": [".\n\n```cpp\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint getMinMachines(vector<int>& start, vector<int>& end) {\n    int n = start.size();\n    sort(start.begin(), start.end());\n    sort(end.begin(), end.end());\n\n    int plat_needed = 1, result = 1;\n    int i = 1, j = 0;\n\n    while (i < n && j < n) {\n        if (start[i] <= end[j]) {\n            plat_needed++;\n            i++;\n        } else {\n            plat_needed--;\n            j++;\n        }\n        result = max(result, plat_needed);\n    }\n\n    return result;\n}\n\nint main() {\n    // Input format: start and end times in a single line\n    int n;\n    cin >> n;\n    vector<int> start(n), end(n);\n\n    for (int i = 0; i < n; ++i) cin >> start[i];\n    for (int i = 0; i < n; ++i) cin >> end[i];\n\n    cout << getMinMachines(start, end) << endl;\n    return 0;\n}\n```"],  
+    "explanation":"The problem can be solved using a greedy approach by sorting the start times and end times of the tasks and then iterating over them to determine the maximum overlap at any time",
+    "time_complexity":"O(nlogn)",
+    "space_complexity":"O(1)"   
+},
+{
+  "id": 27,
+  "name": "Calculate Total Region",
+  "rating": 1400,
+  "difficulty": "Hard",
+  "topics": ["Stack", "Two Pointer","Array"],
+  "company": "LinkedIn",
+  "question_description": "There is a straight line of students of various heights. The students' heights are given in the form of an array, in the order they are standing in the line.\n\nConsider the region of a student as the length of the largest subarray that includes that student's position, and in which that student's height is equal to the maximum height among all students present in that subarray. Return the sum of the regions of all students.",
+  "function_description": "Complete the function `calculateTotalRegion` in the editor below. The function must return the desired sum of all regions.",
+  "input_format": "An integer N, representing the number of students followed by N space-separated integers representing the heights of the students.",
+  "output_format": "Return a single integer, representing the sum of the regions of all students.",
+  "constraints":  "1 \u2264 length of heights \u2264 10^5\n 1 \u2264 heights[i] \u2264 10^9",
+  "examples": [
+    {
+      "input": "3 3 5 6",
+      "output": "6",
+      "explanation": "\nThe longest subarray for the first student's height is [3], so the region length is 1.\nThe longest subarray for the second student's height is [3, 5], so the region length is 2.\nThe longest subarray for the third student's height is [3, 5, 6], so the region length is 3.\nThus, the total sum of regions is 1 + 2 + 3 = 6."
+    },
+    {
+      "input": "3 1 2 1",
+      "output": "5",
+      "explanation": "The regions for heights are [1], [1, 2, 1], and [1]. Their lengths sum to 1 + 3 + 1 = 5."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "4 4 3 2 1",
+      "output": "10"
+    },
+    {
+      "input": "5 1 2 3 4 5",
+      "output": "15"
+    },
+    {
+      
+        "input": "3 3 5 6",
+        "output": "6"
+    },
+    {
+      
+        "input": "5 3 5 2 3 6",
+        "output": "13"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "6 6 5 4 3 2 1",
+      "output": "21"
+    },
+    {
+      "input": "7 7 7 7 7 7 7 7",
+      "output": "49"
+    },
+    {
+      "input": "10 1 4 2 5 1 4 7 1 1 6",
+      "output": "31"
+    }
+  ],
+  "explanation": "Iterate through the array while maintaining the current largest subarray for each height using a stack or two pointers approach. Accumulate the region lengths for all elements.",
+  "solution":["\n#include <vector>\n#include <stack>\n#include <iostream>\nusing namespace std;\n\nint calculateTotalRegion(vector<int>& heights) {\n    int n = heights.size();\n    vector<int> left(n), right(n);\n    stack<int> s;\n\n    // Calculate nearest larger element to the left\n    for (int i = 0; i < n; ++i) {\n        while (!s.empty() && heights[s.top()] <= heights[i]) {\n            s.pop();\n        }\n        if (s.empty()) {\n            left[i] = 0;\n        } else {\n            left[i] = s.top() + 1;\n        }\n        s.push(i);\n    }\n\n    // Clear the stack for reuse\n    while (!s.empty()) s.pop();\n\n    // Calculate nearest larger element to the right\n    for (int i = n - 1; i >= 0; --i) {\n        while (!s.empty() && heights[s.top()] <= heights[i]) {\n            s.pop();\n        }\n        if (s.empty()) {\n            right[i] = n - 1;\n        } else {\n            right[i] = s.top() - 1;\n        }\n        s.push(i);\n    }\n\n    // Calculate the total region for all elements\n    int totalRegion = 0;\n    for (int i = 0; i < n; ++i) {\n        totalRegion += (right[i] - left[i] + 1);\n    }\n\n    return totalRegion;\n}\n\nint main() {\n    // Input format: Heights in a single line\n    int n;\n    cin >> n;\n    vector<int> heights(n);\n    for (int i = 0; i < n; ++i) cin >> heights[i];\n\n    cout << calculateTotalRegion(heights) << endl;\n    return 0;\n}\n",""],
+  "time_complexity": "O(N)",
+  "space_complexity": "O(N)"
+},
+{
+  "id": 28,
+  "name": "Optimal Process Assignment",
+  "rating": 1200,
+  "difficulty": "Medium",
+  "topics": ["Heap", "Greedy Algorithms", "Optimization"],
+  "company": "LinkedIn",
+  "question_description": "You are tasked with assigning a set of processes to two cores in such a way as to minimize the maximum processing time between the two cores. Each process has a defined time required for execution. The aim is to optimize the assignment by assigning each process to the core with the least current load.",
+  "function_description": "Complete the function `getProcessTime` which takes an INTEGER_ARRAY `time` as input and returns a LONG_INTEGER_ARRAY with two elements representing the total processing times for Core 1 and Core 2.",
+  "input_format": "A single INTEGER_ARRAY `time` where each element represents the processing time of a process.",
+  "output_format": "A LONG_INTEGER_ARRAY containing two elements: the total processing time for Core 1 and Core 2, respectively.",
+  "constraints": "1 <= n <= 10^5,1 <= time[i] <= 10^4",
+  "examples": [
+    {
+      "input": "10 10 10 10 10",
+      "output": "30 20",
+      "explanation": "The processes are assigned in a way to balance the loads of the cores. Core 1 gets processes with times 10, 10, and 10 (total 30), while Core 2 gets processes with times 10 and 10 (total 20)."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "5 8 6 4 7",
+      "output": "17 13"
+    },
+    {
+      "input": "1, 2, 3, 4, 5, 6",
+      "output": "12, 9"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "1000 1000 1000 1000 1000",
+      "output": "3000 2000"
+    },
+    {
+      "input": "1",
+      "output": "1 0"
+    }
+  ],
+  "explanation": "Use a min-heap to track the loads of the two cores. For each process time in the array, assign it to the core with the smallest current load. Update the heap after every assignment. Finally, return the two core loads.",
+  "solution":["",""],
+  "time_complexity": "O(n)",
+  "space_complexity": "O(1)"
+},
+{
+  "id": 29,
+  "name": "Marketing campaigns Optimiser",
+  "rating": 1800,
+  "difficulty": "Medium",
+  "topics": ["DP"],
+  "company": "LinkedIn",
+  "question_description": "A company plans a series of marketing campaigns over several weeks. Each campaign has a cost, and the company wants to minimize the total weekly input, where the weekly input is the maximum cost of any campaign planned in a given week. Campaigns must be scheduled in the same order as they appear in the list of costs. Given the costs of campaigns and the number of weeks available, determine the minimum sum of weekly inputs.\n\n Example\nInput:\n- `costs = [3000, 1000, 4000]`\n- `weeks = 2`\n\nOutput:\n- `7000`\n\nExplanation:\nOrganize the first campaign in the first week and the remaining two in the second week. The total weekly input is calculated as `3000 + max(1000, 4000) = 7000`.",
+  "function_description": "Complete the function `minimumWeeklyInput` to compute the minimum sum of weekly inputs.\n\n Parameters\n- `int costs[n]`: The order and cost of the campaigns\n- `int weeks`: The number of weeks available to organize the campaigns\n\n Returns\n`int`: The minimum total weekly input possible",
+  "input_format": "The first line contains an integer `n`, the number of campaigns. The second line contains the list of integers `costs`, the cost of each campaign in order. The third line contains the integer `weeks`, the number of weeks available.",
+  "output_format": "Return a single integer, the minimum total weekly input.",
+  "constraints": "1 <= n <= 300 \n 1 <= weeks <= n \n1 <= costs[i] <= 10\u2075",
+  "examples": [
+    {
+      "input": "3 3000 1000 4000 2",
+      "output": "7000",
+      "explanation": "Organize the first campaign in the first week and the remaining two in the second week. The total weekly input is `3000 + max(1000, 4000) = 7000`."
+    },
+    {
+      "input": "5 1000 500 2000 8000 1500 3",
+      "output": "9500",
+      "explanation": "Organize the campaigns as follows: First campaign in the first week, second campaign in the second week, and the remaining three campaigns in the third week. Total weekly input is `1000 + 500 + max(2000, 8000, 1500) = 9500`."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "5 3000 2000 1000 5000 4000 2",
+      "output": "8000"
+    },
+    {
+      "input": "4 1000 2000 3000 4000 4",
+      "output": "10000"
+    },
+    {
+      "input": "6 3000 1000 4000 2000 5000 6000 3",
+      "output": "10000"
+    },
+    {
+      "input": "2 5000 3000 1",
+      "output": "5000"
+    },
+    {
+      "input": "7 1000 2000 3000 4000 5000 6000 7000 3",
+      "output": "10000"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "5 1000 1000 1000 1000 1000 2",
+      "output": "2000"
+    }
+  ],
+
+    "explanation":"",
+    "solution": ["#include <vector>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint minWeeklyInput(vector<int>& costs, int weeks) {\n    int n = costs.size();\n    vector<vector<int>> dp(n + 1, vector<int>(weeks + 1, INT_MAX));\n    dp[0][0] = 0;\n\n    for (int i = 1; i <= n; ++i) {\n        dp[i][1] = *max_element(costs.begin(), costs.begin() + i);\n    }\n\n    for (int j = 2; j <= weeks; ++j) {\n        for (int i = j; i <= n; ++i) {\n            int maxCost = 0;\n            for (int k = i - 1; k >= j - 1; --k) {\n                maxCost = max(maxCost, costs[k]);\n                dp[i][j] = min(dp[i][j], dp[k][j - 1] + maxCost);\n            }\n        }\n    }\n\n    return dp[n][weeks];\n}\n\nint main() {\n    int n, weeks;\n    cin >> n;\n    vector<int> costs(n);\n    for (int i = 0; i < n; ++i) {\n        cin >> costs[i];\n    }\n    cin >> weeks;\n\n    cout << minWeeklyInput(costs, weeks) << endl;\n    return 0;\n}"],
+    "time_complexity":"O(n * weeks)",
+    "space_complexity":"O(n * weeks)"
   },
   {
-    "input": "6 2 7 3 2 6 5 8 4 10",
-    "output": "2 6"
-  }
-],
-"extraTestCases": [
-  {
-    "input": "4 3 8 6 7 5 5 7 10",
-    "output": "1 2 4"
-  },
-  {
-    "input": "7 3 10 5 6 7 8 12 3 4 9 15",
-    "output": "4 6 7"
-  }
-],
-"solution": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    vector<int> result;\n    for (int bandwidth : listB) {\n        result.push_back(upper_bound(listA.begin(), listA.end(), bandwidth) - listA.begin());\n    }\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n    \n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
-"solution1": "#include <bits/stdc++.h>\nusing namespace std;\n\nvector<int> bandwidth_allocation(vector<int>& listA, vector<int>& listB) {\n    sort(listA.begin(), listA.end());\n    sort(listB.begin(), listB.end());\n\n    vector<int> result;\n    int i = 0; \n    int count = 0;\n    for (int bandwidth : listB) {\n        while (i < listA.size() && listA[i] <= bandwidth) {\n            i++;\n            count++;\n        }\n        result.push_back(count);\n    }\n\n    return result;\n}\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    vector<int> listA(n), listB(m);\n    for (int i = 0; i < n; ++i) cin >> listA[i];\n    for (int i = 0; i < m; ++i) cin >> listB[i];\n\n    vector<int> result = bandwidth_allocation(listA, listB);\n    for (int res : result) cout << res << \" \";\n    cout << endl;\n    return 0;\n}",
-"time_complexity": "O(nlog n+mlog n)",
-"space_complexity": "O(n+m)",
-"explanation": "Sort listA to allow efficient binary search. For each bandwidth in listB, find the number of elements in listA ≤ bandwidth using binary search."
+        "id": 30,
+        "name": "Longest Arithmetic Subsequence",
+        "rating": 1400,
+        "difficulty": "Hard",
+        "topics": ["Array","Hash Table","Binary Search","DP"],
+        "company": "IBM",
+        "question_description": "You are given an array of integers. Your task is to find the length of the longest subsequence that forms an arithmetic sequence. An arithmetic sequence is a sequence of numbers in which the difference between consecutive elements is the same. For example, the sequence [3, 6, 9, 12] is an arithmetic sequence because the difference between consecutive numbers is 3.\n\nYou need to identify the longest possible subsequence (not necessarily contiguous) from the given array that forms such an arithmetic sequence, and return the length of that subsequence.",
+        "input_format": "The first line contains an integer n (1 ≤ n ≤ 1000), the size of the array followed by space-separated integers (0 ≤ arr[i] ≤ 500), the elements of the array.",
+        "output_format": "Print a single integer, the length of the longest subsequence that forms an arithmetic sequence.",
+        "constraints": "2 ≤ n ≤ 1000 \n 0 ≤ arr[i] ≤ 500",
+        "examples": [
+          {
+            "input": "5 3 6 9 12 15",
+            "output": "5",
+            "explanation": "All elements of the array already form an arithmetic sequence with a common difference of 3, so the longest subsequence is 5."
+          },
+          {
+            "input": "6 9 4 7 2 10",
+            "output": "3",
+            "explanation": "The longest arithmetic subsequence is [4, 7, 10] with a common difference of 3."
+          }
+        ],
+        "testCases": [
+    {
+      "input": "10 0 8 45 88 48 68 28 55 17 24",
+      "output": "2"
+    }
+  ],
+    "extraTestCases": [
+      {
+        "input": "5 1 1 1 1 1",
+        "output": "5"
+           },
+      {
+        "input": "8 83 20 17 43 52 78 68 45",
+        "output": "3"
+              },
+      {
+        "input": "62 44 46 22 68 45 66 43 9 37 30 50 67 32 47 44 11 15 4 11 6 20 64 54 54 61 63 23 43 3 12 51 61 16 57 14 12 55 17 18 25 19 28 45 56 29 39 52 8 1 21 17 21 23 70 51 61 21 52 25 28",
+        "output": "6"
+         }
+    ],
+    "solution": [
+    "#include <bits/stdc++.h>\nusing namespace std;\n\nclass Solution {\npublic:\n    int longestArithSeqLength(vector<int>& nums) {\n        int n = nums.size();\n        if (n <= 2)\n            return n;\n\n        int longest = 2;\n        vector<unordered_map<int, int>> dp(n);\n\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < i; j++) {\n                int diff = nums[i] - nums[j];\n                dp[i][diff] = dp[j].count(diff) ? dp[j][diff] + 1 : 2;\n                longest = max(longest, dp[i][diff]);\n            }\n        }\n\n        return longest;\n    }\n};\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> nums(n);\n    for (int i = 0; i < n; i++) {\n        cin >> nums[i];\n    }\n\n    Solution solution;\n    cout << solution.longestArithSeqLength(nums) << endl;\n\n    return 0;\n}"
+]
+,
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(n)" 
+      
+},
+{
+  "id": 31,
+  "name": "Helping Drivers",
+  "rating": 900,
+  "difficulty": "Easy",
+  "topics": ["Sorting", "Greedy"],
+  "company": "Uber",
+  "question_description": "Rob, an Uber driver known for his kindness and willingness to help fellow drivers, finds himself in a situation where he has n drivers seeking support. Each of these drivers has a rating. Rob's criteria for offering support are specific: he will only support a driver if there is at least one other driver with a lower rating and at least one other driver with a higher rating.",
+  "function_description": "Complete the function `int solution(int n, vector<int> drivers)` that returns the number of drivers that Rob can help.",
+  "input_format": "The first line contains an integer `n`, the number of drivers. The second line contains `n` space-separated integers representing the ratings of the drivers.",
+  "output_format": "A single integer representing the number of drivers that Rob can help.",
+  "constraints": "1 ≤ n ≤ 10\u2075 \n 0 ≤ drivers[i] ≤ 10^9",
+  "examples": [
+    {
+      "input": "3 1 2 3",
+      "output": "1",
+      "explanation": "Since 2 is the only driver rating with at least a rating lesser and a higher rating, the output is 1."
+    },
+    {
+      "input": "5 4 1 3 5 2",
+      "output": "3",
+      "explanation": "The drivers with ratings 2, 3, and 4 have both lower and higher-rated drivers, so the output is 3."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "4 1 1 1 1",
+      "output": "0",
+      "explanation": "All ratings are the same, so no driver has both a lower and higher rating."
+    },
+    {
+      "input": "6 10 20 30 40 50 60",
+      "output": "4",
+      "explanation": "Only the first and last drivers are not eligible, as they do not have both a lower and higher rating."
+    },
+    {
+      "input": "2 100 200",
+      "output": "0",
+      "explanation": "Since there are only two ratings, neither driver can fulfill the criteria."
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "10 1 10 5 7 3 8 6 9 2 4",
+      "output": "8"
+    },
+    {
+      "input": "1 999999999",
+      "output": "0"
+    }
+  ],
+  "solution": [
+    "#include <bits/stdc++.h>\nusing namespace std;\n\nint solution(int n, vector<int> drivers) {\n  sort(drivers.begin(), drivers.end());\n    int mini = drivers[0], maxi = drivers[n - 1];\n    int ans = 0;\n    for (int it : drivers) {\n        if (it > mini && it < maxi) ans++;\n    }\n    return ans;\n}\n\nint main() {\n    int n;\n    cin >> n;\n    vector<int> drivers(n);\n    for (int i = 0; i < n; i++) {\n        cin >> drivers[i];\n    }\n    cout << solution(n, drivers) << endl;\n    return 0;\n}"
+  ],
+  "time_complexity": "O(n log n)",
+  "space_complexity": "O(1)"
+},
+{
+  "id": 32,
+  "name": "Binary Circuit",
+  "rating": 1100,
+  "difficulty": "Medium",
+  "topics": ["Greedy", "DP"],
+  "company": "Estee Advisor",
+  "question_description": "An engineer is working to build an integrated binary circuit that takes input a binary string s. A binary string consisting of only 0s and 1s can be segregated by moving all the 1s towards the end of the string. For example, the string \"01010\", after segregation becomes \"00011\".\n\nIn a single operation, any \"1\" from the binary string can be chosen and moved to the right until it reaches the end of the string or another \"1\". The cost of the operation is 1 + the number of places the one is moved. For example, in the string \"10010\", the first one can be moved three places to the right in cost 4. Note that it is mandatory to move a 1 to the maximum possible position to the right.",
+  "input_format": "The input consists of a binary string s containing only '0's and '1's.",
+  "output_format": "Return a long integer that denotes the maximum possible cost for segregating the given string.",
+  "constraints": "1 ≤ length of s ≤ 10⁵ \n Each character of the given string is either '0' or '1'",
+  "examples": [
+    {
+      "input": "110100",
+      "output": "13",
+      "explanation": "Initial string: \"110100\".\n1. Swap the second and third characters at a cost of 2. String becomes \"101100\"\n2. Swap the first and second characters at a cost of 2. String becomes \"011100\"\n3. Move each one to the end i.e. moving 2 places at a cost of 3 each.\nThe total cost of segregation is 2 + 2 + 3 * 3 = 13."
+    }
+  ],
+  "testCases": [
+    {
+      "input": "110100",
+      "output": "13"
+    },
+    {
+      "input": "101",
+      "output": "3"
+    },
+    {
+      "input": "1001",
+      "output": "4"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "1111111",
+      "output": "14",
+      "explanation": "All ones are already together, so no swaps are required."
+    },
+    {
+      "input": "0000000",
+      "output": "0",
+      "explanation": "No ones to move, so the cost is 0."
+    },
+    {
+      "input": "1000001",
+      "output": "7",
+      "explanation": "The first '1' moves 5 places (cost 6) and the second '1' moves 1 place (cost 1). Total cost = 6 + 1 = 7."
+    }
+  ],
+  "function_description": "Complete the function getMaxCost that returns a long integer denoting the maximum possible cost for segregating the given string.\n\ngetMaxCost has the following parameter:\n- string s: The given binary string",
+  "solution": [
+    "#include <bits/stdc++.h>\nusing namespace std;\n\nlong getMaxCost(string s) {\n    if (s.find('1') == string::npos) {\n        return 0;\n    }\n    int ind = s.find('1');\n    int count = 1;\n    int n = s.length();\n    long res = 0;\n    int prev = ind;\n    \n    for (int i = ind + 1; i < n; ++i) {\n        if (s[i] == '1') {\n            if (prev != i - 1) {\n                res += (i - prev) * count;\n            }\n            count += 1;\n            prev = i;\n        }\n    }\n    \n    if (prev == n - 1) {\n        prev = n;\n    }\n    \n    return res + count * (n - prev);\n}\n\nint main() {\n    string s;\n    cin >> s;\n    cout << getMaxCost(s) << endl;\n    return 0;\n}"
+  ],
+  "explanation": "The function iterates over the binary string, tracking the position of the '1's and moving them greedily towards the rightmost available position. Each movement's cost is calculated based on the number of '1's moved and the distance moved. The total cost is accumulated and returned.",
+  "time_complexity": "O(n)",
+  "space_complexity": "O(1)"
+},
+{
+  "id": 33,
+  "name": "Prime String",
+  "rating": 1400,
+  "difficulty": "Medium",
+  "topics": ["String", "DP","Number Theory"],
+  "company": "Estee Advisor",
+  "question_description": "Given a string of length n consisting of digits [0-9], count the number of ways the given string can be split into prime numbers. The digits must remain in the order given and the entire string must be used. Each number must be in the range 2 to 10⁶ inclusive, and may not contain leading zeros. Since the answer can be large, return the answer modulo (10⁹ + 7).\n\nNote: The initial string does not contain leading zeros.",
+  "input_format": "The input consists of a string s containing only digits from 0 to 9, with no leading zeros.",
+  "output_format": "Return an integer representing the number of ways the string can be split into prime numbers, modulo 1000000007 (10⁹ + 7).",
+  "constraints": "1 ≤ length of s ≤ 10⁵",
+  "examples": [
+    {
+      "input": "11375",
+      "output": "3",
+      "explanation": "This string can be split into primes 3 different ways:\n[11, 37, 5], [11, 3, 7, 5], [113, 7, 5]"
+    },
+    {
+      "input": "3175",
+      "output": "3",
+      "explanation": "The 3 ways to split this string into prime numbers are [31, 7, 5], [3, 17, 5], [317, 5]. 3 modulo (10⁹ + 7) = 3"
+    }
+  ],
+  "testCases": [
+    {
+      "input": "3175",
+      "output": "3"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "11375",
+      "output": "3"
+    }
+  ],
+  "function_description": "Complete the function countPrimeStrings that returns an integer denoting the number of ways the string can be split into primes, modulo 1000000007.\n\ncountPrimeStrings has the following parameter(s):\n- string s: a string of digits",
+  "solution": ["#include <bits/stdc++.h>\nusing namespace std;\nconst int MOD = 1e9 + 7;\nconst int MAX_PRIME = 1e6;\n\nvector<bool> sieve(int max_num) {\n    vector<bool> is_prime(max_num + 1, true);\n    is_prime[0] = is_prime[1] = false;\n    for (int i = 2; i * i <= max_num; ++i) {\n        if (is_prime[i]) {\n            for (int j = i * i; j <= max_num; j += i) {\n                is_prime[j] = false;\n            }\n        }\n    }\n    return is_prime;\n}\n\nlong solve(const string& s, int i, vector<long long>& dp, const vector<bool>& is_prime) {\n    if (i >= s.length()) return 1;\n    if (dp[i] != -1) return dp[i];\n    \n    long long count = 0;\n    string p = \"\";\n    \n    for (int j = i; j < s.length(); ++j) {\n        p += s[j];\n        if (p[0] == '0') break;\n        \n        if (p.length() > 7) break; // Primes are only up to 10^6\n        \n        long h = stol(p);\n        if (h > MAX_PRIME) break;\n        \n        if (is_prime[h]) {\n            count = (count + solve(s, j + 1, dp, is_prime)) % MOD;\n        }\n    }\n    \n    dp[i] = count;\n    return count;\n}\n\nint countPrimeStrings(string s) {\n    vector<long long> dp(s.length(), -1);\n    vector<bool> is_prime = sieve(MAX_PRIME);\n    return solve(s, 0, dp, is_prime);\n}\n\nint main() {\n    ofstream fout(getenv(\"OUTPUT_PATH\"));\n    string s;\n    getline(cin, s);\n    int result = countPrimeStrings(s);\n    fout << result << \"\\n\";\n    fout.close();\n    return 0;\n}"],
+  "time_complexity": "O(n × m)",
+  "space_complexity": "O(n + MAX_PRIME)"
+},
+{
+  "id": 34,
+  "name": "Modulo Arithmetic Equation",
+  "rating": 1000,
+  "difficulty": "Medium",
+  "topics": ["Math", "Number Theory"],
+  "company": "Estee Advisor",
+  "question_description": "Given an integer N, determine the number of positive integral solutions for the equation (1/x) + (1/y) = 1/N!, where 1/N! is the inverse of the factorial of N. Return the value modulo 1000007 (10⁶ + 7).",
+  "input_format": "The input consists of a single integer N.",
+  "output_format": "Return an integer representing the number of positive integral solutions (x, y) for which the equation is true, modulo 1000007.",
+  "constraints":  "N is a positive integer",
+  "examples": [
+    {
+      "input": "2",
+      "output": "3",
+      "explanation": "For N = 2, we need to find integral pairs whose inverses sum to 1/2! = 1/2.\nThe 3 solutions are:\nx = 3, y = 6\nx = 4, y = 4\nx = 6, y = 3"
+    }
+  ],
+  "testCases": [
+    {
+      "input": "2",
+      "output": "3"
+    }
+  ],
+  "extraTestCases": [
+    {
+      "input": "3",
+      "output": "4"
+    }
+  ],
+  "function_description": "Complete the function ArithmeticEquation that returns an integer denoting the number of positive integral solutions for the equation, modulo 1000007.\n\nArithmeticEquation has the following parameter(s):\n- int N: an integer representing the factorial value in the equation",
+  "solution": ["int ArithmeticEquation(int N) {\n    // Calculate N!\n    long long fact = 1;\n    for(int i = 1; i <= N; i++) {\n        fact *= i;\n    }\n    \n    const int MOD = 1000007;\n    int count = 0;\n    \n    // For each possible x value\n    for(long long x = 1; x <= fact * 2; x++) {\n        // Calculate required y using the equation\n        // 1/x + 1/y = 1/fact\n        // Solving for y: y = (x * fact)/(x - fact)\n        if(x == fact) continue; // Skip when x equals fact\n        \n        long long num = x * fact;\n        long long den = x - fact;\n        \n        // Check if y would be an integer\n        if(den != 0 && num % den == 0) {\n            long long y = num / den;\n            // Check if y is positive and the equation holds\n            if(y > 0 && x > 0 && \n               (fact * (x + y) == x * y)) {\n                count = (count + 1) % MOD;\n            }\n        }\n    }\n    \n    return count;\n}"],
+  "time_complexity": "O(N × fact(N)) ",
+  "space_complexity": "O(1) "
 }
+
+
 
 ]

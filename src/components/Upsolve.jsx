@@ -19,6 +19,8 @@ import {
   DialogTitle, 
   DialogContent,
   Drawer,
+  Modal,
+  Card,
 
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -41,6 +43,10 @@ import BurgerButton from '../Utils/BurgerButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Premium from './Premium';
 import Add from './Add';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const boilerplate = {
   cpp: `#include <iostream>
@@ -64,6 +70,17 @@ public class Main {
     }
 }`
 };
+
+const mocktc = [
+  {
+    input: "2 3", // Input for this test case as a single string
+    output: "5",  // Expected output as a single string
+  },
+  {
+    input: "4 6",
+    output: "10",
+  },
+];
 
 
 const Upsolve = () => {
@@ -103,6 +120,13 @@ const Upsolve = () => {
   const [isLOADING,SetIsLOADING] = useState(true);  
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isPremium,setIsPremium] = useState(false);
+  const [showTopics, setShowTopics] = useState(false);
+  const [solutionIndex, setSolutionIndex] = useState(0);
+
+  const[mocktcsolved,setMocktcsolved] = useState();
+  const [openModal1, setopenmodal1] = useState(false);
+  const [mockresults, setmockResults] = useState([]);
+  const [successCount, setSuccessCount] = useState(0);
 
 
 
@@ -230,15 +254,15 @@ const Upsolve = () => {
   
     try {
       const controller = new AbortController(); // Create a new AbortController
-      const timeoutId = setTimeout(() => controller.abort(), 3500); 
+      const timeoutId = setTimeout(() => controller.abort(), 10000); 
   
-      const response = await fetch('https://api.codex.jaagrav.in', {
+      const response = await fetch('https://codex-api-hsd8.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           code,
           input: selectedTestCases[index].input,
-          language: 'cpp',
+          language: language,
         }),
         signal: controller.signal, 
       });
@@ -286,6 +310,39 @@ const Upsolve = () => {
       caseSet === 'extra' ? setExtraLoading(false) : setLoading(false);
     }
   };
+
+  const handleRunCode1 = async (index) => {
+    setError('');
+  
+    try {
+      // const controller = new AbortController(); // Create a new AbortController
+      // const timeoutId = setTimeout(() => controller.abort(), 3500); 
+  
+      const response = await fetch('https://codex-api-hsd8.onrender.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          input: mocktc[index].input,
+          language: language,
+        }),
+        // signal: controller.signal, 
+      });
+  
+      const data = await response.json();
+  
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setError('');
+      }
+
+      const isCorrect = data.output.trim() === mocktc[index].output.trim();
+      return isCorrect;
+    } catch (error) {
+      return false;
+    } 
+  };
   
 
 const handleCodeChange = (e) => {
@@ -304,15 +361,7 @@ const handleCodeChange = (e) => {
 
     URL.revokeObjectURL(url); 
 };
-  // Run all extra test cases one by one
-  const handleRunExtraTestCases = async () => {
-    setExtraLoading(true);
-    for (let i = 0; i < extraTestCases.length; i++) {
-      await handleRunCode(i, 'extra');
-      await new Promise(resolve => setTimeout(resolve, 2000)); 
-    }
-    setExtraLoading(false);
-  };
+  
 
   // Add new test case to main test cases
   const addTestCase = () => {
@@ -471,6 +520,7 @@ const generateCodeFromGemini = useCallback(
   []
 );
 
+
 const handleEditorMount = (editor, monaco) => {
   editorRef.current = editor;
   monacoRef.current = monaco;
@@ -599,6 +649,47 @@ const toggleDrawer = () => {
   setIsDrawerOpen(!isDrawerOpen);
 };
 
+const toggleTopicsVisibility = () => {
+    setShowTopics(!showTopics);
+  };
+
+
+  const handlePrevSolution = () => {
+    if (solutionIndex > 0) {
+      setSolutionIndex(solutionIndex - 1);
+    }
+  };
+
+  const handleNextSolution = () => {
+    if (selectedQuestion?.solution && solutionIndex < selectedQuestion.solution.length - 1) {
+      setSolutionIndex(solutionIndex + 1);
+    }
+  };
+
+  const handleRunMockTestCases = async () => {
+    const tempResults = [];
+    let successCounter = 0;
+
+    for (let i = 0; i < mocktc.length; i++) {
+      const isCorrect = await handleRunCode1(i);
+      tempResults.push(isCorrect ? "success" : "failure");
+
+      if (isCorrect) successCounter += 1;
+
+      setMocktcsolved(tempResults); 
+      setSuccessCount(successCounter);
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    setmockResults(tempResults); 
+  };
+  const handleSubmit = () => {
+    setopenmodal1(true);
+    setMocktcsolved([]); // Reset solved states
+    handleRunMockTestCases(); // Start running test cases
+  };
+
   return (
     <>
     <Header/>
@@ -651,9 +742,20 @@ const toggleDrawer = () => {
      <Typography variant="subtitle1" sx={{ mb: 1, color: "#555" }}>
        Difficulty: <b>{selectedQuestion?.difficulty}</b>
      </Typography>
-     <Typography variant="subtitle1" sx={{ mb: 1, color: "#555" }}>
-       Topics: <b>{selectedQuestion?.topics.join(", ")}</b>
-     </Typography>
+     <Typography variant="subtitle1" sx={{ mb: 1, color: "#555", display: "flex", alignItems: "center" }}>
+        Topics: 
+        {showTopics ? (
+          <b style={{ marginLeft: "8px" }}>{selectedQuestion?.topics.join(", ")}</b>
+        ) : (
+          <b style={{ marginLeft: "8px", color: "#555" }}>Hidden</b>
+        )}
+        <IconButton
+          onClick={toggleTopicsVisibility}
+          sx={{ marginLeft: "10px", color: showTopics ? "gray" : "gray" }}
+        >
+          {showTopics ? <VisibilityIcon /> : <VisibilityOffIcon />}
+        </IconButton>
+      </Typography>
      <Typography variant="subtitle1" sx={{ mb: 3, color: "#555" }}>
        Company: <b>{selectedQuestion?.company}</b>
      </Typography>
@@ -770,6 +872,7 @@ const toggleDrawer = () => {
              border: "1px solid #ddd",
              borderRadius: "8px",
              backgroundColor: "#fff",
+              whiteSpace: "pre-line"
            }}
          >
            <Typography variant="body2" sx={{ color: "#555" }}>
@@ -779,7 +882,7 @@ const toggleDrawer = () => {
              <b>Output:</b> {example.output}
            </Typography>
            {example.explanation && (
-             <Typography variant="body2" sx={{ color: "#555" }}>
+             <Typography variant="body2" sx={{ color: "#555", whiteSpace: "pre-wrap" }}>
                <b>Explanation:</b> {example.explanation}
              </Typography>
            )}
@@ -1005,72 +1108,144 @@ const toggleDrawer = () => {
 
 
 
-<Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-  <DialogTitle className="flex justify-between items-center">
-    Correct Answer
-    <button className="bg-red-500 ml-4 p-0 rounded" onClick={handleClose}>
-      <CloseIcon />
-    </button>
-  </DialogTitle>
-  <DialogContent>
-    <Typography variant="body1" gutterBottom>
-       Here is the accepted solution of the question.
-       ({selectedQuestion?.explanation})
-    </Typography>
-    <div style={{ position: 'relative', marginTop: '16px' }}>
-    <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
-        style={{ position: 'absolute', top: '8px', right: '24px', zIndex: 1 }}
-        onClick={() => {
-          navigator.clipboard.writeText(`${selectedQuestion?.solution}`);
-          setCopied(true); 
-          setTimeout(() => setCopied(false), 3000); 
-        }}
-        startIcon={
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            style={{ width: '20px', height: '20px' }}
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle className="flex justify-between items-center">
+        Correct Answer
+        <button className="bg-red-500 ml-4 p-0 rounded" onClick={handleClose}>
+          <CloseIcon />
+      </button>
+      </DialogTitle>
+      <DialogContent>
+        {/* Explanation */}
+        <Typography
+          variant="body1"
+          gutterBottom
+          style={{
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+          }}
+        >
+          Here is the accepted solution of the question.
+          <br />
+          {selectedQuestion?.explanation}
+        </Typography>
+
+        {/* Navigation Buttons */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "16px" }}>
+          <IconButton
+            onClick={handlePrevSolution}
+            disabled={solutionIndex === 0}
+            color="primary"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 9h6m-6 4h6m-5-9h4.25A2.75 2.75 0 0117 6.75v12.5A2.75 2.75 0 0114.25 22H6.75A2.75 2.75 0 014 19.25V6.75A2.75 2.75 0 016.75 4H8.5M8.5 4V3.5a2 2 0 012-2h3a2 2 0 012 2V4"
-            />
-          </svg>
-        }
-      >
-        {copied ? 'Copying code is bad habit 🤦' : 'DONT COPY 😠'}
-      </Button>
-      <div
-        style={{
-          backgroundColor: '#f5f5f5',
-          padding: '16px',
-          borderRadius: '8px',
-          height: '200px',
-          overflowY: 'scroll',
-          fontFamily: 'monospace',
-          fontSize: '14px',
-        }}
-      >
-        <pre>{selectedQuestion?.solution}</pre>
-      </div>
-    </div>
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
-      <Button variant="contained" color="primary">
-       TC of solution: {selectedQuestion?.time_complexity}
-      </Button>
-      <Button variant="contained" color="primary">
-        SC of solution: {selectedQuestion?.space_complexity}
-      </Button>
-    </div>
-  </DialogContent>
-</Dialog>
+            <ArrowBackIosIcon />
+          </IconButton>
+          <Typography variant="body2" style={{ fontStyle: "italic" }}>
+            Solution {solutionIndex + 1} of {selectedQuestion?.solution?.length || 0}
+          </Typography>
+          <IconButton
+            onClick={handleNextSolution}
+            disabled={solutionIndex === (selectedQuestion?.solution?.length || 1) - 1}
+            color="primary"
+          >
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+
+        {/* Solution Display with Copy Button */}
+        <div style={{ position: "relative", marginTop: "16px" }}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="small"
+            style={{ position: "absolute", top: "8px", right: "24px", zIndex: 1 }}
+            onClick={() => {
+              navigator.clipboard.writeText(selectedQuestion?.solution?.[solutionIndex]);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 3000);
+            }}
+            startIcon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                style={{ width: "20px", height: "20px" }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 9h6m-6 4h6m-5-9h4.25A2.75 2.75 0 0117 6.75v12.5A2.75 2.75 0 0114.25 22H6.75A2.75 2.75 0 014 19.25V6.75A2.75 2.75 0 016.75 4H8.5M8.5 4V3.5a2 2 0 012-2h3a2 2 0 012 2V4"
+                />
+              </svg>
+            }
+          >
+            {copied ? "Copied!" : "DONT COPY 😠"}
+          </Button>
+          <div
+            style={{
+              backgroundColor: "#f5f5f5",
+              padding: "16px",
+              borderRadius: "8px",
+              height: "200px",
+              overflowY: "scroll",
+              fontFamily: "monospace",
+              fontSize: "14px",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            <pre>{selectedQuestion?.solution?.[solutionIndex]}</pre>
+          </div>
+        </div>
+
+        {/* Complexity Buttons */}
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "16px" }}>
+  <Button
+    variant="contained"
+    color="primary"
+    style={{
+      position: "relative",
+      overflow: "hidden",
+      transition: "all 0.3s ease-in-out",
+      padding: "12px 24px",
+      backgroundColor: "#1976d2",
+      color: "#fff",
+      borderRadius: "8px",
+    }}
+    onMouseEnter={(e) => {
+      e.target.innerText = `${selectedQuestion?.time_complexity}`;
+    }}
+    onMouseLeave={(e) => {
+      e.target.innerText = "TC";
+    }}
+  >
+    TC
+  </Button>
+  <Button
+    variant="contained"
+    color="secondary"
+    style={{
+      position: "relative",
+      overflow: "hidden",
+      transition: "all 0.3s ease-in-out",
+      padding: "12px 24px",
+      backgroundColor: "#",
+      color: "#fff",
+      borderRadius: "8px",
+    }}
+    onMouseEnter={(e) => {
+      e.target.innerText = `${selectedQuestion?.space_complexity}`;
+    }}
+    onMouseLeave={(e) => {
+      e.target.innerText = "SC";
+    }}
+  >
+    SC
+  </Button>
+</div>
+
+      </DialogContent>
+    </Dialog>
 
 
       <div className="flex items-center gap-1 lg:gap-3">
@@ -1260,6 +1435,97 @@ const toggleDrawer = () => {
                 <div className="absolute z-10 w-16 h-16 rounded-full group-hover:scale-150 transition-all duration-500 ease-in-out bg-sky-500 delay-150 group-hover:delay-300"></div>
                 <p className="z-10">{loading ? <CircularProgress size={24} color="inherit" /> : 'Run'}</p>
             </button>
+
+            {/* <Button
+        variant="contained"
+        color="error"
+        onClick={handleSubmit}
+      >
+        Submit
+      </Button> */}
+
+      <Modal open={openModal1} onClose={() => setopenmodal1(false)}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            p: 4,
+          }}
+        >
+          <Card
+            sx={{
+              width: "80%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              p: 2,
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+              borderRadius: "10px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
+              Test Cases
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                overflowX: "auto",
+                py: 2,
+                px: 1,
+              }}
+            >
+              {mocktc.map((tc, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    minWidth: "200px",
+                    p: 2,
+                    textAlign: "center",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                    backgroundColor:
+                      mockresults[index] === "success"
+                        ? "green"
+                        : mockresults[index] === "failure"
+                        ? "red"
+                        : "#f5f5f5",
+                    flexShrink: 0,
+                    color:
+                    mockresults[index] === "success" ||
+                    mockresults[index] === "failure"
+                        ? "white"
+                        : "black",
+                  }}
+                >
+                  <Typography variant="body1" fontWeight="bold">
+                    Test Case {index + 1}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            <Typography
+              variant="h6"
+              sx={{
+                mt: 4,
+                textAlign: "center",
+                color: successCount === mocktc.length ? "green" : "red",
+              }}
+            >
+              {successCount}/{mocktc.length} Test Cases Passed
+            </Typography>
+          </Card>
+        </Box>
+      </Modal>
+ 
+
 
             <Box mt={2}>
               {testResults[activeTestCase] === true && (

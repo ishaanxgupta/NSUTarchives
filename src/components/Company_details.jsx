@@ -1,15 +1,24 @@
 
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import posts from "../data/posts.json";
+import postquestions from "../data/question.json";
 import company_details from "../data/company_details.json";
 import { Container, Typography, Box, Card, CardMedia, CardContent, Accordion, AccordionSummary, AccordionDetails, Button, Divider, boxClasses  } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { use } from "react";
+import Gobackbutton from "../Utils/Gobackbutton";
 
 function DetailsPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const post = posts.find((post) => post.id === parseInt(id));
+
   const company_detail = company_details.find((company_detail) => company_detail.id === parseInt(id));
+  const company_name = post.username;
+  const company_questions = postquestions.filter(
+    (question) => question.company === company_name
+  );
   const isValidURL = (string) => {
     try {
       new URL(string);
@@ -19,8 +28,18 @@ function DetailsPage() {
     }
   };
 
+  const redirectToquestionpage = (id) => {
+    navigate(`/upsolve/${id}`);
+  }
+
   return (
     <div className="bg-teal-900 min-h-screen flex items-center justify-center">
+      <div
+    className="absolute top-4 left-4 z-10 bg-white font-bold px-1 rounded-full shadow-md"
+    onClick={() => navigate("/patakaro")}
+  >
+    <Gobackbutton/>
+  </div>
       <Container maxWidth="md" className="mt-8">
         <Card className="shadow-lg bg-white">
           {/* Company Logo */}
@@ -36,9 +55,9 @@ function DetailsPage() {
         sx={{
           width: '400px',
           height: '180px',
-          objectFit: 'contain', // Use 'contain' to avoid cropping
-          display: 'block',      // Ensure it's treated as a block element
-          margin: '0 auto',     // Center the image horizontally
+          objectFit: 'contain', 
+          display: 'block',      
+          margin: '0 auto',    
         }}
       />
 
@@ -90,29 +109,108 @@ function DetailsPage() {
               }}
               >
 
-      {company_detail.questions?.map((question, index) => (
-      <Card key={index} className="shadow-md">
-      <CardContent style={{ display: 'flex', flexDirection: 'column', minHeight: '200px' }}>
-      {/* Question title */}
-      <Typography variant="h7" component="h2" className="text-gray-800" style={{ flexGrow: 1 }}>
-        {question.title}
-      </Typography>
-
-      {/* Divider - fixed position between title and button */}
-      <Divider style={{ margin: '20px 0' }} />
-
-      {/* Solve button at the bottom */}
-      <Box display="flex" justifyContent="center" mt="auto">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => alert(`Solving: ${question.title}`)}
-        >
-          Solve
-        </Button>
-      </Box>
-    </CardContent>
-  </Card>
+      {company_questions?.map((question, index) => (
+     <Card
+     key={index}
+     className="shadow-lg"
+     sx={{
+       backgroundColor: "#f7f9fc", // Light gray background
+       border: "1px solid #e0e7f1", // Subtle border
+       borderRadius: "8px",
+       transition: "transform 0.3s, box-shadow 0.3s",
+       "&:hover": {
+         transform: "translateY(-5px)",
+         boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
+       },
+       display: "flex",
+       flexDirection: "column",
+       minHeight: "250px",
+     }}
+   >
+     <CardContent
+       sx={{
+         display: "flex",
+         flexDirection: "column",
+         padding: "16px",
+         height: "100%",
+       }}
+     >
+       {/* Question title */}
+       <Typography
+         variant="h6"
+         component="h2"
+         sx={{
+           color: "#333", // Dark gray for better readability
+           marginBottom: "8px",
+         }}
+       >
+         {question.name}
+       </Typography>
+   
+       {/* Difficulty */}
+       <Typography
+         variant="body2"
+         sx={{
+           color:
+             question.difficulty === "Easy"
+               ? "green"
+               : question.difficulty === "Medium"
+               ? "orange"
+               : "red",
+         }}
+       >
+         Difficulty: {question.difficulty}
+       </Typography>
+   
+       {/* Rating */}
+       <Typography
+         variant="body2"
+         sx={{
+           color: "#555",
+           fontWeight: "medium",
+           marginTop: "4px",
+         }}
+       >
+         Rating: {question.rating}
+       </Typography>
+   
+       {/* Spacer to push divider down */}
+       <Box sx={{ flexGrow: 1 }} />
+   
+       {/* Divider */}
+       <Divider sx={{ margin: "20px 0" }} />
+   
+       {/* Solve button at the bottom */}
+       <Box display="flex" justifyContent="center" mt="auto">
+         <Button
+           onClick={() => redirectToquestionpage(question.id)}
+           sx={{
+             px: 4,
+             py: 0.5,
+             fontSize: "1rem",
+             fontWeight: "bold",
+             borderRadius: "8px",
+             background: "linear-gradient(90deg, #00c6ff, #0072ff)",
+             color: "white",
+             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.25)",
+             transition: "transform 0.3s, box-shadow 0.3s",
+             "&:hover": {
+               transform: "translateY(-3px) scale(1.05)",
+               boxShadow: "0 8px 20px rgba(0, 0, 0, 0.3)",
+               background: "linear-gradient(90deg, #0072ff, #00c6ff)",
+             },
+             "&:active": {
+               transform: "translateY(2px) scale(0.98)",
+               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+             },
+           }}
+         >
+           Code
+         </Button>
+       </Box>
+     </CardContent>
+   </Card>
+   
 ))}
   </Box>
 </Box>

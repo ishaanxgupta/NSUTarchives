@@ -10,6 +10,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import { useUser } from "@clerk/clerk-react";
 import Loader1 from "./Loader1";
+import CloseIcon from '@mui/icons-material/Close';
 
 function Intern_home() {
   const [posts, setPosts] = useState([]);
@@ -52,6 +53,8 @@ function Intern_home() {
     post.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
+
   return (
     <div>
       <div>
@@ -59,7 +62,7 @@ function Intern_home() {
       </div>
       <div className="p-6 bg-teal-900 min-h-screen">
         <h1 className="text-3xl font-bold mb-6 text-center text-white">
-          {user?.fullName}, Welcome to Archives!
+          {user?.fullName}, Welcome to PataKaro Archives!
         </h1>
 
         {/* Interactive Search Bar */}
@@ -80,7 +83,7 @@ function Intern_home() {
               endAdornment: searchQuery && (
                 <InputAdornment position="end">
                   <IconButton onClick={() => setSearchQuery("")}>
-                    ❌ 
+                     <CloseIcon />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -114,7 +117,7 @@ function Intern_home() {
                   <img
                     src={post.logo}
                     alt={post.username}
-                    className="w-15 h-12 rounded-md mr-4 object-cover"
+                    className="w-16 h-12 rounded-md mr-4 object-cover "
                   />
                   <div className="mt-0.5">
                     <Typography>{post.username}</Typography>

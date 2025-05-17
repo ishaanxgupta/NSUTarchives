@@ -8,36 +8,6 @@
     ],
     "details_of_test": "OA - 6 MCQ + 2 DSA",
     "time_for_test": "60 Minutes",
-    "questions": [
-      {
-        "id": 1,
-        "title": "Find the duplicates in three arrays where all values are the same"
-      },
-      {
-        "id": 2,
-        "title": "Find the distinct numbers in an array"
-      },
-      {
-        "id": 3,
-        "title": "Explain the time complexity of quicksort"
-      },
-      {
-        "id": 4,
-        "title": "Implement a function to reverse a linked list"
-      },
-      {
-        "id": 5,
-        "title": "Validate parentheses in a string (Leetcode)"
-      },
-      {
-        "id": 6,
-        "title": "Validate parentheses in a string (Leetcode)"
-      },
-      {
-        "id": 7,
-        "title": "Validate parentheses in a string (Leetcode)"
-      }
-    ],
     "interview_experiences": [
       {
         "id": 1,

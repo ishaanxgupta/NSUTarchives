@@ -69,7 +69,7 @@ function Footer() {
       {/* Footer Bottom */}
       <div className="text-center text-gray-500 text-sm mt-10 border-t border-gray-700 pt-6">
         <p className="mb-2">
-          "Taste success once, tongue wants more"
+          "You Can if you think you Can!"
         </p>
         <p>
           © {new Date().getFullYear()} All rights reserved. Built with 💡 and
