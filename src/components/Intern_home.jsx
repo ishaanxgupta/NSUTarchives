@@ -9,12 +9,15 @@ import { Link } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import { useUser } from "@clerk/clerk-react";
+import Loader1 from "./Loader1";
+import CloseIcon from '@mui/icons-material/Close';
 
 function Intern_home() {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); // Search query state
   const [open, setOpen] = useState(false);
   const { isSignedIn, user } = useUser();
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +32,15 @@ function Intern_home() {
     }
   }, [isSignedIn, navigate]);
 
+
+   useEffect(() => {
+     const timer = setTimeout(() => {
+       setIsLoading(false);
+     }, 2000); 
+ 
+     return () => clearTimeout(timer); 
+   }, []);
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -41,6 +53,8 @@ function Intern_home() {
     post.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+
+
   return (
     <div>
       <div>
@@ -48,7 +62,7 @@ function Intern_home() {
       </div>
       <div className="p-6 bg-teal-900 min-h-screen">
         <h1 className="text-3xl font-bold mb-6 text-center text-white">
-          {user?.fullName}, Welcome to Archives!
+          {user?.fullName}, Welcome to PataKaro Archives!
         </h1>
 
         {/* Interactive Search Bar */}
@@ -69,7 +83,7 @@ function Intern_home() {
               endAdornment: searchQuery && (
                 <InputAdornment position="end">
                   <IconButton onClick={() => setSearchQuery("")}>
-                    ❌ 
+                     <CloseIcon />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -77,7 +91,16 @@ function Intern_home() {
           />
         </div>
 
+
+
         {/* Displaying filtered posts */}
+        {isLoading ? (
+                // Loader component is displayed when loading
+                <div className="flex justify-center items-center py-12">
+                  <Loader1 />
+                </div>
+              ) : (
+                <>
         <div className="space-y-4">
           {filteredPosts.length > 0 ? (
             filteredPosts.slice().reverse().map((post) => (
@@ -94,7 +117,7 @@ function Intern_home() {
                   <img
                     src={post.logo}
                     alt={post.username}
-                    className="w-15 h-12 rounded-md mr-4 object-cover"
+                    className="w-16 h-12 rounded-md mr-4 object-cover "
                   />
                   <div className="mt-0.5">
                     <Typography>{post.username}</Typography>
@@ -113,7 +136,7 @@ function Intern_home() {
                     branches={post.branches}
                   />
                   <Link
-                    to={`/intern/details/${post.id}`}
+                    to={`/patakaro/details/${post.id}`}
                     className="text-blue-500 hover:underline mt-2 block"
                   >
                     Read More
@@ -129,6 +152,8 @@ function Intern_home() {
         </div>
         <div>
         </div>
+              </>
+              )}
       </div>
 
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

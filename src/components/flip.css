@@ -63,6 +63,7 @@
     border-radius: 50%;
     opacity: 0.5;
     animation: float 10s ease-in-out infinite;
+    filter: blur(10px);
   }
   
   /* First bubble */
@@ -82,8 +83,26 @@
     background: rgba(0, 123, 255, 0.4); /* Blue bubble */
     top: 50%;
     left: 60%;
-    animation-delay: 2s;
+    animation-delay: 0s;
   }
+  
+  /* Responsive adjustments for phones */
+  @media (max-width: 768px) {
+    .bubble-container::before {
+      width: 350px;
+      height: 350px;
+      top:10px;
+      left: 1px;
+    }
+  
+    .bubble-container::after {
+      width: 300px;
+      height: 300px;
+      top: 60%;
+      left: 40%;
+    }
+  }
+  
   
   /* Keyframes for floating animation */
   @keyframes float {
@@ -96,5 +115,29 @@
     100% {
       transform: translateY(0) scale(1);
     }
+  }
+  
+
+  @keyframes slideIn {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-effect {
+    animation: slideIn 0.8s ease-out forwards;
+  }
+  
+  .slide-in-effect-image {
+    animation: slideIn 1s ease-out forwards;
+  }
+  
+  .slide-in-effect-text {
+    animation: slideIn 1.2s ease-out forwards;
   }
   

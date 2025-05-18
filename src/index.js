@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react"
 import { ClerkProvider } from '@clerk/clerk-react'
+import {createTheme} from '@mui/material';
+import {ThemeProvider} from '@mui/styles';
 
-
+const theme = createTheme()
 const PUBLISHABLE_KEY = "pk_test_cmljaC1ibHVlZ2lsbC02MC5jbGVyay5hY2NvdW50cy5kZXYk"
 
 if (!PUBLISHABLE_KEY) {

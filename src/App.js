@@ -1,173 +1,31 @@
-// import React from "react";
-// import { BrowserRouter as Router, Route, Routes, Navigate  } from "react-router-dom";
-// import Intern_home from "./components/Intern_home";
-// import Fte_home from "./components/Fte_home";
-// import Company_details from "./components/Company_details";
-// import { SignIn, SignUp, SignedIn, SignedOut, RedirectToSignIn, afterSignUpUrl } from "@clerk/clerk-react";
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Navigate to="/sign-up" />} />
-        
-//         {/* Auth Routes */}
-//         <Route 
-//           path="/sign-in" 
-//           element={<SignIn routing="path" path="/sign-in" signUpUrl="/sign-up" />} 
-//         />
-//         <Route 
-//           path="/sign-up" 
-//           element={<SignUp routing="path" path="/sign-up" afterSignUpUrl="/intern" />} 
-//         />
-
-//         {/* Protect these routes */}
-//         <Route
-//           path="/intern"
-//           element={
-//             <SignedIn>
-//               <Intern_home />
-//             </SignedIn>
-//           }
-//         />
-//         <Route
-//           path="/fte"
-//           element={
-//             <SignedIn>
-//               <Fte_home />
-//             </SignedIn>
-//           }
-//         />
-//         <Route
-//           path="/intern/details/:id"
-//           element={
-//             <SignedIn>
-//               <Company_details />
-//             </SignedIn>
-//           }
-//         />
-
-//         {/* Redirect to sign in if not signed in */}
-//         <Route
-//           path="*"
-//           element={
-//             <SignedOut>
-//               <RedirectToSignIn />
-//             </SignedOut>
-//           }
-//         />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-// import React from "react";
-// import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-// import Intern_home from "./components/Intern_home";
-// import Fte_home from "./components/Fte_home";
-// import Company_details from "./components/Company_details";
-// import { SignIn, SignUp, SignedIn, SignedOut } from "@clerk/clerk-react";
-// import AuthWrapper from "./AuthWrapper";
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route
-//           path="/"
-//           element={
-//             <SignedOut>
-//               <Navigate to="/sign-up" />
-//             </SignedOut>
-//           }
-//         />
-
-//         <Route 
-//           path="/sign-in" 
-//           element={<SignIn routing="path" path="/sign-in"  />} 
-//         />
-//         <Route 
-//           path="/sign-up" 
-//           element={<SignUp routing="path" path ="/sign-up"  />} 
-//         />
-
-//         {/* <Route
-//           path="/intern"
-//           element={
-//             <AuthWrapper>
-//               <SignedIn>
-//                 <Intern_home />
-//               </SignedIn>
-//             </AuthWrapper>
-//           }
-//         />
-//         <Route
-//           path="/fte"
-//           element={
-//             <AuthWrapper>
-//               <SignedIn>
-//                 <Fte_home />
-//               </SignedIn>
-//             </AuthWrapper>
-//           }
-//         />
-//         <Route
-//           path="intern/details/:id"
-//           element={
-//             <AuthWrapper>
-//               <SignedIn>
-//                 <Company_details />
-//               </SignedIn>
-//             </AuthWrapper>
-//           }
-//         /> */}
-
-// <Route path="/intern" element={<Intern_home />} />
-// <Route path = "/intern/details/:id" element={<Company_details />}/>
-
-//         <Route
-//           path="*"
-//           element={
-//             <SignedOut>
-//               <Navigate to="/sign-in" />
-//             </SignedOut>
-//           }
-//         />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
-
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Intern_home from "./components/Intern_home";
 import Fte_home from "./components/Fte_home";
-// import Upsolve_home from "./components/Upsolve_home";
-// import Codecast_home from "./components/Codecast_home";
 import Company_details from "./components/Company_details";
 import Landing_page from './components/Landing_page';
 
-import { SignIn, SignUp, SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
-
+import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
+import SignInPage from "./components/SignInPage";
+import SignUpPage from "./components/SignUpPage";
+import Questions_page from "./components/Questions_page";
+import Upsolve from "./components/Upsolve";
+import User_profile from "./components/User_profile";
 function App() {
-  const { isSignedIn } = useAuth(); // Check if user is signed in
+  const { isSignedIn } = useAuth(); 
 
   return (
     <Router>
       <Routes>
         {/* Public Routes */}
+        <Route path="/user_profile" element={<User_profile/>} />
         <Route
           path="/"
           element={
             isSignedIn ? (
-              <Navigate to="/home" /> // Redirect to home if signed in
+              <Navigate to="/home" /> 
             ) : (
-              <Navigate to="/sign-in" />
+              <Navigate to="/sign-up" />
             )
           }
         />
@@ -175,9 +33,9 @@ function App() {
           path="/sign-in"
           element={
             isSignedIn ? (
-              <Navigate to="/home" /> // Redirect to home if already signed in
+              <Navigate to="/home" /> 
             ) : (
-              <SignIn routing="path" path="/sign-in" />
+              <SignInPage />
             )
           }
         />
@@ -187,30 +45,52 @@ function App() {
             isSignedIn ? (
               <Navigate to="/home" /> // Redirect to home if already signed up
             ) : (
-              <SignUp routing="path" path="/sign-up" />
+              // <SignUp routing="path" path="/sign-up" />
+              <SignUpPage />
+            )
+          }
+        />
+        <Route
+          path="/patakaro"
+          element={
+            isSignedIn ? (
+              <Intern_home /> // Redirect to home if already signed up
+            ) : (
+              <Navigate to="/sign-in" />
+            )
+          }
+        />
+        <Route
+          path="/home"
+          element={
+            isSignedIn ? (
+              <Landing_page /> // Redirect to home if already signed up
+            ) : (
+              <Navigate to="/sign-in" />
             )
           }
         />
 
         {/* Protected Routes */}
-        <Route
+        {/* <Route
           path="/home"
           element={
             <SignedIn>
               <Landing_page />
             </SignedIn>
           }
-        />
+        /> */}
 
         {/* Feature Routes */}
-        <Route
+        {/* <Route
           path="/intern"
           element={
             <SignedIn>
               <Intern_home />
             </SignedIn>
           }
-        />
+        /> */}
+
         <Route
           path="/fte"
           element={
@@ -219,24 +99,24 @@ function App() {
             </SignedIn>
           }
         />
-        {/* <Route
-          path="/upsolve"
+        <Route
+          path="/upsolve/:id"
           element={
             <SignedIn>
-              <Upsolve_home />
+              <Upsolve />
             </SignedIn>
           }
         />
         <Route
-          path="/codecast"
+          path="/intellicode"
           element={
             <SignedIn>
-              <Codecast_home />
+              <Questions_page />
             </SignedIn>
           }
-        /> */}
+        />
         <Route
-          path="/intern/details/:id"
+          path="/patakaro/details/:id"
           element={
             <SignedIn>
               <Company_details />
@@ -253,6 +133,7 @@ function App() {
             </SignedOut>
           }
         />
+        <Route path="/questions" element  ={<Questions_page />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,66 @@
+.custom-button {
+    position: relative;
+    width: 194px;
+    height: 37px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #17795E;
+    background-color: #209978;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .custom-button .button-text {
+    color: #fff;
+    margin-right: 25px;
+    font-weight: 400;
+    transition: color 0.3s ease-in-out;
+    z-index: 10;
+  }
+  
+  .custom-button .button-icon {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #17795E;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .custom-button .svg-icon {
+    width: 20px;
+    fill: #fff;
+    transition: fill 0.3s ease-in-out;
+  }
+  
+  .custom-button:hover {
+    background-color: #17795E;
+    border-color: #146c54;
+  }
+  
+  .custom-button:hover .button-text {
+    color: transparent;
+  }
+  
+  .custom-button:hover .button-icon {
+    width: 100%;
+    right: 0;
+  }
+  
+  .custom-button:active {
+    border-color: #146c54;
+    background-color: #146c54;
+  }
+  
+  .suggestion-text {
+    color: #888; /* Light gray text */
+    font-style: italic;
+    background-color: rgba(200, 200, 200, 0.2); /* Optional subtle background */
+  }
+  

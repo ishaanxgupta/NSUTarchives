@@ -21,7 +21,7 @@ function Navbar() {
 const DrawerList = (
   <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
     <List>
-      {['Intern','FTE','CodeCAST','UpSolve'].map((text, index) => (
+      {['Home','PataKaro','IntelliCode','FTE'].map((text, index) => (
         <ListItem key={text} disablePadding>
           <ListItemButton>
             <ListItemIcon>
@@ -32,7 +32,7 @@ const DrawerList = (
         </ListItem>
       ))}
     </List>
-    <Divider />
+    <Divider /> 
     <List>
       {['Contact US'].map((text, index) => (
         <ListItem key={text} disablePadding>
