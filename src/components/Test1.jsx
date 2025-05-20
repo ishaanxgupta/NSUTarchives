@@ -1,10 +1,6 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import { Search, Code2, Filter, Brain, Building2, Target, Clock, Zap, Sparkles, X } from 'lucide-react';
 import questionsData from '../data/question.json';
-
 
 const topics = ["Array", "Trees", "Linked Lists", "DP", "Graphs", "Strings"];
 const companies = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Netflix","Goldman Sachs","Placewit"];
@@ -265,3 +261,4 @@ function App() {
 }
 
 export default App;
+
