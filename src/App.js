@@ -11,6 +11,8 @@ import SignUpPage from "./components/SignUpPage";
 import Questions_page from "./components/Questions_page";
 import Upsolve from "./components/Upsolve";
 import User_profile from "./components/User_profile";
+import CodeCast from "./components/CodeCast";
+
 function App() {
   const { isSignedIn } = useAuth(); 
 
@@ -70,6 +72,7 @@ function App() {
             )
           }
         />
+         <Route path='/codecast' element={<CodeCast/>}/>
 
         {/* Protected Routes */}
         {/* <Route
